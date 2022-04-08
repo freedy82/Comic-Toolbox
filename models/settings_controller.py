@@ -1,0 +1,146 @@
+import sys
+
+from PyQt5 import QtCore, QtWidgets
+from const import *
+from PyQt5.QtWidgets import QFileDialog
+from uis.main_window import Ui_MainWindow
+
+class SettingsController(object):
+
+	def __init__(self, app=None, ui: Ui_MainWindow = None, main_controller=None):
+		self.app = app
+		self.ui = ui
+		self.main_controller = main_controller
+		self.setup_control()
+		pass
+
+	def setup_control(self):
+		# UI Display
+		self.retranslateUi()
+
+		self.load_config()
+
+		# Button
+		self.ui.btn_settings_save.clicked.connect(self.btn_settings_save_clicked)
+		self.ui.btn_settings_reset.clicked.connect(self.btn_reset_default_clicked)
+		self.ui.btn_settings_general_folder.clicked.connect(self.btn_settings_general_folder_clicked)
+
+	def retranslateUi(self):
+		pass
+
+	#action
+	def btn_settings_general_folder_clicked(self):
+		old_folder_path = self.ui.txt_settings_general_folder.text()
+		if old_folder_path == "":
+			old_folder_path = "./"
+		folder_path = QFileDialog.getExistingDirectory(self.main_controller,TRSM("Open folder"), old_folder_path)
+		if folder_path != "":
+			self.ui.txt_settings_general_folder.setText(folder_path)
+		pass
+
+	def btn_settings_save_clicked(self):
+		self.save_config()
+
+	def btn_reset_default_clicked(self):
+		self.ui.spin_settings_max_retry.setValue(5)
+		self.ui.spin_settings_timeout.setValue(30)
+
+		self.ui.spin_settings_book_padding.setValue(2)
+		self.ui.spin_settings_chapter_padding.setValue(3)
+		self.ui.spin_settings_image_padding.setValue(3)
+		self.ui.spin_settings_jpg_quality.setValue(90)
+		self.ui.spin_settings_check_is_2_page.setValue(1.0)
+
+		self.ui.spin_settings_page_sleep.setValue(10)
+		self.ui.spin_settings_image_sleep.setValue(1)
+		self.ui.spin_settings_download_worker.setValue(2)
+
+		pass
+
+	# internal
+	def load_config(self):
+		#general
+		download_folder = MY_CONFIG.get("general", "download_folder")
+		self.ui.txt_settings_general_folder.setText(download_folder)
+		max_retry = MY_CONFIG.get("general", "max_retry")
+		self.ui.spin_settings_max_retry.setValue(int(max_retry))
+		timeout = MY_CONFIG.get("general", "timeout")
+		self.ui.spin_settings_timeout.setValue(float(timeout))
+
+		self.ui.cbx_settings_user_agent.addItems([
+			"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:98.0) Gecko/20100101 Firefox/98.0",
+			"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36",
+		])
+		# "Mozilla/5.0 (iPad; CPU OS 8_0_2 like Mac OS X) AppleWebKit/60.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A405 Safari/600.1.4",
+		# "Mozilla/5.0 (iPhone; CPU iPhone OS 13_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.2 Mobile/15E148 Safari/604.1",
+		# "Mozilla/5.0 (Linux; Android 12; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.58 Mobile Safari/537.36"
+
+		agent = MY_CONFIG.get("general", "agent")
+		self.ui.cbx_settings_user_agent.setCurrentText(agent)
+
+		book_padding = MY_CONFIG.get("general", "book_padding")
+		self.ui.spin_settings_book_padding.setValue(int(book_padding))
+		chapter_padding = MY_CONFIG.get("general", "chapter_padding")
+		self.ui.spin_settings_chapter_padding.setValue(int(chapter_padding))
+		image_padding = MY_CONFIG.get("general", "image_padding")
+		self.ui.spin_settings_image_padding.setValue(int(image_padding))
+		jpg_quality = MY_CONFIG.get("general", "jpg_quality")
+		self.ui.spin_settings_jpg_quality.setValue(int(jpg_quality))
+		check_is_2_page = MY_CONFIG.get("general", "check_is_2_page")
+		self.ui.spin_settings_check_is_2_page.setValue(float(check_is_2_page))
+
+		#anti ban
+		page_sleep = MY_CONFIG.get("anti-ban", "page_sleep")
+		self.ui.spin_settings_page_sleep.setValue(float(page_sleep))
+		image_sleep = MY_CONFIG.get("anti-ban", "image_sleep")
+		self.ui.spin_settings_image_sleep.setValue(float(image_sleep))
+		download_worker = MY_CONFIG.get("anti-ban", "download_worker")
+		self.ui.spin_settings_download_worker.setValue(int(download_worker))
+
+		#misc
+		display_message = MY_CONFIG.get("misc", "display_message")
+		if display_message == "False":
+			self.ui.radio_settings_message_no.setChecked(True)
+		else:
+			self.ui.radio_settings_message_yes.setChecked(True)
+
+		play_sound = MY_CONFIG.get("misc", "play_sound")
+		if play_sound == "False":
+			self.ui.radio_settings_sound_no.setChecked(True)
+		else:
+			self.ui.radio_settings_sound_yes.setChecked(True)
+
+		pass
+
+	def save_config(self):
+		global WEB_BOT, EXECUTOR
+		#print("try save")
+		#general
+		MY_CONFIG.set("general","download_folder",self.ui.txt_settings_general_folder.text())
+		MY_CONFIG.set("general","max_retry",str(self.ui.spin_settings_max_retry.value()))
+		MY_CONFIG.set("general","timeout",str(self.ui.spin_settings_timeout.value()))
+		MY_CONFIG.set("general","agent",self.ui.cbx_settings_user_agent.currentText())
+		MY_CONFIG.set("general","book_padding",str(self.ui.spin_settings_book_padding.value()))
+		MY_CONFIG.set("general","chapter_padding",str(self.ui.spin_settings_chapter_padding.value()))
+		MY_CONFIG.set("general","image_padding",str(self.ui.spin_settings_image_padding.value()))
+		MY_CONFIG.set("general","jpg_quality",str(self.ui.spin_settings_jpg_quality.value()))
+		MY_CONFIG.set("general","check_is_2_page",str(self.ui.spin_settings_check_is_2_page.value()))
+		#
+
+		#anti ban
+		MY_CONFIG.set("anti-ban","page_sleep",str(self.ui.spin_settings_page_sleep.value()))
+		MY_CONFIG.set("anti-ban","image_sleep",str(self.ui.spin_settings_image_sleep.value()))
+		MY_CONFIG.set("anti-ban","download_worker",str(self.ui.spin_settings_download_worker.value()))
+
+		#misc
+		MY_CONFIG.set("misc","display_message",str(self.ui.radio_settings_message_yes.isChecked()))
+		MY_CONFIG.set("misc","play_sound",str(self.ui.radio_settings_sound_yes.isChecked()))
+
+		MY_CONFIG.save()
+
+		WEB_BOT = WebBot(
+			agent=MY_CONFIG.get("general", "agent"),
+			time_out=float(MY_CONFIG.get("general", "timeout")),
+			max_retry=int(MY_CONFIG.get("general", "max_retry"))
+		)
+		EXECUTOR = concurrent.futures.ThreadPoolExecutor(max_workers=int(MY_CONFIG.get("anti-ban", "download_worker")))

@@ -1,0 +1,9 @@
+pyExecJS
+lzstring
+pillow==9.1.0
+bs4
+configparser
+PyQt5==5.15.6
+ebooklib
+langcodes
+language_data

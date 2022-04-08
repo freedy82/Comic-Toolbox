@@ -1,0 +1,14 @@
+<RCC>
+  <qresource prefix="icon">
+    <file alias="hide">resources/hide.png</file>
+    <file alias="show">resources/show.png</file>
+    <file alias="info">resources/info.png</file>
+    <file alias="exit">resources/exit.png</file>
+    <file alias="main_icon">resources/icon.png</file>
+    <file alias="language">resources/language.png</file>
+    <file alias="help">resources/help.png</file>
+  </qresource>
+  <qresource prefix="sound">
+    <file alias="ring">resources/sound.wav</file>
+  </qresource>
+</RCC>
