@@ -9,10 +9,10 @@ import util
 
 class ConverterController(object):
 	MODES = [
-		{"from_exts":("webp","png","gif","jpeg"),"to_ext":"jpg"},
-		{"from_exts":("webp","jpg","gif","jpeg"),"to_ext":"png"},
-		{"from_exts": ("webp", "png", "gif", "jpg", "jpeg"), "to_ext": "jpg"},
-		{"from_exts": ("webp", "png", "gif", "jpg", "jpeg"), "to_ext": "png"}
+		{"from_exts": util.remove_element_of_tuple(IMAGE_EXTS,"jpg"), "to_ext":"jpg"},
+		{"from_exts": util.remove_element_of_tuple(IMAGE_EXTS,"png"), "to_ext":"png"},
+		{"from_exts": IMAGE_EXTS, "to_ext": "jpg"},
+		{"from_exts": IMAGE_EXTS, "to_ext": "png"}
 	]
 
 	def __init__(self, app=None, ui: Ui_MainWindow = None, main_controller=None):
@@ -27,14 +27,20 @@ class ConverterController(object):
 		pass
 
 	def setup_control(self):
-		download_folder = MY_CONFIG.get("general", "download_folder")
-		#download_folder = "F:/comics/測試"
-		self.ui.txt_converter_from_folder.setText(download_folder)
-		#download_folder = "F:/comics/測試2"
-		self.ui.txt_converter_to_folder.setText(download_folder)
+		convert_from_folder = MY_CONFIG.get("general", "convert_from_folder")
+		if convert_from_folder == "":
+			convert_from_folder = MY_CONFIG.get("general", "download_folder")
+		#convert_from_folder = "F:/comics/測試"
+		self.ui.txt_converter_from_folder.setText(convert_from_folder)
+
+		convert_to_folder = MY_CONFIG.get("general", "convert_to_folder")
+		if convert_to_folder == "":
+			convert_to_folder = MY_CONFIG.get("general", "download_folder")
+		#convert_to_folder = "F:/comics/測試2"
+		self.ui.txt_converter_to_folder.setText(convert_to_folder)
 
 		for mode in self.MODES:
-			label = ",".join(mode["from_exts"]) + " -> " + mode["to_ext"]
+			label = ", ".join(mode["from_exts"]) + " -> " + mode["to_ext"]
 			if mode["to_ext"] in mode["from_exts"]:
 				label += " ("+TRSM("Force convert mode")+")"
 			self.ui.cbx_converter_mode.addItem(label)
@@ -61,7 +67,7 @@ class ConverterController(object):
 
 	def retranslateUi(self):
 		for idx,mode in enumerate(self.MODES):
-			label = ",".join(mode["from_exts"]) + " -> " + mode["to_ext"]
+			label = ", ".join(mode["from_exts"]) + " -> " + mode["to_ext"]
 			if mode["to_ext"] in mode["from_exts"]:
 				label += " ("+TRSM("Force convert mode")+")"
 			self.ui.cbx_converter_mode.setItemText(idx,label)
@@ -93,6 +99,8 @@ class ConverterController(object):
 			self.ui.btn_converter_unselect_all.setEnabled(False)
 			self.ui.btn_converter_start.setEnabled(False)
 			self.ui.btn_converter_cancel.setEnabled(False)
+			MY_CONFIG.set("general", "convert_from_folder", folder_path)
+			MY_CONFIG.save()
 		pass
 
 	def btn_converter_folder_scan_clicked(self):
@@ -137,6 +145,8 @@ class ConverterController(object):
 		folder_path = QFileDialog.getExistingDirectory(self.main_controller,TRSM("Open folder"), old_folder_path)
 		if folder_path != "":
 			self.ui.txt_converter_to_folder.setText(folder_path)
+			MY_CONFIG.set("general", "convert_to_folder", folder_path)
+			MY_CONFIG.save()
 		pass
 
 	def btn_converter_change_filter_clicked(self):

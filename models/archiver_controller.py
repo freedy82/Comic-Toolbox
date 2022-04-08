@@ -20,9 +20,11 @@ class ArchiverController(object):
 		pass
 
 	def setup_control(self):
-		download_folder = MY_CONFIG.get("general", "download_folder")
-		#download_folder = "F:/comics/測試"
-		self.ui.txt_archiver_from_folder.setText(download_folder)
+		archive_from_folder = MY_CONFIG.get("general", "archive_from_folder")
+		if archive_from_folder == "":
+			archive_from_folder = MY_CONFIG.get("general", "download_folder")
+		#archive_from_folder = "F:/comics/測試"
+		self.ui.txt_archiver_from_folder.setText(archive_from_folder)
 
 		for tmp_format in self.FORMATS:
 			label = TRSM(tmp_format["desc"]) + " (*." + tmp_format["ext"] + ")"
@@ -72,7 +74,8 @@ class ArchiverController(object):
 			self.ui.btn_archiver_unselect_all.setEnabled(False)
 			self.ui.btn_archiver_start.setEnabled(False)
 			self.ui.btn_archiver_cancel.setEnabled(False)
-
+			MY_CONFIG.set("general", "archive_from_folder", folder_path)
+			MY_CONFIG.save()
 		pass
 
 	def btn_archiver_folder_scan_clicked(self):

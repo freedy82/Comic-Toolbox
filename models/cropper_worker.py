@@ -88,8 +88,7 @@ class CropperWorker(QThread):
 	def _start_scan_2_page_in_folder(self, folder):
 		full_folder = os.path.join(self.from_folder, folder)
 		files = sorted(os.listdir(full_folder))
-		exts = ('.gif', '.png', '.jpg', '.jpeg', '.webp')
-		filtered_files = [x for x in files if x.endswith(exts)]
+		filtered_files = [x for x in files if x.endswith(IMAGE_EXTS)]
 		pages_ratio_require = float(MY_CONFIG.get("general", "check_is_2_page"))
 		for file in filtered_files:
 			tmp_ext = util.get_ext(file)
@@ -118,8 +117,7 @@ class CropperWorker(QThread):
 	def _start_crop_in_folder(self, folder):
 		full_folder = os.path.join(self.from_folder, folder)
 		files = sorted(os.listdir(full_folder))
-		exts = ('.gif', '.png', '.jpg', '.jpeg', '.webp')
-		filtered_files = [x for x in files if x.endswith(exts)]
+		filtered_files = [x for x in files if x.endswith(IMAGE_EXTS)]
 		# get the first file not start with "0"
 		from_file = ""
 		to_file = ""

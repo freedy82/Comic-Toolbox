@@ -63,9 +63,11 @@ class CropperController(object):
 		pass
 
 	def setup_control(self):
-		download_folder = MY_CONFIG.get("general", "download_folder")
-		#download_folder = "F:/comics/測試"
-		self.ui.txt_cropper_from_folder.setText(download_folder)
+		crop_from_folder = MY_CONFIG.get("general", "crop_from_folder")
+		if crop_from_folder == "":
+			crop_from_folder = MY_CONFIG.get("general", "download_folder")
+		#crop_from_folder = "F:/comics/測試"
+		self.ui.txt_cropper_from_folder.setText(crop_from_folder)
 
 		for method in self.METHODS:
 			self.ui.cbx_cropper_method.addItem(TRSM(method["name"]))
@@ -125,7 +127,8 @@ class CropperController(object):
 			self.ui.btn_cropper_unselect_all.setEnabled(False)
 			self.ui.btn_cropper_start.setEnabled(False)
 			self.ui.btn_cropper_cancel.setEnabled(False)
-
+			MY_CONFIG.set("general", "crop_from_folder", folder_path)
+			MY_CONFIG.save()
 		pass
 
 	def btn_cropper_folder_scan_clicked(self):

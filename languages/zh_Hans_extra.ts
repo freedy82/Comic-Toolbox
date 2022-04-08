@@ -314,6 +314,10 @@
         <source>Please select a folder with contain at least one image</source>
         <translation>请选择包含至少一张图片的文档夹</translation>
     </message>
+    <message>
+        <source>Comic toolbox was hidden to system tray</source>
+        <translation>漫画工具箱被隐藏到这里</translation>
+    </message>
 
 </context>
 </TS>

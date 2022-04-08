@@ -149,7 +149,7 @@ class ArchiverWorker(QThread):
 				for filename in file_list:
 					if self.stop_flag:
 						break
-					if util.get_ext(filename) not in ("jpg","png","gif","jpeg","bmp","webp"):
+					if util.get_ext(filename) not in IMAGE_EXTS:
 						continue
 					full_file = os.path.join(full_folder, filename)
 
@@ -207,7 +207,7 @@ class ArchiverWorker(QThread):
 					if self.stop_flag:
 						break
 					ext = util.get_ext(filename)
-					if ext not in ("jpg","png","gif","jpeg","webp"):
+					if ext not in IMAGE_EXTS:
 						continue
 
 					full_file = os.path.join(full_folder, filename)

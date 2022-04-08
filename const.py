@@ -18,6 +18,8 @@ def TRSM(str_name):
 APP_VERSION = "0.5"
 APP_LINK = "https://github.com/freedy82/Comic-Toolbox"
 
+IMAGE_EXTS = ("jpg","gif","png","jpeg","webp")
+
 # setting for AI
 # REAL_CUGAN_DIR = "E:/Real-CUGAN/"
 # REAL_CUGAN_INPUT = REAL_CUGAN_DIR + "input_dir/"

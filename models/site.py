@@ -16,6 +16,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from urllib.parse import urljoin
 import importlib
 import html
+import glob
 
 
 class Site(QThread):
@@ -188,12 +189,13 @@ class Site(QThread):
 			self.final_total_download = 0
 			self.current_finish_download = 0
 			for page in page_list:
-				#target_file = os.path.join(output_dir.rstrip(), str(i+1).zfill(int(MY_CONFIG.get("general", "image_padding"))) + ".jpg")
-				#if not IS_RESUME or not os.path.isfile(page["file"]):
-				# unknown need 2 params!!!
-				t = threading.Thread(target=self.download_single_page_image_from_page_item, args=(page,True))
-				threads.append(t)
-				t.start()
+				old_exist_file_check = []
+				[old_exist_file_check.extend(glob.glob(page["file"] + '.' + ext)) for ext in IMAGE_EXTS]
+				if self._is_overwrite or len(old_exist_file_check)==0:
+					# unknown need 2 args!!!
+					t = threading.Thread(target=self.download_single_page_image_from_page_item, args=(page,True))
+					threads.append(t)
+					t.start()
 
 			self.final_total_download = len(threads)
 			message = TRSM("Total: %d, need download: %d, skip: %d") % (
@@ -210,7 +212,7 @@ class Site(QThread):
 
 		pass
 
-	def download_single_page_image_from_page_item(self,page,flag):
+	def download_single_page_image_from_page_item(self,page,unused_flag):
 		html = self._web_bot.get_web_content(url=page["url"], ref=page["ref"], code_page=self._code_page)
 		img_url = self.extract_single_page_image_from_info(html)
 		ext = self.get_ext(img_url,self._default_image_format)
@@ -266,7 +268,7 @@ class Site(QThread):
 		return ""
 
 	@staticmethod
-	def get_ext(image_url, default='jpg', allow=frozenset(['jpg', 'png', 'gif', 'webp'])):
+	def get_ext(image_url, default='jpg', allow=IMAGE_EXTS):
 		url = image_url.split('?')[0]
 		ext = url.rsplit('.', 1)[-1].lower()
 		if ext in allow:

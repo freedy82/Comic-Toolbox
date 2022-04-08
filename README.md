@@ -32,8 +32,8 @@ PyQt5 學習自 嗡嗡 的 [今年還是不夠錢買psQQ，不如我們用PyQt�
 - [x] 漫畫批量下載
 - [x] 分目錄按章節／卷／番外儲存
 - [x] 圖片批量轉檔 （ 例如 webp、gif、png 轉成 jpg ）
-- [x] 圖片處理 （ 如改對比度、亮度、銳化度、色彩， 對比較舊的漫畫有點幫助 ）
-- [x] 圖片裁剪 （ 支持常見的日式漫畫封面一體化的裁剪，2頁一體化的裁剪，可半自動微調，方便電子書閱讀器 ）
+- [x] 圖片批量處理 （ 如改對比度、亮度、銳化度、色彩， 對比較舊的漫畫有點幫助 ）
+- [x] 圖片批量裁剪 （ 支持常見的日式漫畫封面一體化的裁剪，2頁一體化的裁剪，可半自動微調，方便電子書閱讀器 ）
 - [x] 支援產生 cbz、epub、pdf、zip （ 可多章節合併成一個檔案 ）
 
 ## 安裝/升級步驟
@@ -92,7 +92,7 @@ PyQt5 學習自 嗡嗡 的 [今年還是不夠錢買psQQ，不如我們用PyQt�
 
 另外如有空，再把代碼整理一下吧，如無用的 import，requirements 之類的
 
-之前在寫初期command line時有加入 [Real-CUGAN](https://github.com/bilibili/ailab/tree/main/Real-CUGAN) 的AI 圖片強化，對舊漫畫效果是不錯，花時間是比較久，但在我的老電腦 GTX 1660 中，經常掛掉，應是GPU Memory 不足，所以 GUI 就先拿掉了
+之前在寫初期command line時有加入 [Real-CUGAN](https://github.com/bilibili/ailab/tree/main/Real-CUGAN) 的AI 圖片強化，對舊漫畫效果是不錯，花時間是比較久，但在我的老電腦 GTX 1660 中，經常掛掉，應是GPU Memory 不足，因比較難測試，所以 GUI 就先拿掉了
 
 ## 感想+隨想
 

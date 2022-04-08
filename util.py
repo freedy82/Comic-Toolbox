@@ -3,14 +3,14 @@ import os.path
 from PIL import Image,ImageEnhance
 import glob
 import shutil
-import distutils.dir_util
+#import distutils.dir_util
 from const import *
 #from pynvml import *
 #import torch
 #import nvidia_smi
 #from zipfile import ZipFile
 import re
-from langcodes import *
+from langcodes import Language
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import QRect
 import imagesize
@@ -30,7 +30,7 @@ def find_all_languages():
 	sorted(languages, key=lambda language: language["name"])
 	return languages
 
-def get_number_of_images_from_folder(folder,num=1,exts=("jpg","jpeg","png","webp","gif")):
+def get_number_of_images_from_folder(folder,num=1,exts=IMAGE_EXTS):
 	lists = []
 	for ext in exts:
 		lists += glob.glob(folder + '/**/*.' + ext, recursive=True)
@@ -103,6 +103,11 @@ def find_rect_to_fit(p_width,p_height,c_width,c_height):
 	c_x = (p_width - c_final_width) / 2.0
 	c_y = (p_height - c_final_height) / 2.0
 	return QRect(c_x,c_y,c_final_width,c_final_height)
+
+def remove_element_of_tuple(tuple_from,need_remove):
+	tmp_list = list(tuple_from)
+	tmp_list.remove(need_remove)
+	return tuple(tmp_list)
 
 def get_image_size(file_name):
 	try:

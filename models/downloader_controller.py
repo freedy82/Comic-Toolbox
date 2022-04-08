@@ -271,10 +271,10 @@ class DownloaderController(object):
 			tmp_title += " - " + tmp_chapter["title"]
 			item.setText(tmp_title)
 			item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
-			if idx < 3:
-				item.setCheckState(QtCore.Qt.Checked)
-			else:
-				item.setCheckState(QtCore.Qt.Unchecked)
+			#if idx < 3:
+			#	item.setCheckState(QtCore.Qt.Checked)
+			#else:
+			item.setCheckState(QtCore.Qt.Unchecked)
 			self.ui.list_downloader_chapter.addItem(item)
 
 		if self.ui.list_downloader_chapter.count() > 0:
