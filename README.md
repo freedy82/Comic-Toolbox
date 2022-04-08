@@ -1,3 +1,5 @@
+<img src="uis/resources/icon.png" align="right" width="100"/>
+
 # Comic Toolbox 漫畫工具箱
 
 ## 寫在前頭
