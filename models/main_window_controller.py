@@ -97,8 +97,8 @@ class MainWindowController(QtWidgets.QMainWindow):
 		self.st_hideAction.setIcon(icon_hide)
 
 		#debug
-		st_messageAction = tray_menu.addAction(TRSM("Show a message"))
-		st_messageAction.triggered.connect(self.on_show_message)
+		#st_messageAction = tray_menu.addAction(TRSM("Show a message"))
+		#st_messageAction.triggered.connect(self.on_show_message)
 
 		tray_menu.addSeparator()
 		self.st_exitAction = tray_menu.addAction(TRSM("Exit"))
