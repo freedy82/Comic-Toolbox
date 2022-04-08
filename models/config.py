@@ -8,7 +8,7 @@ class MyConfig(RawConfigParser):
 	def __init__(self, file_name=""):
 		super().__init__()
 		#print("try load config",file_name)
-		found_config = self.read(file_name)
+		found_config = self.read(file_name, encoding="utf-8")
 		#if not found_config:
 		#	raise ValueError('No config file found!')
 		self.CONFIG_FILE_NAME = file_name
@@ -96,11 +96,11 @@ class MyConfig(RawConfigParser):
 		super().set(section,option,value)
 
 	def load(self):
-		self.read(self.CONFIG_FILE_NAME)
+		self.read(self.CONFIG_FILE_NAME, encoding="utf-8")
 
 	def save(self):
 		#print("try save config",self.CONFIG_FILE_NAME)
-		cfg_file = open(self.CONFIG_FILE_NAME, 'w')
+		cfg_file = open(self.CONFIG_FILE_NAME, 'w', encoding="utf-8")
 		self.write(cfg_file)
 		cfg_file.close()
 
