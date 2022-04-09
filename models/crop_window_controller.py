@@ -80,6 +80,9 @@ class CropWindowController(QtWidgets.QMainWindow):
 	def set_is_remove_source(self,is_remove_source):
 		self.ui.chk_remove_source.setChecked(is_remove_source)
 
+	def get_current_image_ratio(self):
+		return self.current_image_ratio
+
 	def set_image_list(self,image_list):
 		self.image_list = image_list
 		self.ui.pgb_cover.setMaximum(len(self.image_list))
@@ -137,7 +140,7 @@ class CropWindowController(QtWidgets.QMainWindow):
 		#crop frame
 		self.crop_frame_controllers = []
 		for idx, to_file in enumerate(self.image_list[self.current_image_index]["to"]):
-			crop_frame_controller = CropFrameController(self.app,self.main_controller,self.ui.frame_image)
+			crop_frame_controller = CropFrameController(self.app,self.main_controller,self.ui.frame_image,self)
 			crop_frame_controller.show_frame()
 			crop_frame_controller.frame_changed.connect(self.frame_changed)
 			if len(self.image_list[self.current_image_index]["to"]) > 1:
@@ -215,6 +218,7 @@ class CropWindowController(QtWidgets.QMainWindow):
 				target_h = (real_y2-real_y1) * self.current_image_ratio
 				rect = QtCore.QRect(target_x,target_y,target_w,target_h)
 				#print("update crop frame by pos value to ",rect)
+				crop_frame_controller.set_real_pos_rect({"x1":real_x1,"y1":real_y1,"x2":real_x2,"y2":real_y2})
 				crop_frame_controller.move_frame_to(rect)
 		pass
 
@@ -397,6 +401,10 @@ class CropWindowController(QtWidgets.QMainWindow):
 			rect2 = self.crop_frame_controllers[1].get_frame_rect()
 			self.crop_frame_controllers[0].move_frame_to(rect2)
 			self.crop_frame_controllers[1].move_frame_to(rect1)
+			tmp_real_pos_rect1 = self.crop_frame_controllers[0].get_real_pos_rect()
+			tmp_real_pos_rect2 = self.crop_frame_controllers[1].get_real_pos_rect()
+			self.crop_frame_controllers[0].set_real_pos_rect(tmp_real_pos_rect2)
+			self.crop_frame_controllers[1].set_real_pos_rect(tmp_real_pos_rect1)
 			self.frame_changed(self.crop_frame_controllers[0])
 			self.frame_changed(self.crop_frame_controllers[1])
 
@@ -408,18 +416,27 @@ class CropWindowController(QtWidgets.QMainWindow):
 		if frame_controller in self.crop_frame_controllers:
 			index = self.crop_frame_controllers.index(frame_controller)
 			if 1 >= index >= 0:
-				x1,y1,x2,y2 = self.get_image_pos_by_frame(frame_controller.get_frame_rect())
+				# x1,y1,x2,y2 = self.get_image_pos_by_frame(frame_controller.get_frame_rect())
 				self.is_updating_frame_child = True
+				real_pos_rect = frame_controller.get_real_pos_rect()
 				if index == 0:
-					self.ui.spin_frame1_x1.setValue(x1)
-					self.ui.spin_frame1_x2.setValue(x2)
-					self.ui.spin_frame1_y1.setValue(y1)
-					self.ui.spin_frame1_y2.setValue(y2)
+					# self.ui.spin_frame1_x1.setValue(x1)
+					# self.ui.spin_frame1_x2.setValue(x2)
+					# self.ui.spin_frame1_y1.setValue(y1)
+					# self.ui.spin_frame1_y2.setValue(y2)
+					self.ui.spin_frame1_x1.setValue(real_pos_rect["x1"])
+					self.ui.spin_frame1_x2.setValue(real_pos_rect["x2"])
+					self.ui.spin_frame1_y1.setValue(real_pos_rect["y1"])
+					self.ui.spin_frame1_y2.setValue(real_pos_rect["y2"])
 				elif index == 1:
-					self.ui.spin_frame2_x1.setValue(x1)
-					self.ui.spin_frame2_x2.setValue(x2)
-					self.ui.spin_frame2_y1.setValue(y1)
-					self.ui.spin_frame2_y2.setValue(y2)
+					# self.ui.spin_frame2_x1.setValue(x1)
+					# self.ui.spin_frame2_x2.setValue(x2)
+					# self.ui.spin_frame2_y1.setValue(y1)
+					# self.ui.spin_frame2_y2.setValue(y2)
+					self.ui.spin_frame2_x1.setValue(real_pos_rect["x1"])
+					self.ui.spin_frame2_x2.setValue(real_pos_rect["x2"])
+					self.ui.spin_frame2_y1.setValue(real_pos_rect["y1"])
+					self.ui.spin_frame2_y2.setValue(real_pos_rect["y2"])
 				self.is_updating_frame_child = False
 				pass
 

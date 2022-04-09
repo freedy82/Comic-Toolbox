@@ -14,12 +14,14 @@ from const import *
 class CropFrameController(QtWidgets.QMainWindow):
 	frame_changed = pyqtSignal(object)
 
-	def __init__(self,app,main_controller,parent):
+	def __init__(self,app,main_controller,parent,parent_controller):
 		super().__init__()
 		self.app = app
 		self.parent = parent
 		self.main_controller = main_controller
+		self.parent_controller = parent_controller
 		self.ui = crop_frame.Ui_MainWindow()
+		#hack for ui code overwrite problem
 		rect = self.parent.frameGeometry()
 		style_sheet = self.parent.styleSheet()
 		self.ui.setupUi(self.parent)
@@ -32,6 +34,7 @@ class CropFrameController(QtWidgets.QMainWindow):
 		self.org_frame_rect = None
 		self.is_moving_frame = False
 		self.start_pos = None
+		self.real_pos_rect = {}
 
 	def set_allow_rect(self,allow_rect):
 		self.allow_rect = allow_rect
@@ -80,6 +83,27 @@ class CropFrameController(QtWidgets.QMainWindow):
 	def set_display_name(self,display_name):
 		self.ui.lbl_center.setText(display_name)
 
+	def set_real_pos_rect(self,real_pos_rect):
+		self.real_pos_rect = real_pos_rect
+
+	def get_real_pos_rect(self):
+		return self.real_pos_rect
+
+	def update_real_pos_by_frame_changed(self):
+		current_frame = self.ui.frame.frameGeometry()
+		image_ratio = self.parent_controller.get_current_image_ratio()
+		x1_change = (current_frame.x() - self.org_frame_rect.x()) * image_ratio
+		y1_change = (current_frame.y() - self.org_frame_rect.y()) * image_ratio
+		x2_change = (current_frame.x() + current_frame.width() - self.org_frame_rect.x() - self.org_frame_rect.width()) * image_ratio
+		y2_change = (current_frame.y() + current_frame.height() - self.org_frame_rect.y() - self.org_frame_rect.height()) * image_ratio
+		self.real_pos_rect = {
+			"x1": int(self.real_pos_rect["x1"] + x1_change),
+			"y1": int(self.real_pos_rect["y1"] + y1_change),
+			"x2": int(self.real_pos_rect["x2"] + x2_change),
+			"y2": int(self.real_pos_rect["y2"] + y2_change),
+		}
+		#print(f"{x1_change} - {y1_change} - {x2_change} - {y2_change}")
+
 	#action
 	def eventFilter(self, obj, event):
 		obj_set = [
@@ -91,6 +115,7 @@ class CropFrameController(QtWidgets.QMainWindow):
 			self.current_drag_obj = obj
 			self.org_frame_rect = self.ui.frame.frameGeometry()
 			self.start_pos = self.current_drag_obj.mapToGlobal(event.pos())
+			self.start_frame = self.get_frame_rect()
 			self.ui.frame.raise_()
 		elif obj in obj_set and event.type() == QtCore.QEvent.MouseButtonRelease:
 			#print("mouse up")
@@ -98,6 +123,7 @@ class CropFrameController(QtWidgets.QMainWindow):
 			self.start_pos = None
 			if self.ui.frame.frameGeometry() != self.org_frame_rect:
 				#print("changed!")
+				self.update_real_pos_by_frame_changed()
 				self.frame_changed.emit(self)
 			self.org_frame_rect = None
 		elif obj in obj_set and event.type() == QtCore.QEvent.MouseMove:
