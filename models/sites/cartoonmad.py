@@ -45,7 +45,7 @@ class CartoonMad(Site):
 				#print("chapter",chapter)
 				chapter_info = re.findall(pattern_link, str(chapter))
 				#print(chapter_info)
-				if len(chapter_info)> 0:
+				if len(chapter_info) > 0:
 					tmp_url = urljoin(url, chapter_info[0][0])
 					results["chapter"].append({"title": chapter_info[0][1], "url": tmp_url, "index": index, "ref":url})
 					index += 1

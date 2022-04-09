@@ -53,6 +53,8 @@ class HelpWindowController(QtWidgets.QMainWindow):
 			self.ui.txt_supported_site.append(TRSM("Site: %s") % site_obj.get_site_name())
 			url = site_obj.get_home_url()
 			self.ui.txt_supported_site.append(TRSM("URL: <a href='%s'>%s</a>") % (url, url))
+			if site_obj.get_is_need_nodejs():
+				self.ui.txt_supported_site.append("<div style='color:#FF0000'>"+TRSM("Install Node.js was required for this site")+"</div>")
 			sample_urls = site_obj.get_sample_url()
 			self.ui.txt_supported_site.append(TRSM("Sample URL:"))
 			for sample_url in sample_urls:

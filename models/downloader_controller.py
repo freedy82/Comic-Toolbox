@@ -199,13 +199,13 @@ class DownloaderController(object):
 
 			self.ui.cbx_downloader_type.clear()
 			self.type_list = []
-			if "chapter" in self.item_list:
+			if "chapter" in self.item_list and len(self.item_list["chapter"]) > 0:
 				self.type_list.append("chapter")
 				self.ui.cbx_downloader_type.addItem(TRSM("chapter"))
-			if "book" in self.item_list:
+			if "book" in self.item_list and len(self.item_list["book"]) > 0:
 				self.type_list.append("book")
 				self.ui.cbx_downloader_type.addItem(TRSM("book"))
-			if "extra" in self.item_list:
+			if "extra" in self.item_list and len(self.item_list["extra"]) > 0:
 				self.type_list.append("extra")
 				self.ui.cbx_downloader_type.addItem(TRSM("extra"))
 
@@ -265,9 +265,9 @@ class DownloaderController(object):
 			item = QListWidgetItem()
 			tmp_title = ""
 			if self.current_type == "book":
-				tmp_title += str(idx+1).zfill(int(MY_CONFIG.get("general", "book_padding")))
+				tmp_title += str(tmp_chapter["index"]).zfill(int(MY_CONFIG.get("general", "book_padding")))
 			else:
-				tmp_title += str(idx + 1).zfill(int(MY_CONFIG.get("general", "chapter_padding")))
+				tmp_title += str(tmp_chapter["index"]).zfill(int(MY_CONFIG.get("general", "chapter_padding")))
 			tmp_title += " - " + tmp_chapter["title"]
 			item.setText(tmp_title)
 			item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)

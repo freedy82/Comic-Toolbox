@@ -38,6 +38,7 @@ class Site(QThread):
 		self._default_image_format = "jpg"
 		self._stop_flag = False
 		self._is_overwrite = False
+		self._is_need_nodejs = False
 		self.current_finish_download = 0
 		self.final_total_download = 0
 
@@ -89,6 +90,9 @@ class Site(QThread):
 
 	def set_is_overwrite(self,is_overwrite):
 		self._is_overwrite = is_overwrite
+
+	def get_is_need_nodejs(self):
+		return self._is_need_nodejs
 
 	def parse_list(self):
 		return self.parse_list_from_url(self._main_url)
@@ -144,9 +148,16 @@ class Site(QThread):
 				if idx >= DOWNLOAD_IMAGES_PER_BOOK > 0:
 					break
 
-			message = TRSM("Total: %d, need download: %d, skip: %d") % (
-			len(image_urls), self.final_total_download, len(image_urls) - self.final_total_download)
-			self.chapter_trigger.emit(message, self.current_finish_download, self.final_total_download)
+			if self.final_total_download > 0:
+				message = TRSM("Total: %d, need download: %d, skip: %d") % (
+					len(image_urls), self.final_total_download, len(image_urls) - self.final_total_download
+				)
+				self.chapter_trigger.emit(message, self.current_finish_download, self.final_total_download)
+			else:
+				#display a warning message
+				message = TRSM("Either web page format was changed or the site was required install Node.JS")
+				self.chapter_trigger.emit(message, self.current_finish_download, self.final_total_download)
+				pass
 
 			# wait finish download
 			for future in concurrent.futures.as_completed(tasks):

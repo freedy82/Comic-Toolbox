@@ -319,6 +319,14 @@
         <source>Comic toolbox was hidden to system tray</source>
         <translation>漫畫工具箱被隱藏到這裡</translation>
     </message>
+    <message>
+        <source>Either web page format was changed or the site was required install Node.JS</source>
+        <translation>網頁格式可能已更改或站點需要安裝 Node.JS</translation>
+    </message>
+    <message>
+        <source>Install Node.js was required for this site</source>
+        <translation>此站點需要安裝 Node.js</translation>
+    </message>
 
 
     <message>
