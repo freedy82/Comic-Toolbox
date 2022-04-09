@@ -8,7 +8,7 @@
 
 另部分功能可能比較偏向方便有用e-ink電子書閱讀器的用者，因我原意是自用的，來給自己的Light 2閱讀器的😅
 
-爬蟲現在只支援動漫狂、酷漫屋、漫畫柜站點下載（因爬蟲部分寫的不夠模組化，比較亂，等之後改良再加多其他站點吧）
+爬蟲現在只支援動漫狂、酷漫屋、漫畫柜、無限動漫站點下載（因爬蟲部分寫的不夠模組化，比較亂，等之後改良再加多其他站點吧）
 
 另請善待各大漫畫網站，玩壞了，大家都沒得下載了😅
 
@@ -20,7 +20,7 @@
 
 ## 參考
 
-爬蟲部分有部分代碼參考自 lossme 的 [ComicBook](https://github.com/lossme/ComicBook) （但好像不再維護了）
+爬蟲部分有部分代碼參考自 lossme 的 [ComicBook](https://github.com/lossme/ComicBook) （但好像不再維護了）和 eight04 的 [ComicCrawler](https://github.com/eight04/ComicCrawler)
 
 Python 學習自 骆昊 的 [Python - 100天从新手到大师](https://github.com/jackfrued/Python-100-Days) （仍未學完😅仍是新手）
 
