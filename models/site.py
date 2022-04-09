@@ -126,7 +126,7 @@ class Site(QThread):
 		output_dir = os.path.join(MY_CONFIG.get("general", "download_folder"), title, tmp_output_dir)
 		#page_ref = self._home_url + item["url"]
 		Path(output_dir).mkdir(parents=True, exist_ok=True)
-		print("Total need check download images: " + str(len(image_urls)))
+		#print("Total need check download images: " + str(len(image_urls)))
 
 		self.final_total_download = 0
 		self.current_finish_download = 0
@@ -148,7 +148,7 @@ class Site(QThread):
 				if idx >= DOWNLOAD_IMAGES_PER_BOOK > 0:
 					break
 
-			if self.final_total_download > 0:
+			if len(image_urls) > 0:
 				message = TRSM("Total: %d, need download: %d, skip: %d") % (
 					len(image_urls), self.final_total_download, len(image_urls) - self.final_total_download
 				)
@@ -180,6 +180,7 @@ class Site(QThread):
 		# print("Start Download: ",image_url)
 		# sys.stdout.flush()
 		if not self._stop_flag:
+			# debug
 			data = self._web_bot.get_web_content_raw(url=image_url, ref=page_ref)
 			if data:
 				fp = open(target_file, mode="wb")
@@ -243,8 +244,8 @@ class Site(QThread):
 						result = future.result()
 					except Exception as exc:
 						#todo add more handle
-						print('Download %s failed' % result)
-						sys.stdout.flush()
+						#print('Download %s failed' % result)
+						#sys.stdout.flush()
 						return None
 					else:
 						#print('Saved to: %s' % data)

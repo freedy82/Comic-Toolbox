@@ -1,6 +1,8 @@
 import urllib.request as url_request
 import requests
 import json
+from urllib.parse import quote
+import string
 
 class WebBot(object):
 
@@ -27,9 +29,10 @@ class WebBot(object):
 
 	def get_web_content_raw(self, url, ref='', cookie=''):
 		try_count = 1
-		while try_count < self._max_retry:
+		while try_count <= self._max_retry:
 			try:
-				tmp_req = url_request.Request(url)
+				safe_url = quote(url, safe=string.printable)
+				tmp_req = url_request.Request(safe_url)
 				#tmp_req.set_proxy("", 'https')
 				#https://www.httpbin.org/ip
 
@@ -44,6 +47,7 @@ class WebBot(object):
 			except Exception:
 				# print("Get data failed from",url)
 				try_count += 1
-		print("Get data failed from",url)
+		#print("Get data failed from",url)
 		#raise ConnectionError
 		return None
+

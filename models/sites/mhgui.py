@@ -73,6 +73,7 @@ class MHGui(Site):
 			url = self._IMAGE_URL_PREFIX + data['path'] + i + '?e=%(e)s&m=%(m)s' % (data['sl'])
 			image_urls.append({"url":url,"ref":item["url"]})
 
+		#print(image_urls)
 		output_dir = self.download_image_lists(image_urls=image_urls,item=item,item_type=item_type,title=title)
 
 		return output_dir
@@ -110,10 +111,41 @@ class MHGui(Site):
 
 	@staticmethod
 	def _get_image_data_from_page(html):
-		js = re.search(r">window.*(\(function\(p.*?)</script>", html).group(1)
-		b64_str = re.search(r"[0-9],'([A-Za-z0-9+/=]+?)'", js).group(1)
-		s = lzstring.LZString.decompressFromBase64(b64_str)
-		new_js = re.sub(r"'[A-Za-z0-9+/=]*'\[.*\]\('\\x7c'\)", "'" + s + "'.split('|')", js)
-		res = execjs.eval(new_js)
-		return json.loads(re.search(r"(\{.*\})", res).group(1))
+		#JScript Version
+		# js = re.search(r">window.*(\(function\(p.*?)</script>", html).group(1)
+		# b64_str = re.search(r"[0-9],'([A-Za-z0-9+/=]+?)'", js).group(1)
+		# s = lzstring.LZString.decompressFromBase64(b64_str)
+		# new_js = re.sub(r"'[A-Za-z0-9+/=]*'\[.*\]\('\\x7c'\)", "'" + s + "'.split('|')", js)
+		# os.environ["EXECJS_RUNTIME"] = "JScript"
+		# res = execjs.eval(new_js)
+		# return json.loads(re.search(r"(\{.*\})", res).group(1))
 
+		# ref https://github.com/HSSLC/manhuagui-dlr/blob/c5279901b68d5627d202142d6785ac26f2689516/get.py#L10
+		m = re.match(r'^.*\}\(\'(.*)\',(\d*),(\d*),\'([\w|\+|\/|=]*)\'.*$', html)
+		result = MHGui.packed(m.group(1), int(m.group(2)), int(m.group(3)), lzstring.LZString.decompressFromBase64(m.group(4)).split('|'))
+		#print(result)
+		return result
+
+	@staticmethod
+	def packed(functionFrame, a, c, data):
+		def e(innerC):
+			return ('' if innerC < a else e(int(innerC / a))) + (
+				chr(innerC % a + 29) if innerC % a > 35 else MHGui.atr(innerC % a, 36))
+		c -= 1
+		d = {}
+		while c + 1:
+			d[e(c)] = e(c) if data[c] == '' else data[c]
+			c -= 1
+		pieces = re.split(r'(\b\w+\b)', functionFrame)
+		js = ''.join([d[x] if x in d else x for x in pieces]).replace('\\\'', '\'')
+		return json.loads(re.search(r'^.*\((\{.*\})\).*$', js).group(1))
+
+	@staticmethod
+	def itr(value, num):
+		d = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+		return '' if value <= 0 else MHGui.itr(int(value / num), num) + d[value % num]
+
+	@staticmethod
+	def atr(value, num):
+		tmp = MHGui.itr(value, num)
+		return '0' if tmp == '' else tmp

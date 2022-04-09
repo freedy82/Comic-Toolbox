@@ -67,7 +67,7 @@ class ComicABC(Site):
 	def download_item(self,item,title="",item_type=""):
 		#item["url"] = item["url"]
 		output_dir = super(ComicABC, self).download_item(item=item,title=title,item_type=item_type)
-		print(item)
+		#print(item)
 		#final_url = self._home_url + item["url"]
 		info = self._web_bot.get_web_content(url=item["url"], ref=item["ref"], code_page=self._code_page)
 		#print(info)
