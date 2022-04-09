@@ -125,8 +125,8 @@ class ComicABC(Site):
 		"""
 
 		try:
-			os.environ["EXECJS_RUNTIME"] = "JScript"
-			#os.environ["EXECJS_RUNTIME"] = "NodeJS"
+			#os.environ["EXECJS_RUNTIME"] = "JScript"
+			os.environ["EXECJS_RUNTIME"] = "NodeJS"
 			ctx = execjs.compile(html)
 			images = ctx.call('getImages',item["url"])
 			#print(images)
