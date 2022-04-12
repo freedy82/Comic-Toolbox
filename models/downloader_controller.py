@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QFileDialog, QListWidgetItem
 from uis.main_window import Ui_MainWindow
 from .site_parse_worker import SiteParseWorker
 from .chapter_download_worker import ChapterDownloadWorker
+from .bookmark_window_controller import BookmarkWindowController
 from .site import Site
 
 import util
@@ -23,6 +24,8 @@ class DownloaderController(object):
 		self.item_list = None
 		self.type_list = []
 		self.current_type = ""
+
+		self.bookmark_controller = BookmarkWindowController(self.app,self.main_controller,self)
 
 		self.setup_control()
 
@@ -43,6 +46,8 @@ class DownloaderController(object):
 		#action
 		self.ui.btn_downloader_check.clicked.connect(self.btn_downloader_check_clicked)
 		self.ui.btn_downloader_url_help.clicked.connect(self.btn_downloader_url_help_clicked)
+		self.ui.btn_downloader_list.clicked.connect(self.btn_downloader_list_clicked)
+		self.ui.btn_downloader_bookmark.clicked.connect(self.btn_downloader_bookmark_clicked)
 		self.ui.cbx_downloader_type.currentIndexChanged.connect(self.cbx_downloader_type_changed)
 
 		self.ui.btn_downloader_select.clicked.connect(self.btn_downloader_select_clicked)
@@ -77,6 +82,9 @@ class DownloaderController(object):
 				self.ui.cbx_downloader_type.setItemText(idx, TRSM("extra"))
 				idx += 1
 
+		if self.bookmark_controller:
+			self.bookmark_controller.retranslateUi()
+
 		pass
 
 	# action function
@@ -107,11 +115,21 @@ class DownloaderController(object):
 		else:
 			util.msg_box(TRSM("Please input a URL"),self.main_controller)
 			pass
-
 		pass
 
 	def btn_downloader_url_help_clicked(self):
 		self.main_controller.show_help()
+
+	def btn_downloader_list_clicked(self):
+		self.bookmark_controller.show()
+
+	def btn_downloader_bookmark_clicked(self):
+		target_url = self.ui.txt_downloader_url.text()
+		if target_url != "":
+			target_title = self.ui.txt_downloader_title.text()
+			self.bookmark_controller.add_book_mark(target_url,target_title)
+		else:
+			util.msg_box(TRSM("Please input a URL"), self.main_controller)
 
 	def btn_downloader_select_clicked(self):
 		items = self.ui.list_downloader_chapter.selectedItems()
@@ -255,6 +273,10 @@ class DownloaderController(object):
 		pass
 
 	# internal function
+	def load_url(self,url):
+		self.ui.txt_downloader_url.setText(url)
+		self.btn_downloader_check_clicked()
+
 	def update_chapter_list(self):
 		self.ui.list_downloader_chapter.clear()
 

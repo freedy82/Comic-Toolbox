@@ -327,6 +327,23 @@
         <source>Install Node.js was required for this site</source>
         <translation>此站點需要安裝 Node.js</translation>
     </message>
+    <message>
+        <source>Bookmark already exist</source>
+        <translation>書籤已存在</translation>
+    </message>
+    <message>
+        <source>Confirm to delete?</source>
+        <translation>確認刪除？</translation>
+    </message>
+    <message>
+        <source>Please select at least one bookmark</source>
+        <translation>請至少選擇一個書籤</translation>
+    </message>
+    <message>
+        <source>Please select only one bookmark</source>
+        <translation>請只選擇一個書籤</translation>
+    </message>
+
 
 
     <message>

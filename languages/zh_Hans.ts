@@ -9,67 +9,67 @@
         <translation>漫画工具箱</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="779"/>
+        <location filename="../uis/main_window.py" line="797"/>
         <source>URL</source>
         <translation>网址</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="781"/>
+        <location filename="../uis/main_window.py" line="800"/>
         <source>Check</source>
         <translation>检查</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="782"/>
+        <location filename="../uis/main_window.py" line="802"/>
         <source>Title</source>
         <translation>标题</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="783"/>
+        <location filename="../uis/main_window.py" line="803"/>
         <source>Author</source>
         <translation>作者</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="784"/>
+        <location filename="../uis/main_window.py" line="804"/>
         <source>Type</source>
         <translation>类型</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="839"/>
+        <location filename="../uis/main_window.py" line="859"/>
         <source>Select</source>
         <translation>选择</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="840"/>
+        <location filename="../uis/main_window.py" line="860"/>
         <source>Unselect</source>
         <translation>取消选择</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="841"/>
+        <location filename="../uis/main_window.py" line="861"/>
         <source>Select All</source>
         <translation>选择全部</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="842"/>
+        <location filename="../uis/main_window.py" line="862"/>
         <source>Unselect All</source>
         <translation>取消选择全部</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="828"/>
+        <location filename="../uis/main_window.py" line="848"/>
         <source>If file exist</source>
         <translation>如果文件已存在</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="790"/>
+        <location filename="../uis/main_window.py" line="810"/>
         <source>Start Download</source>
         <translation>开始下载</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="791"/>
+        <location filename="../uis/main_window.py" line="811"/>
         <source>Cancel Download</source>
         <translation>取消下载</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="792"/>
+        <location filename="../uis/main_window.py" line="812"/>
         <source>Current download</source>
         <translation>现在下载</translation>
     </message>
@@ -79,12 +79,12 @@
         <translation> %v/%m (%p%)</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="794"/>
+        <location filename="../uis/main_window.py" line="814"/>
         <source>Total download</source>
         <translation>全部下载</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="796"/>
+        <location filename="../uis/main_window.py" line="816"/>
         <source>Downloader</source>
         <translation>下载工具</translation>
     </message>
@@ -99,47 +99,47 @@
         <translation type="obsolete">至</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="852"/>
+        <location filename="../uis/main_window.py" line="872"/>
         <source>Browser</source>
         <translation>浏览</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="826"/>
+        <location filename="../uis/main_window.py" line="846"/>
         <source>Mode</source>
         <translation>模式</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="809"/>
+        <location filename="../uis/main_window.py" line="829"/>
         <source>If destination file exist</source>
         <translation>如果文件已存在</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="810"/>
+        <location filename="../uis/main_window.py" line="830"/>
         <source>If converted, remove source</source>
         <translation>如果转换成功,移除原档</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="813"/>
+        <location filename="../uis/main_window.py" line="833"/>
         <source>Start Convert</source>
         <translation>开始转换</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="814"/>
+        <location filename="../uis/main_window.py" line="834"/>
         <source>Cancel Convert</source>
         <translation>取消转换</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="816"/>
+        <location filename="../uis/main_window.py" line="836"/>
         <source>Converter</source>
         <translation>转换工具</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="834"/>
+        <location filename="../uis/main_window.py" line="854"/>
         <source>From folder</source>
         <translation>从目录</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="827"/>
+        <location filename="../uis/main_window.py" line="847"/>
         <source>Method</source>
         <translation>方法</translation>
     </message>
@@ -164,112 +164,112 @@
         <translation type="obsolete">裁剪封面</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="838"/>
+        <location filename="../uis/main_window.py" line="858"/>
         <source>Scan</source>
         <translation>扫描</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="843"/>
+        <location filename="../uis/main_window.py" line="863"/>
         <source>Format</source>
         <translation>格式</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="844"/>
+        <location filename="../uis/main_window.py" line="864"/>
         <source>If target archiver exist</source>
         <translation>如果目标压缩文件已存在</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="846"/>
+        <location filename="../uis/main_window.py" line="866"/>
         <source>Title (prefix)</source>
         <translation>标题 (前置前缀)</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="847"/>
+        <location filename="../uis/main_window.py" line="867"/>
         <source>Start Archiver</source>
         <translation>开始压缩</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="848"/>
+        <location filename="../uis/main_window.py" line="868"/>
         <source>Cancel Archiver</source>
         <translation>取消压缩</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="850"/>
+        <location filename="../uis/main_window.py" line="870"/>
         <source>Archiver</source>
         <translation>压缩工具</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="851"/>
+        <location filename="../uis/main_window.py" line="871"/>
         <source>Download folder</source>
         <translation>下载至</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="853"/>
+        <location filename="../uis/main_window.py" line="873"/>
         <source>Max retry</source>
         <translation>最大重试数</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="854"/>
+        <location filename="../uis/main_window.py" line="874"/>
         <source>Timeout</source>
         <translation>连接超时</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="866"/>
+        <location filename="../uis/main_window.py" line="886"/>
         <source>s</source>
         <translation>秒</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="856"/>
+        <location filename="../uis/main_window.py" line="876"/>
         <source>User agent</source>
         <translation>用户代理(User agent)</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="857"/>
+        <location filename="../uis/main_window.py" line="877"/>
         <source>Book folder zero padding</source>
         <translation>书目录零填充数</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="858"/>
+        <location filename="../uis/main_window.py" line="878"/>
         <source>Chapter folder zero padding</source>
         <translation>章节目录零填充数</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="859"/>
+        <location filename="../uis/main_window.py" line="879"/>
         <source>Image file zero padding</source>
         <translation>图片名零填充数</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="860"/>
+        <location filename="../uis/main_window.py" line="880"/>
         <source>JPG quality</source>
         <translation>JPQ 图片质量</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="862"/>
+        <location filename="../uis/main_window.py" line="882"/>
         <source>General</source>
         <translation>基本</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="863"/>
+        <location filename="../uis/main_window.py" line="883"/>
         <source>Page sleep</source>
         <translation>网页停留</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="865"/>
+        <location filename="../uis/main_window.py" line="885"/>
         <source>Image sleep</source>
         <translation>图片停留</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="867"/>
+        <location filename="../uis/main_window.py" line="887"/>
         <source>Image parallel download worker</source>
         <translation>图片同步下载数</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="868"/>
+        <location filename="../uis/main_window.py" line="888"/>
         <source>Anti Ban</source>
         <translation>防止被禁</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="875"/>
+        <location filename="../uis/main_window.py" line="895"/>
         <source>Misc</source>
         <translation>其他</translation>
     </message>
@@ -279,47 +279,47 @@
         <translation>重置默认值</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="877"/>
+        <location filename="../uis/main_window.py" line="897"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="878"/>
+        <location filename="../uis/main_window.py" line="898"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="879"/>
+        <location filename="../uis/main_window.py" line="899"/>
         <source>File</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="885"/>
+        <location filename="../uis/main_window.py" line="905"/>
         <source>Help</source>
         <translation>说明</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="881"/>
+        <location filename="../uis/main_window.py" line="901"/>
         <source>Language</source>
         <translation>语言</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="882"/>
+        <location filename="../uis/main_window.py" line="902"/>
         <source>Exit</source>
         <translation>结束</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="883"/>
+        <location filename="../uis/main_window.py" line="903"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="884"/>
+        <location filename="../uis/main_window.py" line="904"/>
         <source>List of language...</source>
         <translation>语言清单</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="845"/>
+        <location filename="../uis/main_window.py" line="865"/>
         <source>Combine multi folder</source>
         <translation>合并多目录</translation>
     </message>
@@ -454,7 +454,7 @@
         <translation>裁剪和下一张 (F1)</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="833"/>
+        <location filename="../uis/main_window.py" line="853"/>
         <source>Cropper</source>
         <translation>裁剪工具</translation>
     </message>
@@ -484,12 +484,12 @@
         <translation>如果裁剪完成，删除来源图片</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="861"/>
+        <location filename="../uis/main_window.py" line="881"/>
         <source>Check is 2 page, width/height ratio larger than</source>
         <translation>检查是否2页，宽高比大于</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="806"/>
+        <location filename="../uis/main_window.py" line="826"/>
         <source>To folder</source>
         <translation>至目录</translation>
     </message>
@@ -501,30 +501,30 @@
     <message>
         <location filename="../uis/main_window.py" line="780"/>
         <source>?</source>
-        <translation>?</translation>
+        <translation type="obsolete">?</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="869"/>
+        <location filename="../uis/main_window.py" line="889"/>
         <source>Display message notification after finish download</source>
         <translation>下载完成后显示消息通知</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="873"/>
+        <location filename="../uis/main_window.py" line="893"/>
         <source>Yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="874"/>
+        <location filename="../uis/main_window.py" line="894"/>
         <source>No</source>
         <translation>不</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="872"/>
+        <location filename="../uis/main_window.py" line="892"/>
         <source>Play sound notification after finish download</source>
         <translation>下载完成后播放声音通知</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="836"/>
+        <location filename="../uis/main_window.py" line="856"/>
         <source>Please select the comic series folder</source>
         <translation>请选择漫画系列文档夹</translation>
     </message>
@@ -559,17 +559,17 @@
         <translation>保存过滤器设置</translation>
     </message>
     <message>
-        <location filename="../uis/image_filter_window.py" line="220"/>
+        <location filename="../uis/bookmark_window.py" line="56"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="811"/>
+        <location filename="../uis/main_window.py" line="831"/>
         <source>Use filter</source>
         <translation>使用过滤器</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="812"/>
+        <location filename="../uis/main_window.py" line="832"/>
         <source>Change</source>
         <translation>改变</translation>
     </message>
@@ -579,12 +579,12 @@
         <translation>图象过滤器</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="830"/>
+        <location filename="../uis/main_window.py" line="850"/>
         <source>Start Crop</source>
         <translation>开始裁剪</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="831"/>
+        <location filename="../uis/main_window.py" line="851"/>
         <source>Cancel Crop</source>
         <translation>取消裁剪</translation>
     </message>
@@ -602,6 +602,36 @@
         <location filename="../uis/about_window.py" line="99"/>
         <source>Respect the copyright, please support the genuine version, and the resources downloaded or generated through this tool are prohibited from spreading and sharing! It is prohibited to use this project for commercial activities!</source>
         <translation>尊重版权，请支持正版，通过本工具下载或生成的资源禁止传播分享！禁止利用本项目进行商业活动！</translation>
+    </message>
+    <message>
+        <location filename="../uis/main_window.py" line="798"/>
+        <source>Display supported site list</source>
+        <translation>显示支持的站点列表</translation>
+    </message>
+    <message>
+        <location filename="../uis/main_window.py" line="799"/>
+        <source>Display bookmark list</source>
+        <translation>显示书签列表</translation>
+    </message>
+    <message>
+        <location filename="../uis/main_window.py" line="801"/>
+        <source>Add to bookmark</source>
+        <translation>添加到书签</translation>
+    </message>
+    <message>
+        <location filename="../uis/bookmark_window.py" line="55"/>
+        <source>Bookmarks</source>
+        <translation>书签</translation>
+    </message>
+    <message>
+        <location filename="../uis/bookmark_window.py" line="57"/>
+        <source>Delete</source>
+        <translation>删除</translation>
+    </message>
+    <message>
+        <location filename="../uis/bookmark_window.py" line="58"/>
+        <source>Load</source>
+        <translation>加载</translation>
     </message>
 </context>
 </TS>

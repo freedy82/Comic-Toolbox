@@ -5,7 +5,7 @@ from configparser import RawConfigParser  # ConfigParser, SafeConfigParser, RawC
 class MyConfig(RawConfigParser):
 	CONFIG_FILE_NAME = ""
 
-	def __init__(self, file_name=""):
+	def __init__(self, file_name="",need_init_as_config=True):
 		super().__init__()
 		#print("try load config",file_name)
 		found_config = self.read(file_name, encoding="utf-8")
@@ -14,7 +14,8 @@ class MyConfig(RawConfigParser):
 		self.CONFIG_FILE_NAME = file_name
 		#for name in section_names:
 		#	self.__dict__.update(parser.items(name))
-		self.inti_with_default()
+		if need_init_as_config:
+			self.inti_with_default()
 
 	def inti_with_default(self):
 		if self.get("general","language") == "":

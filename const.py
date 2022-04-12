@@ -10,12 +10,13 @@ from PyQt5 import QtCore
 
 ROOT_DIR = os.getcwd()
 MY_CONFIG = MyConfig(os.path.join(ROOT_DIR, "setting.ini"))
+MY_BOOKMARK = MyConfig(os.path.join(ROOT_DIR, "bookmarks.ini"),need_init_as_config=False)
 TRS = QtCore.QCoreApplication.translate
 
 def TRSM(str_name):
     return TRS("MainWindow", str_name)
 
-APP_VERSION = "0.5"
+APP_VERSION = "0.5.5"
 APP_LINK = "https://github.com/freedy82/Comic-Toolbox"
 
 IMAGE_EXTS = ("jpg","gif","png","jpeg","webp")

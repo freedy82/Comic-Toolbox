@@ -20,7 +20,11 @@
 
 ## 參考
 
-爬蟲部分有部分代碼參考自 lossme 的 [ComicBook](https://github.com/lossme/ComicBook) （但好像不再維護了）和 eight04 的 [ComicCrawler](https://github.com/eight04/ComicCrawler)
+爬蟲部分有部分代碼參考自 
+
+- lossme 的 [ComicBook](https://github.com/lossme/ComicBook) （但好像不再維護了）
+- eight04 的 [ComicCrawler](https://github.com/eight04/ComicCrawler)
+- HSSLC 的 [manhuagui-dlr](https://github.com/HSSLC/manhuagui-dlr)
 
 Python 學習自 骆昊 的 [Python - 100天从新手到大师](https://github.com/jackfrued/Python-100-Days) （仍未學完😅仍是新手）
 
@@ -32,16 +36,28 @@ PyQt5 學習自 嗡嗡 的 [今年還是不夠錢買psQQ，不如我們用PyQt�
 
 - [x] 全GUI介面操作
 - [x] 漫畫批量下載
+- [x] 書簽功能 （ 追更比較方便 ）
 - [x] 分目錄按章節／卷／番外儲存
 - [x] 圖片批量轉檔 （ 例如 webp、gif、png 轉成 jpg ）
 - [x] 圖片批量處理 （ 如改對比度、亮度、銳化度、色彩， 對比較舊的漫畫有點幫助 ）
 - [x] 圖片批量裁剪 （ 支持常見的日式漫畫封面一體化的裁剪，2頁一體化的裁剪，可半自動微調，方便電子書閱讀器 ）
 - [x] 支援產生 cbz、epub、pdf、zip （ 可多章節合併成一個檔案 ）
 
-## 安裝/升級步驟
+## 安裝／升級步驟
 
-自己找安裝Python的教程，因個人比較沒空(懶)，而且是Python新手，也不知如何解決不同環境的問題，多 Google 吧
-個人是在 Windows 11 中的 Python 3.9 開發的
+個人是在 Windows 11 中的 Python 3.9 開發的，以下是參考
+
+### 安裝 Python
+
+安裝檔可以從 Python 官方網站 [https://www.python.org/](https://www.python.org/) 下載。
+
+安裝時記得要選「Add python.exe to path」，才能使用 pip 指令。
+
+### 安裝 Node.js
+
+部分網站的爬蟲使用 Node.js 來分析 JavaScript 。
+
+安裝檔可以從 Node.js 官方網站 [https://nodejs.org/](https://nodejs.org/) 下載。
 
 ## 介面簡介
 
@@ -103,3 +119,10 @@ Python 入手挺容易的，但想進階挺難的😅
 QtDesigner 真的挺好用的
 
 OpenCV 應該比 Pillow 快，但好多 sin、cos、tan，對初中已過去好多年的人覺得好難用啊！
+
+## 版本更新
+
+### v0.5.5
+
+- 加入書簽功能
+- 加入多一點 Tooltips 說明
