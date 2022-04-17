@@ -1,12 +1,7 @@
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import QTimer
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import QSystemTrayIcon, QMenu, QAction
-from functools import partial
 from PyQt5.QtCore import Qt
 import webbrowser
 
-import util
 from uis import about_window
 from const import *
 

@@ -1,22 +1,14 @@
 import os.path
-
-from PIL import Image,ImageEnhance
 import glob
 import shutil
-#import distutils.dir_util
-from const import *
-#from pynvml import *
-#import torch
-#import nvidia_smi
-#from zipfile import ZipFile
 import re
+import imagesize
 from langcodes import Language
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import QRect
-import imagesize
-#import cv2
-#import numpy as np
-#import math
+from PIL import Image,ImageEnhance
+
+from const import *
 
 def find_all_languages():
 	languages = []

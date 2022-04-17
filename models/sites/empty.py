@@ -1,4 +1,11 @@
-from ..site import *
+import re
+import bs4
+import html
+import os
+import execjs
+from urllib.parse import urljoin
+
+from models.site import Site
 
 class Empty(Site):
 	URL_MATCH = ["domain.com"]

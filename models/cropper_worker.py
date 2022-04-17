@@ -1,10 +1,9 @@
-import glob
-import shutil
-import util
-from const import *
+from PyQt5.QtCore import QThread, pyqtSignal
 from PIL import Image
 
-from PyQt5.QtCore import QThread, pyqtSignal
+from const import *
+import util
+
 
 class CropperWorker(QThread):
 	trigger = pyqtSignal(str,int,int)

@@ -1,13 +1,6 @@
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import QTimer
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import QSystemTrayIcon, QMenu, QAction
-from functools import partial
-from PyQt5.QtCore import Qt
-import webbrowser
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtCore import pyqtSignal
 
-import util
 from uis import crop_frame
 from const import *
 
@@ -34,6 +27,7 @@ class CropFrameController(QtWidgets.QMainWindow):
 		self.org_frame_rect = None
 		self.is_moving_frame = False
 		self.start_pos = None
+		self.start_frame = None
 		self.real_pos_rect = {}
 
 	def set_allow_rect(self,allow_rect):

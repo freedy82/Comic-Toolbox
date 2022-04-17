@@ -1,5 +1,9 @@
-from ..site import *
-#from const import *
+import re
+import html
+import bs4
+from urllib.parse import urljoin
+
+from models.site import Site
 
 class ReadComicsOnline(Site):
 	URL_MATCH = ["readcomicsonline.ru"]

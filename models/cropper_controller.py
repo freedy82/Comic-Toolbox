@@ -1,12 +1,11 @@
-from PyQt5 import QtCore, QtWidgets
-from const import *
 from PyQt5.QtWidgets import QFileDialog, QListWidgetItem
-from uis.main_window import Ui_MainWindow
-from .cropper_worker import CropperWorker
-
-from .crop_window_controller import CropWindowController
 
 import util
+from const import *
+from uis.main_window import Ui_MainWindow
+from models.cropper_worker import CropperWorker
+from models.crop_window_controller import CropWindowController
+
 
 class CropperController(object):
 	METHODS = [

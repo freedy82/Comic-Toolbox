@@ -1,17 +1,13 @@
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import QTimer
-from PyQt5.QtGui import QIcon, QPixmap, QImage
-from PyQt5.QtWidgets import QSystemTrayIcon, QMenu, QAction, QGraphicsScene, QGraphicsPixmapItem
-from functools import partial
+from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtWidgets import QGraphicsScene, QGraphicsPixmapItem
 from PyQt5.QtCore import Qt
-import webbrowser
-from PIL import Image, ImageEnhance
-#import cv2
+from PIL import Image
 
 import util
+from const import *
 from uis import image_filter_window
 
-from const import *
 
 class ImageFilterWindowController(QtWidgets.QMainWindow):
 	def __init__(self,app,main_controller):

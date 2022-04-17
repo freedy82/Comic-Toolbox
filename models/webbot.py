@@ -1,9 +1,8 @@
-import urllib.request as url_request
-from urllib.parse import quote,urlparse
-#import requests
 import json
 import string
 import ssl
+import urllib.request as url_request
+from urllib.parse import quote,urlparse
 
 class WebBot(object):
 

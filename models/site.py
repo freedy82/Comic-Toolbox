@@ -1,22 +1,15 @@
 import os.path
 import re
-import execjs
-import lzstring
-import json
-import bs4
 import threading
-import base64
-import sys
-import time
 import concurrent.futures
 import importlib
-import html
 import glob
-from const import *
+import time
 from abc import ABCMeta, abstractmethod
 from pathlib import Path
 from PyQt5.QtCore import QThread, pyqtSignal
-from urllib.parse import urljoin
+
+from const import *
 
 
 class Site(QThread):
@@ -37,8 +30,8 @@ class Site(QThread):
 		self._stop_flag = False
 		self._is_overwrite = False
 		self._is_need_nodejs = False
-		self.current_finish_download = 0
-		self.final_total_download = 0
+		self._current_finish_download = 0
+		self._final_total_download = 0
 
 	# normal method
 	def get_site_name(self):
@@ -110,8 +103,8 @@ class Site(QThread):
 		Path(output_dir).mkdir(parents=True, exist_ok=True)
 		#print("Total need check download images: " + str(len(image_urls)))
 
-		self.final_total_download = 0
-		self.current_finish_download = 0
+		self._final_total_download = 0
+		self._current_finish_download = 0
 		if not BY_PASS_DOWNLOAD:
 			tasks = []
 			for idx, image_url in enumerate(image_urls, start=1):
@@ -121,7 +114,7 @@ class Site(QThread):
 				# print("target_file",target_file)
 
 				if self._is_overwrite or not os.path.isfile(target_file):
-					self.final_total_download += 1
+					self._final_total_download += 1
 					task = EXECUTOR.submit(self.download_image, image_url["url"], target_file, image_url["ref"])
 					tasks.append(task)
 
@@ -131,13 +124,13 @@ class Site(QThread):
 
 			if len(image_urls) > 0:
 				message = TRSM("Total: %d, need download: %d, skip: %d") % (
-					len(image_urls), self.final_total_download, len(image_urls) - self.final_total_download
+					len(image_urls), self._final_total_download, len(image_urls) - self._final_total_download
 				)
-				self.chapter_trigger.emit(message, self.current_finish_download, self.final_total_download)
+				self.chapter_trigger.emit(message, self._current_finish_download, self._final_total_download)
 			else:
 				#display a warning message
 				message = TRSM("Either web page format was changed or the site was required install Node.JS")
-				self.chapter_trigger.emit(message, self.current_finish_download, self.final_total_download)
+				self.chapter_trigger.emit(message, self._current_finish_download, self._final_total_download)
 				pass
 
 			# wait finish download
@@ -146,14 +139,15 @@ class Site(QThread):
 					data = future.result()
 				except Exception as exc:
 					# print('Download %s failed' % exc)
-					sys.stdout.flush()
+					# sys.stdout.flush()
+					pass
 				else:
 					if data is not None:
-						self.current_finish_download += 1
-						message = TRSM('Saved to: %s (%d/%d)') % (data, self.current_finish_download, self.final_total_download)
+						self._current_finish_download += 1
+						message = TRSM('Saved to: %s (%d/%d)') % (data, self._current_finish_download, self._final_total_download)
 						#print(message)
 						#sys.stdout.flush()
-						self.chapter_trigger.emit(message, self.current_finish_download, self.final_total_download)
+						self.chapter_trigger.emit(message, self._current_finish_download, self._final_total_download)
 
 		return output_dir
 
@@ -172,15 +166,15 @@ class Site(QThread):
 				return target_file
 			else:
 				message = TRSM("Download failed from %s to %s") % (image_url,target_file)
-				self.chapter_trigger.emit(message, self.current_finish_download, self.final_total_download)
+				self.chapter_trigger.emit(message, self._current_finish_download, self._final_total_download)
 		return None
 
 	#flow 2
 	def download_single_page_image_from_list(self,page_list,target_folder):
 		if not BY_PASS_DOWNLOAD:
 			threads = []
-			self.final_total_download = 0
-			self.current_finish_download = 0
+			self._final_total_download = 0
+			self._current_finish_download = 0
 			for idx, page in enumerate(page_list, start=1):
 				page["file"] = os.path.join(target_folder.rstrip(), str(idx).zfill(int(MY_CONFIG.get("general", "image_padding"))))
 				old_exist_file_check = []
@@ -191,11 +185,11 @@ class Site(QThread):
 					threads.append(t)
 					t.start()
 
-			self.final_total_download = len(threads)
+			self._final_total_download = len(threads)
 			message = TRSM("Total: %d, need download: %d, skip: %d") % (
-				len(page_list), self.final_total_download, len(page_list) - self.final_total_download
+				len(page_list), self._final_total_download, len(page_list) - self._final_total_download
 			)
-			self.chapter_trigger.emit(message, self.current_finish_download, self.final_total_download)
+			self.chapter_trigger.emit(message, self._current_finish_download, self._final_total_download)
 
 			for i in threads:
 				i.join()
@@ -232,17 +226,17 @@ class Site(QThread):
 					else:
 						#print('Saved to: %s' % data)
 						if result:
-							self.current_finish_download += 1
-							message = TRSM('Saved to: %s (%d/%d)') % (result, self.current_finish_download, self.final_total_download)
+							self._current_finish_download += 1
+							message = TRSM('Saved to: %s (%d/%d)') % (result, self._current_finish_download, self._final_total_download)
 							#print(message)
 							#sys.stdout.flush()
-							self.chapter_trigger.emit(message, self.current_finish_download, self.final_total_download)
+							self.chapter_trigger.emit(message, self._current_finish_download, self._final_total_download)
 			else:
-				self.current_finish_download += 1
-				message = TRSM('Exist: %s (%d/%d)') % (target_file, self.current_finish_download, self.final_total_download)
+				self._current_finish_download += 1
+				message = TRSM('Exist: %s (%d/%d)') % (target_file, self._current_finish_download, self._final_total_download)
 				#print(message)
 				#sys.stdout.flush()
-				self.chapter_trigger.emit(message, self.current_finish_download, self.final_total_download)
+				self.chapter_trigger.emit(message, self._current_finish_download, self._final_total_download)
 
 		return page["file"]
 

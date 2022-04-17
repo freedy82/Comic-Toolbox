@@ -1,10 +1,10 @@
-from PyQt5 import QtCore, QtWidgets
-from const import *
 from PyQt5.QtWidgets import QFileDialog, QListWidgetItem
-from uis.main_window import Ui_MainWindow
-from .archiver_worker import ArchiverWorker
 
+from const import *
 import util
+from uis.main_window import Ui_MainWindow
+from models.archiver_worker import ArchiverWorker
+
 
 class ArchiverController(object):
 	FORMATS = [{"desc":"Comic Book Zip","ext":"cbz"},{"desc":"ePub","ext":"epub"},{"desc":"Normal Zip","ext":"zip"},{"desc":"Portable Document Format","ext":"pdf"}]

@@ -1,15 +1,13 @@
-import sys
+from PyQt5.QtWidgets import QListWidgetItem
 
-from PyQt5 import QtCore, QtWidgets
 from const import *
-from PyQt5.QtWidgets import QFileDialog, QListWidgetItem
-from uis.main_window import Ui_MainWindow
-from .site_parse_worker import SiteParseWorker
-from .chapter_download_worker import ChapterDownloadWorker
-from .bookmark_window_controller import BookmarkWindowController
-from .site import Site
-
 import util
+from uis.main_window import Ui_MainWindow
+from models.site_parse_worker import SiteParseWorker
+from models.chapter_download_worker import ChapterDownloadWorker
+from models.bookmark_window_controller import BookmarkWindowController
+from models.site import Site
+
 
 class DownloaderController(object):
 

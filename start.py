@@ -1,8 +1,8 @@
 from PyQt5 import QtWidgets
 from PyQt5 import QtCore
 
-from models.main_window_controller import MainWindowController
 from const import *
+from models.main_window_controller import MainWindowController
 
 if __name__ == '__main__':
     import sys

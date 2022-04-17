@@ -1,9 +1,7 @@
 import glob
-#import os
-#from pathlib import Path
 import shutil
 from PIL import Image
-
+from pathlib import Path
 from PyQt5.QtCore import QThread, pyqtSignal
 
 import util

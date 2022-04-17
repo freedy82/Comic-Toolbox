@@ -1,12 +1,9 @@
-from models.webbot import WebBot
-from models.config import MyConfig
-from pathlib import Path
 import os
-import sys
-import time
-import base64
 import concurrent.futures
 from PyQt5 import QtCore
+
+from models.webbot import WebBot
+from models.config import MyConfig
 
 ROOT_DIR = os.getcwd()
 MY_CONFIG = MyConfig(os.path.join(ROOT_DIR, "setting.ini"))

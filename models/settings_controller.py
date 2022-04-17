@@ -1,8 +1,9 @@
 import json
 import re
+from PyQt5.QtWidgets import QFileDialog, QListWidgetItem
+
 import util
 from const import *
-from PyQt5.QtWidgets import QFileDialog, QListWidgetItem
 from uis.main_window import Ui_MainWindow
 
 class SettingsController(object):

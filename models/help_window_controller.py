@@ -1,10 +1,10 @@
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import Qt
 
-import util
 from const import *
 from uis import help_window
-from .site import Site
+from models.site import Site
+
 
 class HelpWindowController(QtWidgets.QMainWindow):
 	def __init__(self,app,main_controller):

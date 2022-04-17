@@ -1,27 +1,21 @@
-# import sys
-# import time
-
 from PyQt5 import QtCore, QtWidgets
-# from PyQt5.QtGui import QImage, QPixmap
-# from PyQt5.QtWidgets import QFileDialog
-# from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import QSystemTrayIcon, QMenu, QAction
+from PyQt5.QtWidgets import QSystemTrayIcon, QMenu
 from PyQt5.QtMultimedia import QSound
 from functools import partial
 
 import util
-from uis import main_window
-from .downloader_controller import DownloaderController
-from .converter_controller import ConverterController
-from .cropper_controller import CropperController
-from .archiver_controller import ArchiverController
-from .settings_controller import SettingsController
-from .about_window_controller import AboutWindowController
-from .help_window_controller import HelpWindowController
-
 from const import *
+from uis import main_window
+from models.downloader_controller import DownloaderController
+from models.converter_controller import ConverterController
+from models.cropper_controller import CropperController
+from models.archiver_controller import ArchiverController
+from models.settings_controller import SettingsController
+from models.about_window_controller import AboutWindowController
+from models.help_window_controller import HelpWindowController
+
 
 class MainWindowController(QtWidgets.QMainWindow):
 	def __init__(self,app,trans):

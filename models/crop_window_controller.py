@@ -1,18 +1,14 @@
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import QTimer
-from PyQt5.QtGui import QIcon, QPixmap, QImage
-from PyQt5.QtWidgets import QSystemTrayIcon, QMenu, QAction, QGraphicsScene, QGraphicsPixmapItem
-from functools import partial
+from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtWidgets import QGraphicsScene, QGraphicsPixmapItem
 from PyQt5.QtCore import Qt
-import webbrowser
 from PIL import Image
 
 import util
-from uis import crop_window
-#from uis import crop_frame
-from .crop_frame_controller import CropFrameController
-
 from const import *
+from uis import crop_window
+from models.crop_frame_controller import CropFrameController
+
 
 class CropWindowController(QtWidgets.QMainWindow):
 	SIZE_POLICY = [

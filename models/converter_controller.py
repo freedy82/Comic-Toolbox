@@ -1,11 +1,11 @@
-from PyQt5 import QtCore, QtWidgets
-from const import *
 from PyQt5.QtWidgets import QFileDialog, QListWidgetItem
-from uis.main_window import Ui_MainWindow
-from .converter_worker import ConverterWorker
-from .image_filter_window_controller import ImageFilterWindowController
 
 import util
+from const import *
+from uis.main_window import Ui_MainWindow
+from models.converter_worker import ConverterWorker
+from models.image_filter_window_controller import ImageFilterWindowController
+
 
 class ConverterController(object):
 	MODES = [

@@ -1,5 +1,6 @@
+import time
 from PyQt5.QtCore import QThread, pyqtSignal
-import util
+
 from const import *
 
 class ChapterDownloadWorker(QThread):
@@ -47,7 +48,7 @@ class ChapterDownloadWorker(QThread):
 					message = TRSM("Page sleep %0.1fs") % page_sleep
 					#print(message)
 					self.trigger.emit(message,self.total_page,self.total_page,self.finish_chapter,self.total_chapter)
-					sys.stdout.flush()
+					#sys.stdout.flush()
 					time.sleep(page_sleep)
 
 		if not self.stop_flag:

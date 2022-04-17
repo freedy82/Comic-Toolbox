@@ -1,12 +1,10 @@
-import glob
-import shutil
-import util
-from const import *
 from zipfile import ZipFile
 from PIL import Image
 from ebooklib import epub
-
 from PyQt5.QtCore import QThread, pyqtSignal
+
+import util
+from const import *
 
 class ArchiverWorker(QThread):
 	trigger = pyqtSignal(str,int,int)

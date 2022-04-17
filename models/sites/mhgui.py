@@ -1,4 +1,10 @@
-from ..site import *
+import re
+import html
+import json
+import lzstring
+from urllib.parse import urljoin
+
+from models.site import Site
 
 class MHGui(Site):
 	URL_MATCH = ["manhuagui.com", "mhgui.com"]
@@ -66,7 +72,7 @@ class MHGui(Site):
 
 		image_urls = []
 		for i in data['files']:
-			url = self._IMAGE_URL_PREFIX + data['path'] + i + '?e=%(e)s&m=%(m)s' % (data['sl'])
+			url = self._image_url_prefix + data['path'] + i + '?e=%(e)s&m=%(m)s' % (data['sl'])
 			image_urls.append({"url":url,"ref":item["url"]})
 
 		#print(image_urls)

@@ -1,13 +1,11 @@
 import json
-
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QTableWidgetItem
 
 import util
-from uis import bookmark_window
-
 from const import *
+from uis import bookmark_window
 
 class BookmarkWindowController(QtWidgets.QMainWindow):
 	def __init__(self,app,main_controller,parent_controller):

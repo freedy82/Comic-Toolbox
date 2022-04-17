@@ -1,4 +1,10 @@
-from ..site import *
+import re
+import html
+import json
+import base64
+from urllib.parse import urljoin
+
+from models.site import Site
 
 class Kumw5(Site):
 	URL_MATCH = ["kumw5.com"]
