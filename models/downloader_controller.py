@@ -233,6 +233,8 @@ class DownloaderController(object):
 			if self.current_type != "":
 				self.update_chapter_list()
 				pass
+		else:
+			util.msg_box(TRSM("Can not found list"),self.main_controller)
 
 		pass
 

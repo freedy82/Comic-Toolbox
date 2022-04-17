@@ -23,8 +23,6 @@ class ChapterDownloadWorker(QThread):
 		self.stop_flag = False
 
 	def run(self):
-		# item_lists = self.site.parse_list()
-
 		self.finish_page = 0
 		self.total_page = 0
 		self.finish_chapter = 0

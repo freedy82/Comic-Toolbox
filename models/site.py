@@ -8,15 +8,15 @@ import threading
 import base64
 import sys
 import time
-from abc import ABCMeta, abstractmethod
-from pathlib import Path
 import concurrent.futures
-from const import *
-from PyQt5.QtCore import QThread, pyqtSignal
-from urllib.parse import urljoin
 import importlib
 import html
 import glob
+from const import *
+from abc import ABCMeta, abstractmethod
+from pathlib import Path
+from PyQt5.QtCore import QThread, pyqtSignal
+from urllib.parse import urljoin
 
 
 class Site(QThread):
@@ -25,8 +25,6 @@ class Site(QThread):
 	chapter_canceled = pyqtSignal()
 
 	def __init__(self, web_bot):
-		"""Init Class
-		"""
 		super().__init__()
 		self._web_bot = web_bot
 		self._home_url = ""
@@ -42,34 +40,7 @@ class Site(QThread):
 		self.current_finish_download = 0
 		self.final_total_download = 0
 
-	@classmethod
-	def init_site_by_url(cls,url,web_bot):
-		all_sites_class = cls.find_all_sites_class()
-		for site_class in all_sites_class:
-			if site_class.is_url_from_this_site(url=url):
-				site_obj = site_class(web_bot)
-				site_obj.set_main_url(url)
-				return site_obj
-		return None
-
-	@classmethod
-	def get_all_sites_class(cls):
-		return cls.find_all_sites_class()
-
-	@classmethod
-	def get_all_sites_object(cls,web_bot):
-		results = []
-		all_sites_class = cls.find_all_sites_class()
-		for site_class in all_sites_class:
-			results.append(site_class(web_bot))
-		return results
-
-	@classmethod
-	def is_url_from_this_site(cls,url):
-		if any(tmp_str in url for tmp_str in cls.URL_MATCH):
-			return True
-		return False
-
+	# normal method
 	def get_site_name(self):
 		return self._site_name
 
@@ -95,14 +66,26 @@ class Site(QThread):
 		return self._is_need_nodejs
 
 	def parse_list(self):
-		return self.parse_list_from_url(self._main_url)
+		self._book_id = self.get_book_id_from_url(self._main_url)
+		if self._book_id == "":
+			return {}
+
+		self._main_url = self.get_main_url_from_book_id()
+
+		html_code = self._web_bot.get_web_content(url=self._main_url, code_page=self._code_page)
+		lists = {}
+		if html_code is not None and html_code != "":
+			title = self.get_book_title_from_html(html_code)
+			author = self.get_book_author_from_html(html_code)
+			lists = self.get_book_item_list_from_html(html_code,self._main_url)
+			if lists is not None:
+				lists["title"] = title
+				lists["author"] = author
+
+		return lists
+		# return self.parse_list_from_url(self._main_url)
 
 	def download_item(self, item, title="", item_type=""):
-		"""download item of 1 list
-		:param item: list
-		:param title: book title
-		:param item_type: type of resource
-		"""
 		self._stop_flag = False
 
 		if item_type == "book":
@@ -124,7 +107,6 @@ class Site(QThread):
 				int(MY_CONFIG.get("general", "chapter_padding")))
 
 		output_dir = os.path.join(MY_CONFIG.get("general", "download_folder"), title, tmp_output_dir)
-		#page_ref = self._home_url + item["url"]
 		Path(output_dir).mkdir(parents=True, exist_ok=True)
 		#print("Total need check download images: " + str(len(image_urls)))
 
@@ -135,7 +117,6 @@ class Site(QThread):
 			for idx, image_url in enumerate(image_urls, start=1):
 				ext = self.get_ext(image_url["url"],self._default_image_format)
 				# print("starting")
-				# target_file = os.path.join(output_dir.rstrip(), "{name:0"+MY_CONFIG.get("general", "image_padding")+"d}.{ext}".format(name=idx, ext=ext))
 				target_file = os.path.join(output_dir.rstrip(),str(idx).zfill(int(MY_CONFIG.get("general", "image_padding"))) + "." + ext)
 				# print("target_file",target_file)
 
@@ -195,23 +176,25 @@ class Site(QThread):
 		return None
 
 	#flow 2
-	def download_single_page_image_from_list(self,page_list):
+	def download_single_page_image_from_list(self,page_list,target_folder):
 		if not BY_PASS_DOWNLOAD:
 			threads = []
 			self.final_total_download = 0
 			self.current_finish_download = 0
-			for page in page_list:
+			for idx, page in enumerate(page_list, start=1):
+				page["file"] = os.path.join(target_folder.rstrip(), str(idx).zfill(int(MY_CONFIG.get("general", "image_padding"))))
 				old_exist_file_check = []
 				[old_exist_file_check.extend(glob.glob(page["file"] + '.' + ext)) for ext in IMAGE_EXTS]
-				if self._is_overwrite or len(old_exist_file_check)==0:
+				if self._is_overwrite or len(old_exist_file_check) == 0:
 					# unknown need 2 args!!!
-					t = threading.Thread(target=self.download_single_page_image_from_page_item, args=(page,True))
+					t = threading.Thread(target=self.download_single_page_image_from_page, args=(page,True))
 					threads.append(t)
 					t.start()
 
 			self.final_total_download = len(threads)
 			message = TRSM("Total: %d, need download: %d, skip: %d") % (
-			len(page_list), self.final_total_download, len(page_list) - self.final_total_download)
+				len(page_list), self.final_total_download, len(page_list) - self.final_total_download
+			)
 			self.chapter_trigger.emit(message, self.current_finish_download, self.final_total_download)
 
 			for i in threads:
@@ -221,12 +204,11 @@ class Site(QThread):
 			#print("Page Sleep %fs" % page_sleep)
 			#sys.stdout.flush()
 			#time.sleep(page_sleep)
-
 		pass
 
-	def download_single_page_image_from_page_item(self,page,unused_flag):
-		html = self._web_bot.get_web_content(url=page["url"], ref=page["ref"], code_page=self._code_page)
-		img_url = self.extract_single_page_image_from_info(html)
+	def download_single_page_image_from_page(self,page,unused_flag):
+		html_code = self._web_bot.get_web_content(url=page["url"], ref=page["ref"], code_page=self._code_page)
+		img_url = self.get_single_page_image_from_html(html_code)
 		ext = self.get_ext(img_url,self._default_image_format)
 
 		if not BY_PASS_DOWNLOAD:
@@ -264,20 +246,36 @@ class Site(QThread):
 
 		return page["file"]
 
-	def extract_single_page_image_from_info(self,html):
+	#should call from child
+	def get_main_url_from_book_id(self):
+		return self._main_url
+
+	def get_single_page_image_from_html(self, html_code):
 		return ""
 
 	#action
 	def stop(self):
 		self._stop_flag = True
 
-	@abstractmethod
-	def parse_list_from_url(self, url=''):
-		pass
+	#@abstractmethod
+	#def parse_list_from_url(self, url=''):
+	#	pass
 
 	@abstractmethod
-	def parse_book_id_from_url(self, url):
+	def get_book_id_from_url(self, url):
 		return ""
+
+	@abstractmethod
+	def get_book_title_from_html(self,html_code):
+		return 'unknown'
+
+	@abstractmethod
+	def get_book_author_from_html(self,html_code):
+		return 'unknown'
+
+	@abstractmethod
+	def get_book_item_list_from_html(self,html_code,url):
+		return {}
 
 	@staticmethod
 	def get_ext(image_url, default='jpg', allow=IMAGE_EXTS):
@@ -290,6 +288,34 @@ class Site(QThread):
 	@staticmethod
 	def find_all_sites_class():
 		for file in os.listdir(os.path.join(os.path.dirname(__file__), "sites")):
-			if re.match(r"^[a-zA-Z].*?\.py$", file):
+			if re.match(r"^[a-zA-Z].*?\.py$", file) and file != "empty.py":
 				importlib.import_module(".sites.{}".format(file.split(".")[0]), __package__)
 		return [site_class for site_class in Site.__subclasses__()]
+
+	@classmethod
+	def init_site_by_url(cls,url,web_bot):
+		all_sites_class = cls.find_all_sites_class()
+		for site_class in all_sites_class:
+			if site_class.is_url_from_this_site(url=url):
+				site_obj = site_class(web_bot)
+				site_obj.set_main_url(url)
+				return site_obj
+		return None
+
+	@classmethod
+	def get_all_sites_class(cls):
+		return cls.find_all_sites_class()
+
+	@classmethod
+	def get_all_sites_object(cls,web_bot):
+		results = []
+		all_sites_class = cls.find_all_sites_class()
+		for site_class in all_sites_class:
+			results.append(site_class(web_bot))
+		return results
+
+	@classmethod
+	def is_url_from_this_site(cls,url):
+		if any(tmp_str in url for tmp_str in cls.URL_MATCH):
+			return True
+		return False

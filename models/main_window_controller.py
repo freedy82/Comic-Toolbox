@@ -47,7 +47,6 @@ class MainWindowController(QtWidgets.QMainWindow):
 		self.about_window_controller = AboutWindowController(app=self.app, main_controller=self)
 		self.help_window_controller = HelpWindowController(app=self.app, main_controller=self)
 
-
 	def setup_control(self):
 		self.setup_languages()
 		self.setup_tray_icon()
@@ -145,6 +144,7 @@ class MainWindowController(QtWidgets.QMainWindow):
 
 	def on_show_main_window(self):
 		self.setVisible(True)
+		self.activateWindow()
 
 	def on_hide_main_window(self):
 		self.setVisible(False)
