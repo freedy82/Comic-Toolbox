@@ -972,7 +972,7 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QTabWidget" name="tabSettingWidget">
+         <widget class="QTabWidget" name="tab_settings_inner">
           <property name="tabPosition">
            <enum>QTabWidget::North</enum>
           </property>
@@ -1205,93 +1205,204 @@
            <attribute name="title">
             <string>Anti Ban</string>
            </attribute>
-           <layout class="QFormLayout" name="formLayout_2">
-            <property name="fieldGrowthPolicy">
-             <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-            </property>
-            <property name="labelAlignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-            <item row="0" column="0">
-             <widget class="QLabel" name="lbl_settings_page_sleep">
-              <property name="text">
-               <string>Page sleep</string>
+           <layout class="QVBoxLayout" name="verticalLayout_9">
+            <item>
+             <layout class="QFormLayout" name="formLayout_2">
+              <item row="0" column="0">
+               <widget class="QLabel" name="lbl_settings_page_sleep">
+                <property name="text">
+                 <string>Page sleep</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QDoubleSpinBox" name="spin_settings_page_sleep">
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+                <property name="suffix">
+                 <string>s</string>
+                </property>
+                <property name="decimals">
+                 <number>1</number>
+                </property>
+                <property name="maximum">
+                 <double>20.000000000000000</double>
+                </property>
+                <property name="singleStep">
+                 <double>0.500000000000000</double>
+                </property>
+                <property name="value">
+                 <double>8.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="lbl_settings_image_sleep">
+                <property name="text">
+                 <string>Image sleep</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QDoubleSpinBox" name="spin_settings_image_sleep">
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+                <property name="suffix">
+                 <string>s</string>
+                </property>
+                <property name="decimals">
+                 <number>1</number>
+                </property>
+                <property name="maximum">
+                 <double>10.000000000000000</double>
+                </property>
+                <property name="singleStep">
+                 <double>0.500000000000000</double>
+                </property>
+                <property name="value">
+                 <double>0.500000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="lbl_settings_download_worker">
+                <property name="text">
+                 <string>Image parallel download worker</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QSpinBox" name="spin_settings_download_worker">
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+                <property name="minimum">
+                 <number>1</number>
+                </property>
+                <property name="maximum">
+                 <number>20</number>
+                </property>
+                <property name="value">
+                 <number>2</number>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="lbl_settings_proxy_mode">
+                <property name="text">
+                 <string>Proxy mode</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QComboBox" name="cbx_settings_proxy_mode"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="group_settings_proxy_list">
+              <property name="enabled">
+               <bool>true</bool>
               </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="title">
+               <string>Proxy List</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_2">
+               <item>
+                <widget class="QListWidget" name="list_settings_proxy">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>120</height>
+                  </size>
+                 </property>
+                 <property name="verticalScrollBarPolicy">
+                  <enum>Qt::ScrollBarAlwaysOn</enum>
+                 </property>
+                 <property name="horizontalScrollBarPolicy">
+                  <enum>Qt::ScrollBarAsNeeded</enum>
+                 </property>
+                 <property name="editTriggers">
+                  <set>QAbstractItemView::NoEditTriggers</set>
+                 </property>
+                 <property name="selectionMode">
+                  <enum>QAbstractItemView::ExtendedSelection</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="layout_settings_proxy_button">
+                 <item>
+                  <widget class="QComboBox" name="cbx_settings_proxy_type"/>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="txt_settings_proxy_ip">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="toolTip">
+                    <string>IP:PORT</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="btn_settings_proxy_add">
+                   <property name="text">
+                    <string>Add</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="Line" name="line_settings_proxy">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="btn_settings_proxy_delete">
+                   <property name="text">
+                    <string>Delete</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="spin_settings_page_sleep">
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            <item>
+             <spacer name="spacer_settings_anti_ban">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
               </property>
-              <property name="suffix">
-               <string>s</string>
+              <property name="sizeType">
+               <enum>QSizePolicy::Expanding</enum>
               </property>
-              <property name="decimals">
-               <number>1</number>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>97</height>
+               </size>
               </property>
-              <property name="maximum">
-               <double>20.000000000000000</double>
-              </property>
-              <property name="singleStep">
-               <double>0.500000000000000</double>
-              </property>
-              <property name="value">
-               <double>8.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="lbl_settings_image_sleep">
-              <property name="text">
-               <string>Image sleep</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="spin_settings_image_sleep">
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-              <property name="suffix">
-               <string>s</string>
-              </property>
-              <property name="decimals">
-               <number>1</number>
-              </property>
-              <property name="maximum">
-               <double>10.000000000000000</double>
-              </property>
-              <property name="singleStep">
-               <double>0.500000000000000</double>
-              </property>
-              <property name="value">
-               <double>0.500000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="lbl_settings_download_worker">
-              <property name="text">
-               <string>Image parallel download worker</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QSpinBox" name="spin_settings_download_worker">
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-              <property name="minimum">
-               <number>1</number>
-              </property>
-              <property name="maximum">
-               <number>20</number>
-              </property>
-              <property name="value">
-               <number>2</number>
-              </property>
-             </widget>
+             </spacer>
             </item>
            </layout>
           </widget>
@@ -1464,7 +1575,7 @@
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="layout_settings_download">
+         <layout class="QHBoxLayout" name="layout_settings_button">
           <item>
            <widget class="QPushButton" name="btn_settings_reset">
             <property name="text">
@@ -1579,7 +1690,7 @@
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="btn_group_settings_sound"/>
   <buttongroup name="btn_group_settings_message"/>
+  <buttongroup name="btn_group_settings_sound"/>
  </buttongroups>
 </ui>

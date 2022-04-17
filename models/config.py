@@ -46,6 +46,8 @@ class MyConfig(RawConfigParser):
 			self.set("anti-ban","image_sleep","1.0")
 		if self.get("anti-ban","download_worker") == "":
 			self.set("anti-ban","download_worker","2")
+		if self.get("anti-ban","proxy_mode") == "":
+			self.set("anti-ban","proxy_mode","0")
 
 		if self.get("misc","display_message") == "":
 			self.set("misc","display_message","True")

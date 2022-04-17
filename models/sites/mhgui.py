@@ -121,10 +121,12 @@ class MHGui(Site):
 		# return json.loads(re.search(r"(\{.*\})", res).group(1))
 
 		# ref https://github.com/HSSLC/manhuagui-dlr/blob/c5279901b68d5627d202142d6785ac26f2689516/get.py#L10
-		m = re.match(r'^.*\}\(\'(.*)\',(\d*),(\d*),\'([\w|\+|\/|=]*)\'.*$', html)
-		result = MHGui.packed(m.group(1), int(m.group(2)), int(m.group(3)), lzstring.LZString.decompressFromBase64(m.group(4)).split('|'))
-		#print(result)
-		return result
+		if html != "":
+			m = re.match(r'^.*\}\(\'(.*)\',(\d*),(\d*),\'([\w|\+|\/|=]*)\'.*$', html)
+			result = MHGui.packed(m.group(1), int(m.group(2)), int(m.group(3)), lzstring.LZString.decompressFromBase64(m.group(4)).split('|'))
+			#print(result)
+			return result
+		return {}
 
 	@staticmethod
 	def packed(functionFrame, a, c, data):

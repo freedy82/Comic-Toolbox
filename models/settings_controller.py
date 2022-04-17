@@ -1,8 +1,8 @@
-import sys
-
-from PyQt5 import QtCore, QtWidgets
+import json
+import re
+import util
 from const import *
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QListWidgetItem
 from uis.main_window import Ui_MainWindow
 
 class SettingsController(object):
@@ -15,17 +15,25 @@ class SettingsController(object):
 		pass
 
 	def setup_control(self):
+		self.ui.cbx_settings_proxy_mode.addItems([TRSM("Disable proxy"),TRSM("Use proxy and not proxy same time"),TRSM("Only use proxy")])
+		self.ui.cbx_settings_proxy_type.addItems([TRSM("https"),TRSM("http")])
+
 		# UI Display
 		self.retranslateUi()
-
 		self.load_config()
 
 		# Button
 		self.ui.btn_settings_save.clicked.connect(self.btn_settings_save_clicked)
-		self.ui.btn_settings_reset.clicked.connect(self.btn_reset_default_clicked)
+		self.ui.btn_settings_reset.clicked.connect(self.btn_settings_reset_clicked)
 		self.ui.btn_settings_general_folder.clicked.connect(self.btn_settings_general_folder_clicked)
+		self.ui.btn_settings_proxy_add.clicked.connect(self.btn_settings_proxy_add_clicked)
+		self.ui.btn_settings_proxy_delete.clicked.connect(self.btn_settings_proxy_delete_clicked)
 
 	def retranslateUi(self):
+		self.ui.cbx_settings_proxy_mode.setItemText(0,TRSM("Disable proxy"))
+		self.ui.cbx_settings_proxy_mode.setItemText(1,TRSM("Use proxy and not proxy same time"))
+		self.ui.cbx_settings_proxy_mode.setItemText(2,TRSM("Only use proxy"))
+
 		pass
 
 	#action
@@ -38,10 +46,33 @@ class SettingsController(object):
 			self.ui.txt_settings_general_folder.setText(folder_path)
 		pass
 
+	def btn_settings_proxy_add_clicked(self):
+		if self.ui.txt_settings_proxy_ip.text() != "":
+			proxy = self.ui.cbx_settings_proxy_type.currentText() + "://" + self.ui.txt_settings_proxy_ip.text()
+			if not self.check_proxy_format(proxy):
+				util.msg_box(TRSM("Please enter a proxy with ip:port format"), self.main_controller)
+			elif self.check_proxy_exist_in_list(proxy):
+				util.msg_box(TRSM("Proxy already exist in list"), self.main_controller)
+			else:
+				self.try_add_proxy(proxy)
+				self.ui.txt_settings_proxy_ip.setText("")
+		else:
+			util.msg_box(TRSM("Please enter a proxy with ip:port format"),self.main_controller)
+			pass
+
+	def btn_settings_proxy_delete_clicked(self):
+		if len(self.ui.list_settings_proxy.selectedItems()) > 0:
+			if util.confirm_box(TRSM("Confirm delete these proxy?"),self.main_controller):
+				for item in self.ui.list_settings_proxy.selectedItems():
+					self.ui.list_settings_proxy.takeItem(self.ui.list_settings_proxy.row(item))
+		else:
+			util.msg_box(TRSM("Please select at least one proxy"),self.main_controller)
+		pass
+
 	def btn_settings_save_clicked(self):
 		self.save_config()
 
-	def btn_reset_default_clicked(self):
+	def btn_settings_reset_clicked(self):
 		self.ui.spin_settings_max_retry.setValue(5)
 		self.ui.spin_settings_timeout.setValue(30)
 
@@ -54,6 +85,8 @@ class SettingsController(object):
 		self.ui.spin_settings_page_sleep.setValue(10)
 		self.ui.spin_settings_image_sleep.setValue(1)
 		self.ui.spin_settings_download_worker.setValue(2)
+
+		self.ui.cbx_settings_proxy_mode.setCurrentIndex(0)
 
 		pass
 
@@ -96,6 +129,20 @@ class SettingsController(object):
 		self.ui.spin_settings_image_sleep.setValue(float(image_sleep))
 		download_worker = MY_CONFIG.get("anti-ban", "download_worker")
 		self.ui.spin_settings_download_worker.setValue(int(download_worker))
+		proxy_mode = MY_CONFIG.get("anti-ban", "proxy_mode")
+		self.ui.cbx_settings_proxy_mode.setCurrentIndex(int(proxy_mode))
+		proxy_list = MY_CONFIG.get("anti-ban", "proxy_list")
+		if proxy_list != "":
+			proxy_list = json.loads(proxy_list)
+			for proxy in proxy_list:
+				item = QListWidgetItem()
+				item.setText(proxy["url"])
+				item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
+				if proxy["enable"]:
+					item.setCheckState(QtCore.Qt.Checked)
+				else:
+					item.setCheckState(QtCore.Qt.Unchecked)
+				self.ui.list_settings_proxy.addItem(item)
 
 		#misc
 		display_message = MY_CONFIG.get("misc", "display_message")
@@ -125,12 +172,13 @@ class SettingsController(object):
 		MY_CONFIG.set("general","image_padding",str(self.ui.spin_settings_image_padding.value()))
 		MY_CONFIG.set("general","jpg_quality",str(self.ui.spin_settings_jpg_quality.value()))
 		MY_CONFIG.set("general","check_is_2_page",str(self.ui.spin_settings_check_is_2_page.value()))
-		#
 
 		#anti ban
 		MY_CONFIG.set("anti-ban","page_sleep",str(self.ui.spin_settings_page_sleep.value()))
 		MY_CONFIG.set("anti-ban","image_sleep",str(self.ui.spin_settings_image_sleep.value()))
 		MY_CONFIG.set("anti-ban","download_worker",str(self.ui.spin_settings_download_worker.value()))
+		MY_CONFIG.set("anti-ban","proxy_mode",str(self.ui.cbx_settings_proxy_mode.currentIndex()))
+		MY_CONFIG.set("anti-ban","proxy_list",json.dumps(self.proxy_list_to_json()))
 
 		#misc
 		MY_CONFIG.set("misc","display_message",str(self.ui.radio_settings_message_yes.isChecked()))
@@ -138,9 +186,44 @@ class SettingsController(object):
 
 		MY_CONFIG.save()
 
-		WEB_BOT = WebBot(
-			agent=MY_CONFIG.get("general", "agent"),
-			time_out=float(MY_CONFIG.get("general", "timeout")),
-			max_retry=int(MY_CONFIG.get("general", "max_retry"))
-		)
+		WEB_BOT.set_agent(MY_CONFIG.get("general", "agent"))
+		WEB_BOT.set_time_out(float(MY_CONFIG.get("general", "timeout")))
+		WEB_BOT.set_max_retry(int(MY_CONFIG.get("general", "max_retry")))
+		WEB_BOT.set_proxy_mode(int(MY_CONFIG.get("anti-ban", "proxy_mode")))
+		WEB_BOT.set_proxy_list(MY_CONFIG.get("anti-ban", "proxy_list"))
+
 		EXECUTOR = concurrent.futures.ThreadPoolExecutor(max_workers=int(MY_CONFIG.get("anti-ban", "download_worker")))
+
+	def try_add_proxy(self,proxy):
+		if self.check_proxy_exist_in_list(proxy):
+			return False
+		item = QListWidgetItem()
+		item.setText(proxy)
+		item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
+		item.setCheckState(QtCore.Qt.Checked)
+		self.ui.list_settings_proxy.addItem(item)
+		return True
+
+	def check_proxy_format(self,proxy):
+		pattern_proxy = re.compile(r'http([s]?)://(.*?):([0-9]*)')
+		proxy_info = re.findall(pattern_proxy, proxy)
+		if len(proxy_info) == 1 and len(proxy_info[0]) == 3:
+			return True
+		return False
+
+	def check_proxy_exist_in_list(self,proxy):
+		for i in range(self.ui.list_settings_proxy.count()):
+			item = self.ui.list_settings_proxy.item(i)
+			if item.text() == proxy:
+				return True
+		return False
+
+	def proxy_list_to_json(self):
+		result = []
+		for i in range(self.ui.list_settings_proxy.count()):
+			item = self.ui.list_settings_proxy.item(i)
+			result.append({
+				"enable": item.checkState(),
+				"url": item.text(),
+			})
+		return result

@@ -85,6 +85,10 @@ PyQt5 學習自 嗡嗡 的 [今年還是不夠錢買psQQ，不如我們用PyQt�
 
 ![圖片裁剪](screenshots/image_cropper.jpg "圖片裁剪")
 
+設定 - 防止被禁
+
+![設定](screenshots/settings_anti-ban.jpg "設定")
+
 ## 注意
 
 對於轉換工具、裁剪工具、壓縮工具，請在掃描前選擇漫畫系列的文件夾\
@@ -92,7 +96,7 @@ PyQt5 學習自 嗡嗡 的 [今年還是不夠錢買psQQ，不如我們用PyQt�
 📁 d:\comics\  (下載文件夾)\
 📁 d:\comics\book_name\  (系列的文件夾)\
 📁 d:\comics\book_name\chapter-##\  (章節/卷文件夾)\
-🖼 d:\comics\book_name\chapter-##\###.jpg  (圖像文件)
+🖼 d:\comics\book_name\chapter-##\\###.jpg  (圖像文件)
 
 轉換工具目標文件夾建議與源文件夾不同，即使應該沒問題，但為了安全起見😅
 
@@ -122,7 +126,15 @@ OpenCV 應該比 Pillow 快，但好多 sin、cos、tan，對初中已過去好�
 
 ## 版本更新
 
+### v0.6.0
+
+- 加入支持代理(Proxy)功能
+
 ### v0.5.5
 
 - 加入書簽功能
 - 加入多一點 Tooltips 說明
+
+### v0.5.0
+
+- 初版

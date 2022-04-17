@@ -342,6 +342,34 @@
         <source>Please select only one bookmark</source>
         <translation>请只选择一个书签</translation>
     </message>
+    <message>
+        <source>Disable proxy</source>
+        <translation>禁用代理</translation>
+    </message>
+    <message>
+        <source>Use proxy and not proxy same time</source>
+        <translation>有时使用代理和有时不使用代理 (混合模式)</translation>
+    </message>
+    <message>
+        <source>Only use proxy</source>
+        <translation>只使用代理</translation>
+    </message>
+    <message>
+        <source>Please select at least one proxy</source>
+        <translation>请选择至少一个代理</translation>
+    </message>
+    <message>
+        <source>Please enter a proxy with ip:port format</source>
+        <translation>请输入 ip:port 格式的代理</translation>
+    </message>
+    <message>
+        <source>Proxy already exist in list</source>
+        <translation>代理已存在于列表中</translation>
+    </message>
+    <message>
+        <source>Confirm delete these proxy?</source>
+        <translation>确认删除这些代理？</translation>
+    </message>
 
 </context>
 </TS>

@@ -16,7 +16,7 @@ TRS = QtCore.QCoreApplication.translate
 def TRSM(str_name):
     return TRS("MainWindow", str_name)
 
-APP_VERSION = "0.5.5"
+APP_VERSION = "0.6.0"
 APP_LINK = "https://github.com/freedy82/Comic-Toolbox"
 
 IMAGE_EXTS = ("jpg","gif","png","jpeg","webp")
@@ -35,6 +35,8 @@ BY_PASS_DOWNLOAD = False        # debug
 
 WEB_BOT = WebBot(agent=MY_CONFIG.get("general", "agent"),
                  time_out=float(MY_CONFIG.get("general", "timeout")),
-                 max_retry=int(MY_CONFIG.get("general", "max_retry"))
+                 max_retry=int(MY_CONFIG.get("general", "max_retry")),
+                 proxy_mode=int(MY_CONFIG.get("anti-ban", "proxy_mode")),
+                 proxy_list=MY_CONFIG.get("anti-ban", "proxy_list")
                  )
 EXECUTOR = concurrent.futures.ThreadPoolExecutor(max_workers=int(MY_CONFIG.get("anti-ban", "download_worker")))
