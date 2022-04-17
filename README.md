@@ -89,7 +89,7 @@ PyQt5 學習自 嗡嗡 的 [今年還是不夠錢買psQQ，不如我們用PyQt�
 
 ![設定](screenshots/settings_anti-ban.jpg "設定")
 
-書簽
+書簽 （ 有些是我在看的，有些是測試的😅 ）
 
 ![書簽](screenshots/bookmarks.jpg "書簽")
 
@@ -114,7 +114,7 @@ PyQt5 學習自 嗡嗡 的 [今年還是不夠錢買psQQ，不如我們用PyQt�
 
 因是半學習半編寫的作品，所以一定仍有很多不足的地方，臭蟲(bug)一定是有的，而且可能不少，歡迎提交 issue，因是個人空閒的作品，所以修正回應比較慢啦
 
-想加入Proxy的支持，但線上沒找到一個好用的免費的Proxy
+~~想加入Proxy的支持，但線上沒找到一個好用的免費的Proxy~~ (最後用了在本地裝的Proxy代理測試)
 
 另外如有空，再把代碼整理一下吧，如無用的 import，requirements 之類的
 
