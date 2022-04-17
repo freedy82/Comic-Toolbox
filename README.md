@@ -89,6 +89,10 @@ PyQt5 學習自 嗡嗡 的 [今年還是不夠錢買psQQ，不如我們用PyQt�
 
 ![設定](screenshots/settings_anti-ban.jpg "設定")
 
+書簽
+
+![書簽](screenshots/bookmarks.jpg "書簽")
+
 ## 注意
 
 對於轉換工具、裁剪工具、壓縮工具，請在掃描前選擇漫畫系列的文件夾\
