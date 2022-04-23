@@ -22,6 +22,15 @@ def find_all_languages():
 	sorted(languages, key=lambda language: language["name"])
 	return languages
 
+def find_all_themes():
+	themes = []
+	for file in os.listdir(os.path.join(ROOT_DIR, "themes")):
+		if re.match(r"^[a-zA-Z_].*?\.qss$", file):
+			file_name = get_file_name(file)
+			themes.append({"name":file_name})
+	sorted(themes, key=lambda theme: theme["name"])
+	return themes
+
 def get_number_of_images_from_folder(folder,num=1,exts=IMAGE_EXTS):
 	lists = []
 	for ext in exts:
@@ -112,6 +121,7 @@ def get_image_size(file_name):
 			if width > 0 and height > 0:
 				return [width, height]
 	except Exception:
+		#fallback use PIL
 		im = Image.open(file_name)
 		width, height = im.size
 		if width > 0 and height > 0:

@@ -65,19 +65,13 @@ class MHGui(Site):
 
 		return results
 
-	def download_item(self,item,title="",item_type=""):
-		output_dir = super(MHGui, self).download_item(item=item,title=title,item_type=item_type)
-		html_code = self._web_bot.get_web_content(url=item["url"], ref=item["ref"], code_page=self._code_page)
+	def get_image_list_from_html(self,html_code,url):
 		data = self._get_image_data_from_page(html_code=html_code)
-
 		image_urls = []
 		for i in data['files']:
-			url = self._image_url_prefix + data['path'] + i + '?e=%(e)s&m=%(m)s' % (data['sl'])
-			image_urls.append({"url":url,"ref":item["url"]})
-
-		#print(image_urls)
-		self.download_image_lists(image_urls=image_urls,item=item,item_type=item_type,title=title)
-		return output_dir
+			image_url = self._image_url_prefix + data['path'] + i + '?e=%(e)s&m=%(m)s' % (data['sl'])
+			image_urls.append({"url":image_url,"ref":url})
+		return {"images":image_urls}
 
 	# internal function
 	@staticmethod

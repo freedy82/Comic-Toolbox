@@ -9,6 +9,10 @@ from abc import ABCMeta, abstractmethod
 from pathlib import Path
 from PyQt5.QtCore import QThread, pyqtSignal
 
+# fix for pyInstaller
+import execjs
+import lzstring
+
 from const import *
 
 
@@ -76,7 +80,6 @@ class Site(QThread):
 				lists["author"] = author
 
 		return lists
-		# return self.parse_list_from_url(self._main_url)
 
 	def download_item(self, item, title="", item_type=""):
 		self._stop_flag = False
@@ -89,18 +92,17 @@ class Site(QThread):
 		output_dir = os.path.join(MY_CONFIG.get("general", "download_folder"), title, tmp_output_dir)
 		Path(output_dir).mkdir(parents=True, exist_ok=True)
 
+		html_code = self._web_bot.get_web_content(url=item["url"], ref=item["ref"], code_page=self._code_page)
+		results = self.get_image_list_from_html(html_code=html_code,url=item["url"])
+		if "images" in results:
+			self.download_image_lists(results["images"],output_dir)
+		if "pages" in results:
+			self.download_single_page_image_from_list(results["pages"],output_dir)
+
 		return output_dir
 
 	#flow 1
-	def download_image_lists(self, image_urls, item, item_type, title):
-		if item_type == "book":
-			tmp_output_dir = item_type + "-" + str(item["index"]).zfill(int(MY_CONFIG.get("general", "book_padding")))
-		else:
-			tmp_output_dir = item_type + "-" + str(item["index"]).zfill(
-				int(MY_CONFIG.get("general", "chapter_padding")))
-
-		output_dir = os.path.join(MY_CONFIG.get("general", "download_folder"), title, tmp_output_dir)
-		Path(output_dir).mkdir(parents=True, exist_ok=True)
+	def download_image_lists(self, image_urls, output_dir):
 		#print("Total need check download images: " + str(len(image_urls)))
 
 		self._final_total_download = 0
@@ -202,7 +204,7 @@ class Site(QThread):
 
 	def download_single_page_image_from_page(self,page,unused_flag):
 		html_code = self._web_bot.get_web_content(url=page["url"], ref=page["ref"], code_page=self._code_page)
-		img_url = self.get_single_page_image_from_html(html_code)
+		img_url = self.get_single_page_image_from_html(html_code,page["url"])
 		ext = self.get_ext(img_url,self._default_image_format)
 
 		if not BY_PASS_DOWNLOAD:
@@ -244,7 +246,7 @@ class Site(QThread):
 	def get_main_url_from_book_id(self):
 		return self._main_url
 
-	def get_single_page_image_from_html(self, html_code):
+	def get_single_page_image_from_html(self, html_code, url):
 		return ""
 
 	#action
@@ -269,6 +271,10 @@ class Site(QThread):
 
 	@abstractmethod
 	def get_book_item_list_from_html(self,html_code,url):
+		return {}
+
+	@abstractmethod
+	def get_image_list_from_html(self,html_code,url):
 		return {}
 
 	@staticmethod

@@ -35,7 +35,7 @@ class Ui_MainWindow(object):
         self.frame = QtWidgets.QFrame(MainWindow)
         self.frame.setGeometry(QtCore.QRect(0, -10, 401, 199))
         self.frame.setAutoFillBackground(False)
-        self.frame.setStyleSheet("background: rgb(255, 255, 255)")
+        self.frame.setStyleSheet("")
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")

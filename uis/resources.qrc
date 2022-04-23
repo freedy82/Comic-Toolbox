@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icon">
+    <file alias="theme">resources/theme.png</file>
     <file alias="question">resources/question.png</file>
     <file alias="hide">resources/hide.png</file>
     <file alias="bookmark">resources/heart.png</file>

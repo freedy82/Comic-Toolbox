@@ -32,6 +32,7 @@ class ChapterDownloadWorker(QThread):
 		self.site.chapter_finished.connect(self.chapter_finished)
 		self.stop_flag = False
 		self.site.set_is_overwrite(self.is_overwrite)
+		page_sleep = float(MY_CONFIG.get("anti-ban", "page_sleep"))
 
 		for idx, temp_item in enumerate(self.items):
 			if self.stop_flag:
@@ -43,7 +44,6 @@ class ChapterDownloadWorker(QThread):
 				message = TRSM("Finish %s item %d") % (TRSM(self.current_type), self.finish_chapter)
 				self.trigger.emit(message,self.total_page,self.total_page,self.finish_chapter,self.total_chapter)
 
-				page_sleep = float(MY_CONFIG.get("anti-ban", "page_sleep"))
 				if page_sleep > 0.0:
 					message = TRSM("Page sleep %0.1fs") % page_sleep
 					#print(message)

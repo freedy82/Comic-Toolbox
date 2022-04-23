@@ -35,22 +35,19 @@ class Empty(Site):
 
 	def get_book_item_list_from_html(self, html_code, url):
 		#todo parse book list from html
-		#can have chapter,book,extra section
+		#   can have chapter,book,extra section
 		return {}
 
-	def download_item(self,item,title="",item_type=""):
-		output_dir = super(Empty, self).download_item(item=item,title=title,item_type=item_type)
-		info = self._web_bot.get_web_content(url=item["url"], ref=item["ref"], code_page=self._code_page)
+	def get_image_list_from_html(self,html_code,url):
 		#todo parse page/image list
-		# for image list use
-		#   self.download_image_lists(image_urls=image_urls,item=item,item_type=item_type,title=title)
-		# for page list use
-		#   self.download_single_page_image_from_list(pages,output_dir)
-		return output_dir
+		#   each page/image include {"url":"","ref":""}
+		#   for image list use {"images":image_urls}
+		#   for page list use {"pages":page_urls}
+		return {}
 
-	# use only need
-	def get_single_page_image_from_html(self, html_code):
-		#todo use for page list
+	# use only need for page list
+	def get_single_page_image_from_html(self, html_code,url):
+		#todo get image url from page html
 		return ""
 
 

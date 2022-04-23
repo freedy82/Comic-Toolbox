@@ -73,21 +73,17 @@ class ComicABC(Site):
 		#print(results)
 		return results
 
-	def download_item(self,item,title="",item_type=""):
-		output_dir = super(ComicABC, self).download_item(item=item,title=title,item_type=item_type)
-		info = self._web_bot.get_web_content(url=item["url"], ref=item["ref"], code_page=self._code_page)
-
-		# ref from https://github.com/eight04/ComicCrawler/blob/master/comiccrawler/mods/eight.py
-		nview = re.search('src="([^"]*nview\.js[^"]*)"', info).group(1)
-		nview = urljoin(item["url"], nview)
-		nview = self._web_bot.get_web_content(url=nview, ref=item["url"], code_page=self._code_page)
+	def get_image_list_from_html(self,html_code,url):
+		nview = re.search('src="([^"]*nview\.js[^"]*)"', html_code).group(1)
+		nview = urljoin(url, nview)
+		nview = self._web_bot.get_web_content(url=nview, ref=url, code_page=self._code_page)
 
 		try:
 			# http://www.comicbus.com/html/103.html
-			script = re.search('(var ch=.+?)spp\(\)', info, re.DOTALL).group(1)
+			script = re.search('(var ch=.+?)spp\(\)', html_code, re.DOTALL).group(1)
 		except AttributeError:
 			# http://www.comicbus.com/html/7294.html
-			script = re.search('(var chs=.+?)</script>', info, re.DOTALL).group(1)
+			script = re.search('(var chs=.+?)</script>', html_code, re.DOTALL).group(1)
 
 		html = """
 			var url;
@@ -119,7 +115,7 @@ class ComicABC(Site):
 			""" + nview + script + """
 				jn();
 			}
-	
+
 			function getImages(url) {
 				images = [];
 				document.location.href = url;
@@ -128,21 +124,20 @@ class ComicABC(Site):
 		"""
 
 		try:
-			#os.environ["EXECJS_RUNTIME"] = "JScript"
+			# os.environ["EXECJS_RUNTIME"] = "JScript"
 			os.environ["EXECJS_RUNTIME"] = "NodeJS"
 			ctx = execjs.compile(html)
-			images = ctx.call('getImages',item["url"])
-			#print(images)
+			images = ctx.call('getImages', url)
+		# print(images)
 		except Exception:
 			images = []
 
 		image_urls = []
 		for img in images:
-			url = urljoin(item["url"],img)
-			image_urls.append({"url":url,"ref":item["url"]})
+			url = urljoin(url, img)
+			image_urls.append({"url": url, "ref": url})
 
-		self.download_image_lists(image_urls=image_urls,item=item,item_type=item_type,title=title)
-		return output_dir
+		return {"images":image_urls}
 
 	# internal function
 	@staticmethod

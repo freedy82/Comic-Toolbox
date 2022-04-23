@@ -62,23 +62,18 @@ class CartoonMad(Site):
 					index += 1
 		return results
 
-	def download_item(self,item,title="",item_type=""):
-		output_dir = super(CartoonMad, self).download_item(item=item,title=title,item_type=item_type)
-		info = self._web_bot.get_web_content(url=item["url"], ref=item["ref"], code_page=self._code_page)
-
-		bs = bs4.BeautifulSoup(info, features='html.parser')
+	def get_image_list_from_html(self,html_code,url):
+		bs = bs4.BeautifulSoup(html_code, features='html.parser')
 		page_lists = bs.select('option[value]')
 
 		pages = []
 		for idx, page_link in enumerate(page_lists, start=1):
-			tmp_url = urljoin(item["url"], page_link.attrs["value"])
-			pages.append({"url":tmp_url,"ref":item["url"]})
+			tmp_url = urljoin(url, page_link.attrs["value"])
+			pages.append({"url":tmp_url,"ref":url})
 
-		#print(pages)
-		self.download_single_page_image_from_list(pages,output_dir)
-		return output_dir
+		return {"pages":pages}
 
-	def get_single_page_image_from_html(self, html_code):
+	def get_single_page_image_from_html(self, html_code, url):
 		bs = bs4.BeautifulSoup(html_code, features='html.parser')
 		img_src = bs.select('img[src^="'+self._image_url_prefix+'"]')[0].attrs['src']
 		return img_src

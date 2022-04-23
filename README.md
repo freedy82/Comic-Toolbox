@@ -8,7 +8,7 @@
 
 另部分功能可能比較偏向方便有用e-ink電子書閱讀器的用者，因我原意是自用的，來給自己的Light 2閱讀器的😅
 
-爬蟲現在只支援動漫狂、酷漫屋、漫畫柜、無限動漫站點下載（因爬蟲部分寫的不夠模組化，比較亂，等之後改良再加多其他站點吧）
+爬蟲現在只支援動漫狂、酷漫屋、漫畫柜、無限動漫、Read Comic Online（美漫）站點下載（~~因爬蟲部分寫的不夠模組化，比較亂，等之後改良再加多其他站點吧~~）
 
 另請善待各大漫畫網站，玩壞了，大家都沒得下載了😅
 
@@ -30,6 +30,8 @@ Python 學習自 骆昊 的 [Python - 100天从新手到大师](https://github.c
 
 PyQt5 學習自 嗡嗡 的 [今年還是不夠錢買psQQ，不如我們用PyQt自己寫一個](https://www.wongwonggoods.com/category/portfolio/13th_ironman/)
 
+QSS 暗色主題參考自 书包 的 [QSS-Skin-Builder](https://github.com/satchelwu/QSS-Skin-Builder)
+
 部分圖示來自 [Icons8](https://icons8.com/icon/set/show/ios-glyphs)
 
 ## 本工具特點
@@ -42,7 +44,7 @@ PyQt5 學習自 嗡嗡 的 [今年還是不夠錢買psQQ，不如我們用PyQt�
 - [x] 圖片批量轉檔 （ 例如 webp、gif、png 轉成 jpg ）
 - [x] 圖片批量處理 （ 如改對比度、亮度、銳化度、色彩， 對比較舊的漫畫有點幫助 ）
 - [x] 圖片批量裁剪 （ 支持常見的日式漫畫封面一體化的裁剪，2頁一體化的裁剪，可半自動微調，方便電子書閱讀器 ）
-- [x] 支援產生 cbz、epub、pdf、zip （ 可多章節合併成一個檔案 ）
+- [x] 支援產生 cbz、epub、pdf、zip、docx （ 可多章節合併成一個檔案 ）
 
 ## 安裝／升級步驟
 
@@ -94,6 +96,11 @@ PyQt5 學習自 嗡嗡 的 [今年還是不夠錢買psQQ，不如我們用PyQt�
 
 ![書簽](screenshots/bookmarks.jpg "書簽")
 
+暗色主題
+
+![暗色主題](screenshots/dark_theme.jpg "暗色主題")
+
+
 ## 注意
 
 對於轉換工具、裁剪工具、壓縮工具，請在掃描前選擇漫畫系列的文件夾\
@@ -130,6 +137,12 @@ QtDesigner 真的挺好用的
 OpenCV 應該比 Pillow 快，但好多 sin、cos、tan，對初中已過去好多年的人覺得好難用啊！
 
 ## 版本更新
+
+### v0.6.5
+
+- 加入產生 docx 功能
+- 加入暗色主題
+- 爬蟲部分代碼重新整理，依賴重新整理
 
 ### v0.6.0
 

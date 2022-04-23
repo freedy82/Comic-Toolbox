@@ -65,7 +65,8 @@ class Ui_MainWindow(object):
         self.lbl_center.setCursor(QtGui.QCursor(QtCore.Qt.SizeAllCursor))
         self.lbl_center.setMouseTracking(False)
         self.lbl_center.setStyleSheet("border: 0px;\n"
-"background-color: rgba(255,255,255,0);")
+"background-color: rgba(255,255,255,0);\n"
+"color:#000000;")
         self.lbl_center.setAlignment(QtCore.Qt.AlignCenter)
         self.lbl_center.setObjectName("lbl_center")
         self.gridLayout.addWidget(self.lbl_center, 1, 1, 1, 1)

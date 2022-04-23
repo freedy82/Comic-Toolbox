@@ -7,7 +7,13 @@ from models.archiver_worker import ArchiverWorker
 
 
 class ArchiverController(object):
-	FORMATS = [{"desc":"Comic Book Zip","ext":"cbz"},{"desc":"ePub","ext":"epub"},{"desc":"Normal Zip","ext":"zip"},{"desc":"Portable Document Format","ext":"pdf"}]
+	FORMATS = [
+		{"desc": "Comic Book Zip", "ext": "cbz"},
+		{"desc": "ePub", "ext": "epub"},
+		{"desc": "Normal Zip", "ext": "zip"},
+		{"desc": "Portable Document Format", "ext": "pdf"},
+		{"desc": "Microsoft Word (.docx) file", "ext": "docx"}
+	]
 
 	def __init__(self, app=None, ui: Ui_MainWindow = None, main_controller=None):
 		self.app = app
@@ -80,12 +86,15 @@ class ArchiverController(object):
 
 	def btn_archiver_folder_scan_clicked(self):
 		folder_path = self.ui.txt_archiver_from_folder.text()
-		folders = os.listdir(folder_path)
-		folders.sort()
 		final_folders = []
-		for folder in folders:
-			if os.path.isdir(os.path.join(folder_path,folder)):
-				final_folders.append(folder)
+		try:
+			folders = os.listdir(folder_path)
+			folders.sort()
+			for folder in folders:
+				if os.path.isdir(os.path.join(folder_path,folder)):
+					final_folders.append(folder)
+		except Exception:
+			pass
 		self.folder_list = final_folders
 		self._update_folder_list()
 

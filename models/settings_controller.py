@@ -224,7 +224,7 @@ class SettingsController(object):
 		for i in range(self.ui.list_settings_proxy.count()):
 			item = self.ui.list_settings_proxy.item(i)
 			result.append({
-				"enable": item.checkState(),
+				"enable": item.checkState() == QtCore.Qt.Checked,
 				"url": item.text(),
 			})
 		return result

@@ -58,25 +58,18 @@ class Kumw5(Site):
 				tmp_url = urljoin(url, tmp_chapter[0])
 				chapters.append({"url":tmp_url,"title":tmp_chapter_title,"index":idx,"ref":url})
 			results["chapter"] = chapters
-
 		return results
 
-	def download_item(self,item,title="",item_type=""):
-		output_dir = super(Kumw5, self).download_item(item=item,title=title,item_type=item_type)
-		info = self._web_bot.get_web_content(url=item["url"], ref=item["ref"], code_page=self._code_page)
+	def get_image_list_from_html(self,html_code,url):
 		pattern_image_list = re.compile(r"var km5_img_url='(.*?)'")
-		plists = re.findall(pattern_image_list, info)
+		plists = re.findall(pattern_image_list, html_code)
+		image_urls = []
 		if len(plists) > 0:
 			tmp_lists = json.loads(base64.b64decode(plists[0]))
-			image_urls = []
 			for tmp_list in tmp_lists:
 				idx, tmp_img_url = tmp_list.split("|",1)
 				tmp_img_url = tmp_img_url.strip()
 				if tmp_img_url.startswith("//"):
 					tmp_img_url = "http:" + tmp_img_url
-				image_urls.append({"url":tmp_img_url,"ref":item["url"]})
-			self.download_image_lists(image_urls=image_urls,item=item,item_type=item_type,title=title)
-		return output_dir
-
-
-
+				image_urls.append({"url":tmp_img_url,"ref":url})
+		return {"images":image_urls}

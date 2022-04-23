@@ -12,6 +12,11 @@ if __name__ == '__main__':
     trans.load("./languages/"+MY_CONFIG.get("general", "language"))
     app.installTranslator(trans)
 
+    theme = MY_CONFIG.get("general", "theme")
+    if theme != "":
+        qss_info = open("./themes/" + theme + ".qss","r").read()
+        app.setStyleSheet(qss_info)
+
     window = MainWindowController(app,trans)
     window.show()
     sys.exit(app.exec_())

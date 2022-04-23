@@ -59,28 +59,28 @@ class WebBot(object):
 			return None
 
 	def get_web_content_raw(self, url, ref='', cookie=''):
-		try_count = 1
+		try_count = 0
 		while try_count <= self._max_retry:
 			try:
 				safe_url = quote(url, safe=string.printable)
-				parsed_uri = urlparse(safe_url)
+				parsed_uri = urlparse(url)
 				tmp_req = url_request.Request(safe_url)
-				#tmp_req.set_proxy("", 'https')
-				#https://www.httpbin.org/ip
 
 				tmp_req.add_header('User-Agent',self._agent)
 				if ref != '':
-					tmp_req.add_header('Referer', ref)
+					tmp_req.add_header('Referer', quote(ref, safe=string.printable))
 				if cookie != '':
 					tmp_req.add_header('Cookie', cookie)
 
-				opener = self._build_opener(parsed_uri.scheme)
+				opener = self._build_opener(scheme=parsed_uri.scheme)
 				tmp_response = opener.open(tmp_req,timeout=self._time_out).read()
 				#tmp_response = url_request.urlopen(tmp_req, timeout=self._time_out).read()
 
 				return tmp_response
-			except Exception:
-				# print("Get data failed from",url)
+			except Exception as ex:
+				#template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+				#message = template.format(type(ex).__name__, ex.args)
+				#print(message)
 				try_count += 1
 		#print("Get data failed from",url)
 		#raise ConnectionError

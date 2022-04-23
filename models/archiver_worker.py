@@ -1,6 +1,8 @@
 from zipfile import ZipFile
-from PIL import Image
 from ebooklib import epub
+from docx import Document
+#from docx.shared import Inches
+from PIL import Image
 from PyQt5.QtCore import QThread, pyqtSignal
 
 import util
@@ -86,10 +88,10 @@ class ArchiverWorker(QThread):
 			self._make_zip_from_multi_folder(folder_info["folders"],folder_info["to_file"])
 		elif self.to_format == "epub":
 			self._make_epub_from_multi_folder(folder_info["folders"],folder_info["to_file"])
-			pass
 		elif self.to_format == "pdf":
 			self._make_pdf_from_multi_folder(folder_info["folders"],folder_info["to_file"])
-			pass
+		elif self.to_format == "docx":
+			self._make_docx_from_multi_folder(folder_info["folders"],folder_info["to_file"])
 		pass
 
 	def _make_zip_from_multi_folder(self, folders, zip_file):
@@ -246,4 +248,62 @@ class ArchiverWorker(QThread):
 		# "play_order":{'enabled': False, 'start_from': 1}
 		epub.write_epub(full_epub_file, book, {})
 
+		pass
+
+	def _make_docx_from_multi_folder(self, folders, docx_file):
+		full_docx_file = os.path.join(self.from_folder,docx_file)
+
+		images_files = []
+		document = Document()
+
+		for folder in folders:
+			if self.stop_flag:
+				break
+			full_folder = os.path.join(self.from_folder,folder)
+			files = sorted(os.listdir(full_folder))
+			name_prefix = 'cover.'
+
+			with_cover = [x for x in files if x.startswith(name_prefix)]
+			without_cover = [x for x in files if x not in with_cover]
+
+			for file_list in (with_cover,without_cover):
+				if self.stop_flag:
+					break
+				for filename in file_list:
+					if self.stop_flag:
+						break
+					if util.get_ext(filename) not in IMAGE_EXTS:
+						continue
+					full_file = os.path.join(full_folder, filename)
+
+					if len(images_files) > 0:
+						document.add_section(2)   # add new section with new page
+
+					section = document.sections[-1]
+					section.left_margin = 0
+					section.right_margin = 0
+					section.top_margin = 0
+					section.bottom_margin = 0
+					pixel2inch = 8000
+					img_width, img_height = util.get_image_size(full_file)
+
+					section.page_width = img_width * pixel2inch
+					section.page_height = img_height * pixel2inch
+
+					document.add_picture(full_file, width=section.page_width, height=section.page_height)
+					images_files.append(full_file)
+
+					message = TRSM("Adding %s") % full_file
+					self.trigger.emit(message,self.current_action_count,self.total_action_count)
+
+		if not self.stop_flag:
+			if len(images_files) >= 1:
+				message = TRSM("Creating %s") % full_docx_file
+				self.trigger.emit(message, self.current_action_count, self.total_action_count)
+				document.save(full_docx_file)
+				message = TRSM("Finish create %s") % full_docx_file
+				self.trigger.emit(message, self.current_action_count, self.total_action_count)
+			else:
+				message = TRSM("Not images found to create %s") % full_docx_file
+				self.trigger.emit(message, self.current_action_count, self.total_action_count)
 		pass

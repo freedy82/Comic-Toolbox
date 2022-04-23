@@ -43,12 +43,15 @@ class MainWindowController(QtWidgets.QMainWindow):
 
 	def setup_control(self):
 		self.setup_languages()
+		self.setup_themes()
 		self.setup_tray_icon()
 
 		#action
 		self.ui.actionFileExit.triggered.connect(self.on_file_exit)
 		self.ui.actionHelpAbout.triggered.connect(self.on_help_about)
 		self.ui.actionHelpHelp.triggered.connect(self.on_help_help)
+
+		#self.ui.actionHelpThemeDefault.triggered.connect(partial(self.on_help_theme_select, theme={"name":""}))
 		pass
 
 	def retranslateUi(self):
@@ -61,6 +64,8 @@ class MainWindowController(QtWidgets.QMainWindow):
 		if self.help_window_controller:
 			self.help_window_controller.retranslateUi()
 
+		self.setup_themes()
+
 	def setup_languages(self):
 		languages = util.find_all_languages()
 		self.ui.menuHelpLanguage.removeAction(self.ui.action_help_language_tmp_language)
@@ -69,6 +74,21 @@ class MainWindowController(QtWidgets.QMainWindow):
 			tmp_lang_action.setText(lang["name"])
 			tmp_lang_action.triggered.connect(partial(self.on_select_language, lang=lang))
 			self.ui.menuHelpLanguage.addAction(tmp_lang_action)
+
+	def setup_themes(self):
+		self.ui.menuHelpTheme.clear()
+
+		tmp_theme_action = QtWidgets.QAction(self)
+		tmp_theme_action.setText(TRSM("Default"))
+		tmp_theme_action.triggered.connect(partial(self.on_help_theme_select, theme={"name":""}))
+		self.ui.menuHelpTheme.addAction(tmp_theme_action)
+
+		themes = util.find_all_themes()
+		for theme in themes:
+			tmp_theme_action = QtWidgets.QAction(self)
+			tmp_theme_action.setText(TRSM(theme["name"]))
+			tmp_theme_action.triggered.connect(partial(self.on_help_theme_select, theme=theme))
+			self.ui.menuHelpTheme.addAction(tmp_theme_action)
 
 	def setup_tray_icon(self):
 		icon = QIcon()
@@ -168,6 +188,16 @@ class MainWindowController(QtWidgets.QMainWindow):
 		MY_CONFIG.set("general","language",lang["file"])
 		MY_CONFIG.save()
 		pass
+
+	def on_help_theme_select(self,theme):
+		if theme["name"] != "":
+			qss_info = open("./themes/" + theme["name"] + ".qss","r").read()
+			self.app.setStyleSheet(qss_info)
+		else:
+			self.app.setStyleSheet("")
+
+		MY_CONFIG.set("general","theme",theme["name"])
+		MY_CONFIG.save()
 
 	def on_help_help(self):
 		self.show_help()

@@ -1643,7 +1643,18 @@
      </property>
      <addaction name="action_help_language_tmp_language"/>
     </widget>
+    <widget class="QMenu" name="menuHelpTheme">
+     <property name="title">
+      <string>Theme</string>
+     </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/icon/theme</normaloff>:/icon/theme</iconset>
+     </property>
+     <addaction name="actionHelpThemeDefault"/>
+    </widget>
     <addaction name="actionHelpHelp"/>
+    <addaction name="menuHelpTheme"/>
     <addaction name="menuHelpLanguage"/>
     <addaction name="separator"/>
     <addaction name="actionHelpAbout"/>
@@ -1684,13 +1695,18 @@
     <string>Help</string>
    </property>
   </action>
+  <action name="actionHelpThemeDefault">
+   <property name="text">
+    <string>Default</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="resources.qrc"/>
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="btn_group_settings_message"/>
   <buttongroup name="btn_group_settings_sound"/>
+  <buttongroup name="btn_group_settings_message"/>
  </buttongroups>
 </ui>

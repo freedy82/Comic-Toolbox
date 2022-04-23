@@ -59,19 +59,13 @@ class ReadComicsOnline(Site):
 					index += 1
 		return results
 
-	def download_item(self,item,title="",item_type=""):
-		output_dir = super(ReadComicsOnline, self).download_item(item=item,title=title,item_type=item_type)
-		info = self._web_bot.get_web_content(url=item["url"], ref=item["ref"], code_page=self._code_page)
-
-		bs = bs4.BeautifulSoup(info, features='html.parser')
+	def get_image_list_from_html(self,html_code,url):
+		bs = bs4.BeautifulSoup(html_code, features='html.parser')
 		image_lists = bs.select('div#all img')
+		image_urls = []
 		if len(image_lists) > 0:
-			image_urls = []
 			for image_link in image_lists:
 				link = image_link.get("data-src").strip()
-				tmp_img_url = urljoin(item["url"],link)
-				image_urls.append({"url": tmp_img_url, "ref": item["url"]})
-
-			self.download_image_lists(image_urls=image_urls,item=item,item_type=item_type,title=title)
-		return output_dir
-
+				tmp_img_url = urljoin(url,link)
+				image_urls.append({"url": tmp_img_url, "ref": url})
+		return {"images":image_urls}

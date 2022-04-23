@@ -105,12 +105,15 @@ class ConverterController(object):
 
 	def btn_converter_folder_scan_clicked(self):
 		folder_path = self.ui.txt_converter_from_folder.text()
-		folders = os.listdir(folder_path)
-		folders.sort()
 		final_folders = []
-		for folder in folders:
-			if os.path.isdir(os.path.join(folder_path,folder)):
-				final_folders.append(folder)
+		try:
+			folders = os.listdir(folder_path)
+			folders.sort()
+			for folder in folders:
+				if os.path.isdir(os.path.join(folder_path,folder)):
+					final_folders.append(folder)
+		except Exception:
+			pass
 		self.folder_list = final_folders
 		self._update_folder_list()
 

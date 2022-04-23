@@ -371,6 +371,14 @@
         <source>Confirm delete these proxy?</source>
         <translation>確認刪除這些代理？</translation>
     </message>
+    <message>
+        <source>Microsoft Word (.docx) file</source>
+        <translation>Microsoft Word (.docx) 文件</translation>
+    </message>
+    <message>
+        <source>Dark</source>
+        <translation>暗色</translation>
+    </message>
 
 
 
