@@ -324,17 +324,17 @@
         <translation>合併多目錄</translation>
     </message>
     <message>
-        <location filename="../uis/about_window.py" line="95"/>
+        <location filename="../uis/about_window.py" line="91"/>
         <source>About Comic Toolbox</source>
         <translation>關於漫畫工具箱</translation>
     </message>
     <message>
-        <location filename="../uis/about_window.py" line="97"/>
+        <location filename="../uis/about_window.py" line="93"/>
         <source>Version: %s</source>
         <translation>版本: %s</translation>
     </message>
     <message>
-        <location filename="../uis/about_window.py" line="98"/>
+        <location filename="../uis/about_window.py" line="95"/>
         <source>%s</source>
         <translation>%s</translation>
     </message>
@@ -599,7 +599,7 @@
         <translation>其他</translation>
     </message>
     <message>
-        <location filename="../uis/about_window.py" line="99"/>
+        <location filename="../uis/about_window.py" line="94"/>
         <source>Respect the copyright, please support the genuine version, and the resources downloaded or generated through this tool are prohibited from spreading and sharing! It is prohibited to use this project for commercial activities!</source>
         <translation>尊重版權，請支持正版，通過本工具下載或生成的資源禁止傳播分享！禁止利用本項目進行商業活動！</translation>
     </message>

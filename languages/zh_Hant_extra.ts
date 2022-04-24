@@ -379,6 +379,10 @@
         <source>Dark</source>
         <translation>暗色</translation>
     </message>
+    <message>
+        <source>Green</source>
+        <translation>綠色</translation>
+    </message>
 
 
 

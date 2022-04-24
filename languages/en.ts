@@ -294,17 +294,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/about_window.py" line="95"/>
+        <location filename="../uis/about_window.py" line="91"/>
         <source>About Comic Toolbox</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/about_window.py" line="97"/>
+        <location filename="../uis/about_window.py" line="93"/>
         <source>Version: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/about_window.py" line="98"/>
+        <location filename="../uis/about_window.py" line="95"/>
         <source>%s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -524,7 +524,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/about_window.py" line="99"/>
+        <location filename="../uis/about_window.py" line="94"/>
         <source>Respect the copyright, please support the genuine version, and the resources downloaded or generated through this tool are prohibited from spreading and sharing! It is prohibited to use this project for commercial activities!</source>
         <translation type="unfinished"></translation>
     </message>

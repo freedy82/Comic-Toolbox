@@ -378,6 +378,10 @@
         <source>Dark</source>
         <translation>暗色</translation>
     </message>
+    <message>
+        <source>Green</source>
+        <translation>绿色</translation>
+    </message>
 
 </context>
 </TS>

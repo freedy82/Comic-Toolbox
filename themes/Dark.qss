@@ -2,6 +2,7 @@
 /* selected:#383838 */
 /* hover:#636363 */
 /* panel:#464646 */
+/* text:#F0F0F0 */
 
 * {
     background:#4D4D4D;

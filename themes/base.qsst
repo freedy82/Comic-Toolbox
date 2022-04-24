@@ -1,0 +1,106 @@
+$background = #4D4D4D;
+$selected = #383838;
+$hover = #636363;
+$disabled = #808080;
+$panel = #464646;
+$text = #F0F0F0;
+$border = #353535;
+
+$background = #EEFFEE;
+$selected = #D6E3D6;
+$hover = #B4CFB4;
+$disabled = #B4CFB4;
+$panel = #D6E3B5;
+$text = #506550;
+$border = #90B090;
+
+
+* {
+    background:$background;
+    color:$text;
+}
+
+QListView,QTableView,QTabWidget::pane {
+    border:1px solid $border;
+}
+
+QTableView::item:selected,QListView::item:selected {
+    background:$selected;
+    color:$text;
+}
+QTableView::item:hover,QListView::item:hover {
+    background:$hover;
+    color:$text;
+}
+
+
+QGroupBox {
+    border:1px solid $border;
+    border-radius:5px;
+    margin-top: 5px;
+}
+
+QGroupBox::title {
+    left: 15px;
+    margin-top: -10px;
+}
+
+QTabBar::tab {
+    color:$text;
+    background:$selected;
+    border-left:1px solid $border;
+    border-top:1px solid $border;
+    border-right:1px solid $border;
+    padding: 5px 10px;
+}
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+    background:$background;
+}
+
+QProgressBar {
+    background:$background;
+    border:1px solid $selected;
+    text-align:center;
+}
+
+QProgressBar:chunk {
+    background:$border;
+}
+
+QPushButton:disabled {
+    background:$disabled;
+}
+
+QLineEdit,QSpinBox,QDoubleSpinBox {
+    border:1px solid $border;
+}
+
+QComboBox {
+    border:1px solid $selected;
+}
+
+QMenu {
+    border:1px solid $selected;
+}
+
+QMenu::item:selected,QMenuBar::item:selected {
+    color:$text;
+    border:0px solid $border;
+    background:$selected;
+}
+
+QHeaderView, QHeaderView::section {
+    background: $border;
+}
+
+QToolTip{
+    border:1px solid $border;
+    padding:1px;
+    color:$text;
+    background:$background;
+}
+
+QListView, QTableView, QTextBrowser {
+    background: $panel;
+}

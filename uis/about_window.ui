@@ -131,35 +131,7 @@
      <string>Version: %s</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_app_link">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>93</y>
-      <width>221</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="layoutDirection">
-     <enum>Qt::LeftToRight</enum>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">text-align: left;
-border: none;
-color: #0000FF;
-text-decoration: underline;</string>
-    </property>
-    <property name="text">
-     <string>%s</string>
-    </property>
-    <property name="flat">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="lbl_notice">
     <property name="geometry">
      <rect>
       <x>140</x>
@@ -184,6 +156,28 @@ text-decoration: underline;</string>
     </property>
     <property name="wordWrap">
      <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_app_link">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>100</y>
+      <width>231</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>%s</string>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::RichText</enum>
+    </property>
+    <property name="openExternalLinks">
+     <bool>true</bool>
+    </property>
+    <property name="textInteractionFlags">
+     <set>Qt::TextBrowserInteraction</set>
     </property>
    </widget>
   </widget>

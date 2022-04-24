@@ -1,6 +1,5 @@
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import Qt
-import webbrowser
 
 from uis import about_window
 from const import *
@@ -21,16 +20,13 @@ class AboutWindowController(QtWidgets.QMainWindow):
 		self.retranslateUi()
 
 		#action
-		# self.ui.lbl_app_link.clicked.connect(self.lbl_app_link_clicked)
-		# self.ui.lbl_app_link.mousePressEvent(self.lbl_app_link_clicked)
-		self.ui.btn_app_link.clicked.connect(self.btn_app_link_clicked)
 		pass
 
 	def retranslateUi(self):
 		self.ui.retranslateUi(self)
 
 		self.ui.lbl_version.setText(TRSM("Version: %s") % APP_VERSION)
-		self.ui.btn_app_link.setText(TRSM("%s") % APP_LINK)
+		self.ui.lbl_app_link.setText('<a href=\"%s\">%s</a>' % (APP_LINK, APP_LINK))
 
 		pass
 
@@ -42,10 +38,6 @@ class AboutWindowController(QtWidgets.QMainWindow):
 
 	def reject(self):
 		#print("Click reject")
-		pass
-
-	def btn_app_link_clicked(self):
-		webbrowser.open(APP_LINK)
 		pass
 
 	def center_pos_of_parent(self):
