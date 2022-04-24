@@ -8,8 +8,6 @@
 
 另部分功能可能比較偏向方便有用e-ink電子書閱讀器的用者，因我原意是自用的，來給自己的Light 2閱讀器的😅
 
-爬蟲現在只支援動漫狂、酷漫屋、漫畫柜、無限動漫、Read Comic Online（美漫）站點下載（~~因爬蟲部分寫的不夠模組化，比較亂，等之後改良再加多其他站點吧~~）
-
 另請善待各大漫畫網站，玩壞了，大家都沒得下載了😅
 
 請在開始下載之前，自行設定好爬蟲停留時間（在設定介面），本人對被網站封IP不負責哦！
@@ -33,6 +31,15 @@ PyQt5 學習自 嗡嗡 的 [今年還是不夠錢買psQQ，不如我們用PyQt�
 QSS 暗色主題參考自 书包 的 [QSS-Skin-Builder](https://github.com/satchelwu/QSS-Skin-Builder)
 
 部分圖示來自 [Icons8](https://icons8.com/icon/set/show/ios-glyphs)
+
+## 支持站點
+
+- 動漫狂 `www.cartoonmad.com`
+- 無限動漫 `www.comicabc.com`
+- 动漫屋 `www.dm5.com`
+- 酷漫屋 `www.kumw5.com`
+- 漫畫柜 `www.mhgui.com`
+- Read Comic Online （美漫） `readcomicsonline.ru`
 
 ## 本工具特點
 
@@ -143,6 +150,7 @@ OpenCV 應該比 Pillow 快，但好多 sin、cos、tan，對初中已過去好�
 - 加入產生 docx 功能
 - 加入暗色主題
 - 爬蟲部分代碼重新整理，依賴重新整理
+- 加入新支持站點 `www.dm5.com` `readcomicsonline.ru`
 
 ### v0.6.0
 

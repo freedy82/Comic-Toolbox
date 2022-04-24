@@ -12,6 +12,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 # fix for pyInstaller
 import execjs
 import lzstring
+import jsbeautifier
 
 from const import *
 
@@ -31,6 +32,8 @@ class Site(QThread):
 		self._sample_url = []
 		self._code_page = "utf-8"
 		self._default_image_format = "jpg"
+		self._cookies = {}
+		self._accept_language = ""
 		self._stop_flag = False
 		self._is_overwrite = False
 		self._is_need_nodejs = False
@@ -69,7 +72,8 @@ class Site(QThread):
 
 		self._main_url = self.get_main_url_from_book_id()
 
-		html_code = self._web_bot.get_web_content(url=self._main_url, code_page=self._code_page)
+		self._web_bot.set_accept_language(self._accept_language)
+		html_code = self._web_bot.get_web_content(url=self._main_url, code_page=self._code_page, cookie=self._cookies)
 		lists = {}
 		if html_code is not None and html_code != "":
 			title = self.get_book_title_from_html(html_code)
@@ -92,7 +96,8 @@ class Site(QThread):
 		output_dir = os.path.join(MY_CONFIG.get("general", "download_folder"), title, tmp_output_dir)
 		Path(output_dir).mkdir(parents=True, exist_ok=True)
 
-		html_code = self._web_bot.get_web_content(url=item["url"], ref=item["ref"], code_page=self._code_page)
+		self._web_bot.set_accept_language(self._accept_language)
+		html_code = self._web_bot.get_web_content(url=item["url"], ref=item["ref"], code_page=self._code_page, cookie=self._cookies)
 		results = self.get_image_list_from_html(html_code=html_code,url=item["url"])
 		if "images" in results:
 			self.download_image_lists(results["images"],output_dir)
@@ -158,7 +163,7 @@ class Site(QThread):
 		# sys.stdout.flush()
 		if not self._stop_flag:
 			# debug
-			data = self._web_bot.get_web_content_raw(url=image_url, ref=page_ref)
+			data = self._web_bot.get_web_content_raw(url=image_url, ref=page_ref, cookie=self._cookies)
 			if data:
 				fp = open(target_file, mode="wb")
 				fp.write(data)
@@ -203,7 +208,7 @@ class Site(QThread):
 		pass
 
 	def download_single_page_image_from_page(self,page,unused_flag):
-		html_code = self._web_bot.get_web_content(url=page["url"], ref=page["ref"], code_page=self._code_page)
+		html_code = self._web_bot.get_web_content(url=page["url"], ref=page["ref"], code_page=self._code_page, cookie=self._cookies)
 		img_url = self.get_single_page_image_from_html(html_code,page["url"])
 		ext = self.get_ext(img_url,self._default_image_format)
 
@@ -291,6 +296,10 @@ class Site(QThread):
 			if re.match(r"^[a-zA-Z].*?\.py$", file) and file != "empty.py":
 				importlib.import_module(".sites.{}".format(file.split(".")[0]), __package__)
 		return [site_class for site_class in Site.__subclasses__()]
+
+	@staticmethod
+	def remove_html(html_code):
+		return re.sub('<[^<]+?>', '', html_code)
 
 	@classmethod
 	def init_site_by_url(cls,url,web_bot):

@@ -10,6 +10,11 @@ class WebBot(object):
 		self._agent = agent
 		self._time_out = time_out
 		self._max_retry = max_retry
+		#self._accept_language = "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7"
+		self._accept_language = ""
+		#self._accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+		#self._accept_encoding = "gzip, deflate, br"
+		#self._cache_control = "max-age=0"
 		self._cookie_processor = url_request.HTTPCookieProcessor()
 
 		ctx = ssl.create_default_context()
@@ -45,7 +50,10 @@ class WebBot(object):
 		else:
 			self._proxy_list = []
 
-	def get_web_content(self, url, ref='', cookie='', is_json=False, code_page="utf-8"):
+	def set_accept_language(self,accept_language):
+		self._accept_language = accept_language
+
+	def get_web_content(self, url, ref='', cookie=None, is_json=False, code_page="utf-8"):
 		tmp_response = self.get_web_content_raw(url=url, ref=ref, cookie=cookie)
 		if tmp_response:
 			tmp_content = tmp_response.decode(code_page, 'ignore')
@@ -58,7 +66,7 @@ class WebBot(object):
 		else:
 			return None
 
-	def get_web_content_raw(self, url, ref='', cookie=''):
+	def get_web_content_raw(self, url, ref='', cookie=None):
 		try_count = 0
 		while try_count <= self._max_retry:
 			try:
@@ -69,8 +77,11 @@ class WebBot(object):
 				tmp_req.add_header('User-Agent',self._agent)
 				if ref != '':
 					tmp_req.add_header('Referer', quote(ref, safe=string.printable))
-				if cookie != '':
-					tmp_req.add_header('Cookie', cookie)
+				if cookie is not None and cookie != {}:
+					cookie_string = "; ".join([str(x) + "=" + str(y) for x, y in cookie.items()])
+					tmp_req.add_header('Cookie', cookie_string)
+				if self._accept_language != "":
+					tmp_req.add_header("Accept-Language",self._accept_language)
 
 				opener = self._build_opener(scheme=parsed_uri.scheme)
 				tmp_response = opener.open(tmp_req,timeout=self._time_out).read()

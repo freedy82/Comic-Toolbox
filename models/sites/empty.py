@@ -14,7 +14,12 @@ class Empty(Site):
 		super().__init__(web_bot)
 		self._home_url = "https://www.domain.com"
 		self._site_name = "Site Name"
-		self._sample_url = ["http://www.domain.com/comic/1234/"]
+		self._sample_url = ["https://www.domain.com/comic/1234/"]
+		# change is need
+		self._cookies = {}
+		self._accept_language = ""
+		self._code_page = "utf-8"
+		self._default_image_format = "jpg"
 
 	def get_book_id_from_url(self,url):
 		#todo parse id from url

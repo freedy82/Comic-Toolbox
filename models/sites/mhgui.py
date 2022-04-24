@@ -39,7 +39,8 @@ class MHGui(Site):
 		pattern_author = re.compile(r'<span><strong>漫画作者：</strong><a href="(.*?)" title="(.*?)">(.*?)</a></span>')
 		info_author = re.findall(pattern_author, html_code)
 		if len(info_author) > 0 and info_author[0][2] != '':
-			author = html.unescape(info_author[0][2].strip())
+			tmp_author = self.remove_html(info_author[0][2])
+			author = html.unescape(tmp_author.strip())
 		else:
 			author = "unknown"
 		return author
