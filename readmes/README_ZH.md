@@ -1,4 +1,4 @@
-<img src="uis/resources/icon.png" align="right" width="100"/>
+<img src="../uis/resources/icon.png" align="right" width="100"/>
 
 # Comic Toolbox 漫畫工具箱
 
