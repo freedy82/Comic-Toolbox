@@ -1,9 +1,8 @@
 from PyQt5.QtGui import QPixmap
 
+from models import util
 from models.reader import Reader
 
-from const import *
-import util
 
 class FolderReader(Reader):
 	FILE_MATCH = ["NO_FILE_MATCH"]

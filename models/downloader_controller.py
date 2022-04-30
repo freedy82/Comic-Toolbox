@@ -1,8 +1,8 @@
 from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import QListWidgetItem
 
-from const import *
-import util
+from models.const import *
+from models import util
 from uis.main_window import Ui_MainWindow
 from models.site_parse_worker import SiteParseWorker
 from models.chapter_download_worker import ChapterDownloadWorker

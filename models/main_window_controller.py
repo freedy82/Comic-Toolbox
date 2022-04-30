@@ -5,8 +5,8 @@ from PyQt5.QtWidgets import QSystemTrayIcon, QMenu
 from PyQt5.QtMultimedia import QSound
 from functools import partial
 
-import util
-from const import *
+from models.const import *
+from models import util
 from uis import main_window
 from models.downloader_controller import DownloaderController
 from models.converter_controller import ConverterController

@@ -1,5 +1,5 @@
 import fitz
-from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtGui import QPixmap
 from PIL import Image, ImageQt
 
 from models.reader import Reader
@@ -47,7 +47,9 @@ class PDFReader(Reader):
 			try:
 				q_pixmap = QPixmap.fromImage(q_img)
 			except Exception as exc:
-				print('Convert PDF to image failed %s' % exc)
+				#print('Convert PDF to image failed %s' % exc)
+				q_pixmap = None
+				pass
 			#print(f"mark 1 page no {page_no}")
 
 			self.pixmap_buffer[file_name] = pixmap

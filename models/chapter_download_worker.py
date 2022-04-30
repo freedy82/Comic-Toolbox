@@ -1,7 +1,7 @@
 import time
 from PyQt5.QtCore import QThread, pyqtSignal
 
-from const import *
+from models.const import *
 
 class ChapterDownloadWorker(QThread):
 	trigger = pyqtSignal(str, int, int, int, int)

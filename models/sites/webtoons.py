@@ -1,8 +1,8 @@
 import re
 import bs4
 import html
-import os
-import execjs
+#import os
+#import execjs
 from urllib.parse import urljoin,parse_qs,urlparse
 
 from models.site import Site

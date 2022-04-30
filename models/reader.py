@@ -4,8 +4,8 @@ import importlib
 
 from PyQt5.QtCore import QThread, pyqtSignal
 
-import util
-import fitz
+from models import util
+#import fitz
 
 class Reader(QThread):
 	FILE_MATCH = []

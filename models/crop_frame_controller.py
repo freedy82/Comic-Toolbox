@@ -1,8 +1,8 @@
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import pyqtSignal
 
+from models.const import *
 from uis import crop_frame
-from const import *
 
 class CropFrameController(QtWidgets.QMainWindow):
 	frame_changed = pyqtSignal(object)

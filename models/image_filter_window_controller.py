@@ -4,8 +4,8 @@ from PyQt5.QtWidgets import QGraphicsScene, QGraphicsPixmapItem
 from PyQt5.QtCore import Qt
 from PIL import Image, ImageOps
 
-import util
-from const import *
+from models.const import *
+from models import util
 from uis import image_filter_window
 
 

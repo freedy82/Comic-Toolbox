@@ -5,8 +5,8 @@ from docx import Document
 from PIL import Image
 from PyQt5.QtCore import QThread, pyqtSignal
 
-import util
-from const import *
+from models import util
+from models.const import *
 
 class ArchiverWorker(QThread):
 	trigger = pyqtSignal(str,int,int)

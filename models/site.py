@@ -1,6 +1,6 @@
-import inspect
+#import inspect
 import os.path
-import pkgutil
+#import pkgutil
 import re
 import threading
 import concurrent.futures
@@ -16,7 +16,7 @@ import execjs
 import lzstring
 import jsbeautifier
 
-from const import *
+from models.const import *
 
 
 class Site(QThread):

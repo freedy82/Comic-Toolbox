@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QFileDialog, QListWidgetItem
 
-import util
-from const import *
+from models import util
+from models.const import *
 from uis.main_window import Ui_MainWindow
 from models.converter_worker import ConverterWorker
 from models.image_filter_window_controller import ImageFilterWindowController

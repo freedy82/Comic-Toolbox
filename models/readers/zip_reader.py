@@ -3,8 +3,8 @@ from PIL import Image
 from zipfile import ZipFile
 from PyQt5.QtGui import QPixmap
 
-import util
-from const import *
+from models.const import *
+from models import util
 from models.reader import Reader
 
 class ZipReader(Reader):

@@ -1,14 +1,14 @@
-import time
+#import time
 import threading
-from PIL import Image, ImageQt
+#from PIL import Image, ImageQt
 from enum import Enum
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtGui import QPixmap, QImage, QCursor
 from PyQt5.QtWidgets import QFileDialog, QWidget, QSizePolicy, QToolTip
 from PyQt5.QtCore import Qt, QEvent, QPoint, QSize, QTimer
 
-import util
-from const import *
+from models.const import *
+from models import util
 from uis import reader_window
 from models.bookmark_window_controller import BookmarkWindowController
 from models.reader import Reader

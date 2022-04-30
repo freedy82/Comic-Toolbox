@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QFileDialog, QListWidgetItem
 
-from const import *
-import util
+from models import util
+from models.const import *
 from uis.main_window import Ui_MainWindow
 from models.archiver_worker import ArchiverWorker
 

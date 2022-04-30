@@ -4,8 +4,8 @@ import re
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QFileDialog, QListWidgetItem, QColorDialog
 
-import util
-from const import *
+from models.const import *
+from models import util
 from uis.main_window import Ui_MainWindow
 
 class SettingsController(object):

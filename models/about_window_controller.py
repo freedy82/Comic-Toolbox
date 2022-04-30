@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import Qt
 
 from uis import about_window
-from const import *
+from models.const import *
 
 class AboutWindowController(QtWidgets.QMainWindow):
 	def __init__(self,app,main_controller):

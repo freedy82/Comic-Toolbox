@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import QRect
 from PIL import Image,ImageEnhance,ImageOps
 
-from const import *
+from models.const import *
 
 def find_all_languages():
 	languages = []

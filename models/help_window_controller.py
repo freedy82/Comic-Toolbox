@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import Qt
 
-from const import *
+from models.const import *
 from uis import help_window
 from models.site import Site
 

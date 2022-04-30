@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QFileDialog, QListWidgetItem
 
-import util
-from const import *
+from models.const import *
+from models import util
 from uis.main_window import Ui_MainWindow
 from models.cropper_worker import CropperWorker
 from models.crop_window_controller import CropWindowController

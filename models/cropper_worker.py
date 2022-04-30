@@ -1,8 +1,8 @@
 from PyQt5.QtCore import QThread, pyqtSignal
 from PIL import Image
 
-from const import *
-import util
+from models.const import *
+from models import util
 
 
 class CropperWorker(QThread):

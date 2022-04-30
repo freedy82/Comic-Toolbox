@@ -3,8 +3,8 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QTableWidgetItem,QAbstractItemView
 
-import util
-from const import *
+from models import util
+from models.const import *
 from uis import bookmark_window
 
 class BookmarkWindowController(QtWidgets.QMainWindow):

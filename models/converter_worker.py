@@ -1,13 +1,13 @@
 import glob
 import shutil
-import os
+#import os
 from PIL import Image
 from pathlib import Path
 from PyQt5.QtCore import QThread, pyqtSignal
 import subprocess
 
-import util
-from const import *
+from models import util
+from models.const import *
 
 class ConverterWorker(QThread):
 	trigger = pyqtSignal(str,int,int)

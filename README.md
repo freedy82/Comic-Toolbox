@@ -6,7 +6,7 @@
 
 ## At the front
 
-This tool is mainly for practicing Python before, and then I will change it when I have time, so the overall code is not very well written 😅 And because it is a learning work, sometimes you may find something strange or useless in this tool function? ! !
+This tool is mainly for practicing Python before, and then I will change it when I have time, so the overall code is not very well written 😅 And because it is a learning work, sometimes you may find something strange or useless function in this tool? ! !
 
 Another part of the functions may be more convenient and useful for users of e-ink e-book readers, because my original intention is to use it for my own Light 2 reader 😅
 
