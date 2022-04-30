@@ -251,9 +251,12 @@ class MainWindowController(QtWidgets.QMainWindow):
 	# replace event
 	def closeEvent(self, event):
 		event.ignore()
-		self.setVisible(False)
-		if MY_CONFIG.get("general", "is_show_message_of_hidden") == "":
-			self.show_tray_message(TRSM("Comic toolbox was hidden to system tray"))
-			MY_CONFIG.set("general","is_show_message_of_hidden","True")
-			MY_CONFIG.save()
+		if MY_CONFIG.get("misc", "when_close_window") == "1":
+			self.on_file_exit()
+		else:
+			self.setVisible(False)
+			if MY_CONFIG.get("general", "is_show_message_of_hidden") == "":
+				self.show_tray_message(TRSM("Comic toolbox was hidden to system tray"))
+				MY_CONFIG.set("general","is_show_message_of_hidden","True")
+				MY_CONFIG.save()
 		pass

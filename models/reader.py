@@ -39,7 +39,7 @@ class Reader(QThread):
 	@staticmethod
 	def find_all_readers_class():
 		for file in os.listdir(os.path.join(os.path.dirname(__file__), "readers")):
-			if re.match(r"^[a-zA-Z].*?\.py$", file) and file != "empty.py":
+			if re.match(r"^[a-zA-Z].*?\.py(c)?$", file):
 				importlib.import_module(".readers.{}".format(file.split(".")[0]), __package__)
 		return [reader_class for reader_class in Reader.__subclasses__()]
 

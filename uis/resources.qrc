@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="icon">
+    <file alias="play">resources/play.png</file>
+    <file alias="pause">resources/pause.png</file>
     <file alias="open-archive">resources/open-archive.png</file>
     <file alias="4columns">resources/4columns.png</file>
     <file alias="2columns">resources/2columns.png</file>

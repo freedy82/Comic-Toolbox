@@ -94,6 +94,7 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		self.ui.tb_right.setVisible(False)
 
 		self.bookmark_controller = BookmarkWindowController(self.app,self,self,is_reader=True)
+		self.auto_play_timer = QTimer(self)
 
 		self.setup_control()
 
@@ -115,6 +116,7 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		self.ui.actionFileExit.triggered.connect(self.on_file_exit)
 		self.ui.actionFileOpenFolder.triggered.connect(self.on_file_open_folder)
 		self.ui.actionFileOpenFile.triggered.connect(self.on_file_open_file)
+		self.ui.actionAutoPlay.triggered.connect(self.btn_auto_play_clicked)
 		self.ui.actionScrollFlowLeftRight.triggered.connect(lambda: self.change_scroll_flow(ScrollFlow.LEFT_RIGHT))
 		self.ui.actionScrollFlowUpDown.triggered.connect(lambda: self.change_scroll_flow(ScrollFlow.UP_DOWN))
 		self.ui.actionFitHeight.triggered.connect(lambda: self.change_page_fit(PageFit.HEIGHT))
@@ -144,6 +146,15 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		self.slider_pages.installEventFilter(self)
 		pass
 
+	def setup_timer(self):
+		q_icon = QtGui.QIcon()
+		q_icon.addPixmap(QtGui.QPixmap(":/icon/play"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		self.ui.actionAutoPlay.setIcon(q_icon)
+		self.auto_play_timer = QTimer(self)
+		self.auto_play_timer.timeout.connect(self.auto_play_timer_timeout)
+		reader_auto_play_interval = float(MY_CONFIG.get("reader", "auto_play_interval"))
+		self.auto_play_timer.setInterval(reader_auto_play_interval*1000)
+
 	def retranslateUi(self):
 		self.ui.retranslateUi(self)
 		self.bookmark_controller.retranslateUi()
@@ -153,6 +164,7 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 	def show(self):
 		super().show()
 		self.update_background()
+		self.setup_timer()
 		#self.get_image_list_from_folder("F:/comics/全知讀者視角")
 		#self.get_image_list_from_folder("F:/comics/全职法师")
 		#self.get_image_list_from_folder("F:/comics/烙印战士_good")
@@ -169,6 +181,8 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 	def keyPressEvent(self, e):
 		if e.key() == Qt.Key_F11 or e.key() == Qt.Key_F:
 			self.btn_full_screen_clicked()
+		if e.key() == Qt.Key_K:
+			self.btn_auto_play_clicked()
 		if e.key() == Qt.Key_Escape:
 			if self.isFullScreen():
 				self.btn_full_screen_clicked()
@@ -267,6 +281,24 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		if not self.slider_pages.isSliderDown():
 			self.go_page_index(new_value)
 			QToolTip.showText(QCursor.pos(),"%d / %d" % (new_value+1,self.slider_pages.maximum()+1))
+
+	def btn_auto_play_clicked(self):
+		q_icon = QtGui.QIcon()
+		if self.auto_play_timer.isActive():
+			self.auto_play_timer.stop()
+			q_icon.addPixmap(QtGui.QPixmap(":/icon/play"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		else:
+			self.auto_play_timer.start()
+			q_icon.addPixmap(QtGui.QPixmap(":/icon/pause"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		self.ui.actionAutoPlay.setIcon(q_icon)
+
+	def auto_play_timer_timeout(self):
+		#print("auto_play next page")
+		self.go_next_page()
+
+	def force_stop_auto_play_timer(self):
+		if self.auto_play_timer.isActive():
+			self.btn_auto_play_clicked()
 
 	def scroll_area_scroll_bar_value_changed(self):
 		if self.scroll_flow == ScrollFlow.UP_DOWN:
@@ -441,6 +473,7 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 
 	#internal function
 	def reset_data(self):
+		self.force_stop_auto_play_timer()
 		self.image_list = []
 		self.current_single_image_list = []
 		self.current_double_image_list = []
@@ -744,8 +777,14 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 			elif self.current_path_index > 0:
 				self.go_prev_chapter()
 		elif self.scroll_flow == ScrollFlow.UP_DOWN:
-			if self.current_path_index > 0:
-				self.go_prev_chapter()
+			if self.ui.scrollArea.verticalScrollBar().value() != 0:
+				if self.current_page_index > 0:
+					self.go_page_index(self.current_page_index-1)
+				else:
+					self.ui.scrollArea.verticalScrollBar().setValue(0)
+			else:
+				if self.current_path_index > 0:
+					self.go_prev_chapter()
 
 	def go_prev_chapter(self):
 		self.current_path_index -= 1
@@ -767,8 +806,15 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 			elif self.current_path_index < len(self.image_list) - 1:
 				self.go_next_chapter()
 		elif self.scroll_flow == ScrollFlow.UP_DOWN:
-			if self.current_path_index < len(self.image_list) - 1:
-				self.go_next_chapter()
+			if self.ui.scrollArea.verticalScrollBar().value() != self.ui.scrollArea.verticalScrollBar().maximum():
+				current_target_list = self.get_current_target_list()
+				if self.current_page_index < len(current_target_list) - 1:
+					self.go_page_index(self.current_page_index+1)
+				else:
+					self.ui.scrollArea.verticalScrollBar().setValue(self.ui.scrollArea.verticalScrollBar().maximum())
+			else:
+				if self.current_path_index < len(self.image_list) - 1:
+					self.go_next_chapter()
 
 	def go_next_chapter(self):
 		self.current_path_index += 1

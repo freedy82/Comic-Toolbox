@@ -22,6 +22,7 @@ class SettingsController(object):
 		self.ui.cbx_settings_proxy_type.addItems([TRSM("https"),TRSM("http")])
 		self.ui.cbx_settings_cugan_denoise.addItems([TRSM("No effect"),TRSM("Level 0"),TRSM("Level 1"),TRSM("Level 2"),TRSM("Level 3")])
 		self.ui.cbx_settings_cugan_resize.addItems([TRSM("No"),TRSM("Yes")])
+		self.ui.cbx_settings_when_close_window.addItems([TRSM("Minimize to system tray"),TRSM("Close window")])
 
 		# UI Display
 		self.retranslateUi()
@@ -50,6 +51,9 @@ class SettingsController(object):
 
 		self.ui.cbx_settings_cugan_resize.setItemText(0,TRSM("No"))
 		self.ui.cbx_settings_cugan_resize.setItemText(1,TRSM("Yes"))
+
+		self.ui.cbx_settings_when_close_window.setItemText(0,TRSM("Minimize to system tray"))
+		self.ui.cbx_settings_when_close_window.setItemText(1,TRSM("Close window"))
 
 		pass
 
@@ -114,12 +118,19 @@ class SettingsController(object):
 		self.ui.spin_settings_image_padding.setValue(3)
 		self.ui.spin_settings_jpg_quality.setValue(90)
 		self.ui.spin_settings_check_is_2_page.setValue(1.0)
+		self.ui.txt_settings_reader_background.setText("#000000")
+		self.ui.spin_settings_reader_auto_play_interval.setValue(5.0)
 
 		self.ui.spin_settings_page_sleep.setValue(10)
 		self.ui.spin_settings_image_sleep.setValue(1)
 		self.ui.spin_settings_download_worker.setValue(2)
-
 		self.ui.cbx_settings_proxy_mode.setCurrentIndex(0)
+
+		self.ui.spin_settings_cugan_scale.setValue(2)
+		self.ui.cbx_settings_cugan_denoise.setCurrentIndex(4)
+		self.ui.cbx_settings_cugan_resize.setCurrentIndex(0)
+
+		self.ui.cbx_settings_when_close_window.setCurrentIndex(0)
 
 		pass
 
@@ -164,6 +175,8 @@ class SettingsController(object):
 		reader_background = MY_CONFIG.get("reader", "background")
 		self.ui.txt_settings_reader_background.setText(reader_background)
 		self.ui.lbl_settings_reader_background_preview.setStyleSheet("background-color:"+reader_background+";")
+		reader_auto_play_interval = MY_CONFIG.get("reader", "auto_play_interval")
+		self.ui.spin_settings_reader_auto_play_interval.setValue(float(reader_auto_play_interval))
 
 		#anti ban
 		page_sleep = MY_CONFIG.get("anti-ban", "page_sleep")
@@ -206,12 +219,13 @@ class SettingsController(object):
 			self.ui.radio_settings_message_no.setChecked(True)
 		else:
 			self.ui.radio_settings_message_yes.setChecked(True)
-
 		play_sound = MY_CONFIG.get("misc", "play_sound")
 		if play_sound == "False":
 			self.ui.radio_settings_sound_no.setChecked(True)
 		else:
 			self.ui.radio_settings_sound_yes.setChecked(True)
+		when_close_window = MY_CONFIG.get("misc", "when_close_window")
+		self.ui.cbx_settings_when_close_window.setCurrentIndex(int(when_close_window))
 
 		pass
 
@@ -229,6 +243,7 @@ class SettingsController(object):
 		MY_CONFIG.set("general","jpg_quality",str(self.ui.spin_settings_jpg_quality.value()))
 		MY_CONFIG.set("general","check_is_2_page",str(self.ui.spin_settings_check_is_2_page.value()))
 		MY_CONFIG.set("reader","background",self.ui.txt_settings_reader_background.text())
+		MY_CONFIG.set("reader","auto_play_interval",str(self.ui.spin_settings_reader_auto_play_interval.value()))
 
 		#anti ban
 		MY_CONFIG.set("anti-ban","page_sleep",str(self.ui.spin_settings_page_sleep.value()))
@@ -246,6 +261,7 @@ class SettingsController(object):
 		#misc
 		MY_CONFIG.set("misc","display_message",str(self.ui.radio_settings_message_yes.isChecked()))
 		MY_CONFIG.set("misc","play_sound",str(self.ui.radio_settings_sound_yes.isChecked()))
+		MY_CONFIG.set("misc","when_close_window",str(self.ui.cbx_settings_when_close_window.currentIndex()))
 
 		MY_CONFIG.save()
 

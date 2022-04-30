@@ -9,12 +9,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>780</width>
+    <width>800</width>
     <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Reader</string>
+   <string>Comic Reader</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
@@ -68,7 +68,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>780</width>
+         <width>800</width>
          <height>425</height>
         </rect>
        </property>
@@ -199,7 +199,7 @@ color: #FFFFFF;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>780</width>
+     <width>800</width>
      <height>21</height>
     </rect>
    </property>
@@ -244,6 +244,8 @@ color: #FFFFFF;</string>
    </attribute>
    <addaction name="actionFileOpenFolder"/>
    <addaction name="actionFileOpenFile"/>
+   <addaction name="separator"/>
+   <addaction name="actionAutoPlay"/>
    <addaction name="separator"/>
    <addaction name="actionScrollFlowLeftRight"/>
    <addaction name="actionScrollFlowUpDown"/>
@@ -536,6 +538,18 @@ color: #FFFFFF;</string>
    </property>
    <property name="toolTip">
     <string>Display bookmark list</string>
+   </property>
+  </action>
+  <action name="actionAutoPlay">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/play</normaloff>:/icon/play</iconset>
+   </property>
+   <property name="text">
+    <string>Start or Pause Auto Play</string>
+   </property>
+   <property name="toolTip">
+    <string>Start or Pause Auto Play (k)</string>
    </property>
   </action>
  </widget>

@@ -66,6 +66,8 @@ class MyConfig(RawConfigParser):
 			self.set("misc","display_message","True")
 		if self.get("misc","play_sound") == "":
 			self.set("misc","play_sound","True")
+		if self.get("misc","when_close_window") == "":
+			self.set("misc","when_close_window","0")
 
 		if self.get("filter","contrast") == "":
 			self.set("filter","contrast","1.0")
@@ -92,6 +94,8 @@ class MyConfig(RawConfigParser):
 			self.set("reader","page_flow","RIGHT_TO_LEFT")
 		if self.get("reader","background") == "":
 			self.set("reader","background","#000000")
+		if self.get("reader","auto_play_interval") == "":
+			self.set("reader","auto_play_interval","5")
 
 		pass
 

@@ -313,7 +313,7 @@ class Site(QThread):
 		# print("mark 4")
 		#print(results)
 		for file in os.listdir(os.path.join(os.path.dirname(__file__), "sites")):
-			if re.match(r"^[a-zA-Z].*?\.py$", file) and file != "empty.py":
+			if re.match(r"^[a-zA-Z].*?\.py(c)?$", file) and file != "empty.py" and file != "empty.pyc":
 				importlib.import_module(".sites.{}".format(file.split(".")[0]), __package__)
 		return [site_class for site_class in Site.__subclasses__()]
 

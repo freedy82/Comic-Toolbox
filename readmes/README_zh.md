@@ -152,34 +152,4 @@ OpenCV 應該比 Pillow 快，但好多 sin、cos、tan，對初中已過去好�
 
 ## 版本更新
 
-### v0.8.0
-
-- 加入漫畫閱讀器！
-
-### v0.7.0
-
-- 加入綠色主題
-- 部分代碼修正，圖片批量裁剪加入全屏模式
-- 圖片批量處理加入旋轉、水平翻轉、垂直翻轉
-- 加入 [Real-CUGAN](https://github.com/nihui/realcugan-ncnn-vulkan) 的支持 (對舊漫畫效果是不錯，高清新漫用處不大)
-- 加入新支持站點 `www.webtoons.com`
-
-### v0.6.5
-
-- 加入產生 docx 功能
-- 加入暗色主題
-- 爬蟲部分代碼重新整理，依賴重新整理
-- 加入新支持站點 `www.dm5.com` `readcomicsonline.ru`
-
-### v0.6.0
-
-- 加入支持代理(Proxy)功能
-
-### v0.5.5
-
-- 加入書簽功能
-- 加入多一點 Tooltips 說明
-
-### v0.5.0
-
-- 初版
+查看 [版本更新](change_log_zh.md)

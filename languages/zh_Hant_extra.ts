@@ -447,6 +447,15 @@
         <source>All supported format</source>
         <translation>所有支持的格式</translation>
     </message>
+    <message>
+        <source>Minimize to system tray</source>
+        <translation>最小化到右下角系統托盤</translation>
+    </message>
+    <message>
+        <source>Close window</source>
+        <translation>關閉窗口</translation>
+    </message>
+
 
 
     <message>

@@ -15,7 +15,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setWindowModality(QtCore.Qt.NonModal)
-        MainWindow.resize(780, 480)
+        MainWindow.resize(800, 480)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/icon/main_icon"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -36,7 +36,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setAlignment(QtCore.Qt.AlignCenter)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 780, 425))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 800, 425))
         self.scrollAreaWidgetContents.setStyleSheet("background-color: #000000;\n"
 "color: #FFFFFF;")
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
@@ -69,7 +69,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.scrollArea)
         MainWindow.setCentralWidget(self.mainwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 780, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -202,6 +202,11 @@ class Ui_MainWindow(object):
         icon18.addPixmap(QtGui.QPixmap(":/icon/list"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionBookmarkList.setIcon(icon18)
         self.actionBookmarkList.setObjectName("actionBookmarkList")
+        self.actionAutoPlay = QtWidgets.QAction(MainWindow)
+        icon19 = QtGui.QIcon()
+        icon19.addPixmap(QtGui.QPixmap(":/icon/play"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionAutoPlay.setIcon(icon19)
+        self.actionAutoPlay.setObjectName("actionAutoPlay")
         self.menuFile.addAction(self.actionFileOpenFile)
         self.menuFile.addAction(self.actionFileOpenFolder)
         self.menuFile.addSeparator()
@@ -209,6 +214,8 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuFile.menuAction())
         self.tb_main.addAction(self.actionFileOpenFolder)
         self.tb_main.addAction(self.actionFileOpenFile)
+        self.tb_main.addSeparator()
+        self.tb_main.addAction(self.actionAutoPlay)
         self.tb_main.addSeparator()
         self.tb_main.addAction(self.actionScrollFlowLeftRight)
         self.tb_main.addAction(self.actionScrollFlowUpDown)
@@ -236,7 +243,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Reader"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Comic Reader"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.actionPageModeSingle.setText(_translate("MainWindow", "1 Page"))
         self.actionPageModeSingle.setToolTip(_translate("MainWindow", "1 Page"))
@@ -271,6 +278,8 @@ class Ui_MainWindow(object):
         self.actionAddBookmark.setToolTip(_translate("MainWindow", "Add to bookmark"))
         self.actionBookmarkList.setText(_translate("MainWindow", "Display bookmark list"))
         self.actionBookmarkList.setToolTip(_translate("MainWindow", "Display bookmark list"))
+        self.actionAutoPlay.setText(_translate("MainWindow", "Start or Pause Auto Play"))
+        self.actionAutoPlay.setToolTip(_translate("MainWindow", "Start or Pause Auto Play (k)"))
 from uis import resources_rc
 
 

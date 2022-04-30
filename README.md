@@ -2,7 +2,7 @@
 
 # Comic Toolbox ( Manga Toolbox )
 
-[Chinese version please check this page (中文版請看這)](readmes/README_ZH.md)
+[Chinese version please check this page (中文版請看這)](readmes/README_zh.md)
 
 ## At the front
 
@@ -153,36 +153,6 @@ QtDesigner is really useful
 
 OpenCV should be faster than Pillow, but a lot of sin, cos, and tan are difficult to use for those who have passed junior high school for many years!
 
-## New version update
+## Changelog
 
-### v0.8.0
-
-- Added the manga reader!
-
-### v0.7.0
-
-- Added green theme
-- Some code corrections, batch cropping of pictures to join full-screen mode
-- Add rotation, horizontal flip, vertical flip to image batch processing
-- Added support for [Real-CUGAN](https://github.com/nihui/realcugan-ncnn-vulkan) (good for old comics, not very useful for new high-definition comics)
-- Added new support site `www.webtoons.com`
-
-### v0.6.5
-
-- Added the function of generating docx
-- Added dark theme
-- Reorganized some code of crawler, and reorganized dependencies
-- Added new support sites `www.dm5.com` `readcomicsonline.ru`
-
-### v0.6.0
-
-- Added support for proxy (Proxy) function
-
-### v0.5.5
-
-- Add bookmark function
-- Add a little more Tooltips description
-
-### v0.5.0
-
-- First edition
+View [Changelog](readmes/change_log.md)
