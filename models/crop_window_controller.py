@@ -36,6 +36,7 @@ class CropWindowController(QtWidgets.QMainWindow):
 		self.is_updating_frame_child = False
 		self.last_crop_ratio = [{"x1":0,"y1":0,"x2":1,"y2":1},{"x1":0,"y1":0,"x2":1,"y2":1}]
 		self.is_finish_job_flag = False
+		self.before_full_screen_is_max = False
 
 	def setup_control(self):
 		self.setWindowFlag(Qt.WindowMinimizeButtonHint, False)
@@ -56,9 +57,10 @@ class CropWindowController(QtWidgets.QMainWindow):
 		self.ui.btn_ignore.clicked.connect(self.btn_ignore_clicked)
 		self.ui.btn_process.clicked.connect(self.btn_process_clicked)
 		self.ui.btn_use_rule.clicked.connect(self.btn_use_rule_clicked)
-		self.ui.btn_quit.clicked.connect(self.btn_quit_clicked)
 		self.ui.btn_full_of_image.clicked.connect(self.btn_full_of_image_clicked)
 		self.ui.btn_exchange.clicked.connect(self.btn_exchange_clicked)
+		self.ui.btn_full_screen.clicked.connect(self.btn_full_screen_clicked)
+		self.ui.btn_quit.clicked.connect(self.btn_quit_clicked)
 		#hack to combobox of F4?
 		self.ui.cbx_size_policy.installEventFilter(self)
 		pass
@@ -404,6 +406,19 @@ class CropWindowController(QtWidgets.QMainWindow):
 			self.frame_changed(self.crop_frame_controllers[0])
 			self.frame_changed(self.crop_frame_controllers[1])
 
+	def btn_full_screen_clicked(self):
+		if not self.isFullScreen():
+			if self.isMaximized():
+				self.before_full_screen_is_max = True
+			else:
+				self.before_full_screen_is_max = False
+			self.showFullScreen()
+		else:
+			if self.before_full_screen_is_max:
+				self.showMaximized()
+			else:
+				self.showNormal()
+
 	def btn_quit_clicked(self):
 		self.close()
 
@@ -472,6 +487,8 @@ class CropWindowController(QtWidgets.QMainWindow):
 			self.btn_full_of_image_clicked()
 		if e.key() == Qt.Key_F8:
 			self.btn_exchange_clicked()
+		if e.key() == Qt.Key_F11:
+			self.btn_full_screen_clicked()
 		if e.key() == Qt.Key_F12:
 			self.btn_quit_clicked()
 

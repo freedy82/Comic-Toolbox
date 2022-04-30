@@ -383,7 +383,70 @@
         <source>Green</source>
         <translation>綠色</translation>
     </message>
-
+    <message>
+        <source>Real-CUGAN AI enhance mode</source>
+        <translation>Real-CUGAN 人工智能增強模式</translation>
+    </message>
+    <message>
+        <source>No effect</source>
+        <translation>沒有效果</translation>
+    </message>
+    <message>
+        <source>Level 0</source>
+        <translation>0級</translation>
+    </message>
+    <message>
+        <source>Level 1</source>
+        <translation>1級</translation>
+    </message>
+    <message>
+        <source>Level 2</source>
+        <translation>2級</translation>
+    </message>
+    <message>
+        <source>Level 3</source>
+        <translation>3級</translation>
+    </message>
+    <message>
+        <source>Please choose the real-cugan exe location in settings</source>
+        <translation>請在設置中選擇real-cugan EXE 位置</translation>
+    </message>
+    <message>
+        <source>Parsing page %s</source>
+        <translation>正在分析頁面 %s</translation>
+    </message>
+    <message>
+        <source>Respect the copyright, please support the genuine version, and the resources downloaded or generated through this tool are prohibited from spreading and sharing!</source>
+        <translation>尊重版權，請支援正版，通過本工具下載或產生的資源禁止傳播分享！</translation>
+    </message>
+    <message>
+        <source>It is prohibited to use this project for commercial activities!</source>
+        <translation>禁止利用本專案進行商業活動！</translation>
+    </message>
+    <message>
+        <source>Please select a folder</source>
+        <translation>請選擇一個文件夾</translation>
+    </message>
+    <message>
+        <source>Folder</source>
+        <translation>文件夾</translation>
+    </message>
+    <message>
+        <source>Can not found any image in file</source>
+        <translation>在文件中找不到任何圖像</translation>
+    </message>
+    <message>
+        <source>Can not found any image in folder</source>
+        <translation>在文件夾中找不到任何圖像</translation>
+    </message>
+    <message>
+        <source>Please open a folder or file</source>
+        <translation>請打開一個文件夾或文件</translation>
+    </message>
+    <message>
+        <source>All supported format</source>
+        <translation>所有支持的格式</translation>
+    </message>
 
 
     <message>

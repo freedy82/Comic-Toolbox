@@ -370,6 +370,55 @@
        </layout>
       </item>
       <item>
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QFormLayout" name="layout_rotate">
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_rotate">
+          <property name="text">
+           <string>Rotate</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="cbx_rotate"/>
+        </item>
+        <item row="1" column="1">
+         <widget class="QCheckBox" name="chk_horizontal_flip">
+          <property name="text">
+           <string>Flip</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QCheckBox" name="chk_vertical_flip">
+          <property name="text">
+           <string>Flip</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lbl_horizontal_flip">
+          <property name="text">
+           <string>Horizontal flip</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lbl_vertical_flip">
+          <property name="text">
+           <string>Vertical flip</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <spacer name="spacer_info">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -384,6 +433,13 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_full_screen">
+        <property name="text">
+         <string>Toggle full screen (F11)</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QPushButton" name="btn_save">

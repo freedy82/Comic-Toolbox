@@ -2,11 +2,15 @@ import os.path
 import glob
 import shutil
 import re
+#from concurrent.futures.thread import ThreadPoolExecutor
+
 import imagesize
+import threading
+from pathlib import Path
 from langcodes import Language
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import QRect
-from PIL import Image,ImageEnhance
+from PIL import Image,ImageEnhance,ImageOps
 
 from const import *
 
@@ -35,12 +39,54 @@ def get_number_of_images_from_folder(folder,num=1,exts=IMAGE_EXTS):
 	lists = []
 	for ext in exts:
 		lists += glob.glob(folder + '/**/*.' + ext, recursive=True)
-		if len(lists) > num:
+		if len(lists) > num > 0:
 			break
 	lists.sort()
-	if len(lists) > num:
+	if len(lists) > num > 0:
 		lists = lists[0:num]
 	return lists
+
+def get_image_list_from_folder(folder,results,exts=IMAGE_EXTS,path=""):
+	files = sorted(os.listdir(folder))
+	root_files = []
+	threads = []
+	for file in files:
+		full_file = os.path.join(folder,file)
+		full_file = Path(full_file).as_posix()
+		if os.path.isdir(full_file):
+			new_path = os.path.join(path,file)
+			new_path = Path(new_path).as_posix()
+			tmp_threading = threading.Thread(target=get_image_list_from_folder, args=(full_file,results,exts,new_path,))
+			threads.append(tmp_threading)
+			tmp_threading.start()
+		elif get_ext(file) in exts:
+			root_files.append(full_file)
+
+	for tmp_threading in threads:
+		tmp_threading.join()
+
+	if len(root_files) > 0:
+		results.append({"path":path,"files":root_files})
+
+def get_image_list_from_folder_old(folder,exts=IMAGE_EXTS,path=""):
+	files = sorted(os.listdir(folder))
+	root_files = []
+	folder_files = []
+	for file in files:
+		full_file = os.path.join(folder,file)
+		if os.path.isdir(full_file):
+			tmp_files = get_image_list_from_folder_old(full_file,exts,os.path.join(path,file))
+			if len(tmp_files) > 0:
+				folder_files.extend(tmp_files)
+		elif get_ext(file) in exts:
+			root_files.append(full_file)
+	results = []
+	if len(root_files) > 0:
+		results.append({"path":path,"files":root_files})
+	if len(folder_files) > 0:
+		results.extend(folder_files)
+	return results
+
 
 def filter_pimage(pimage,contrast=1,sharpness=1,brightness=1,color=1):
 	new_pimage = pimage
@@ -56,6 +102,16 @@ def filter_pimage(pimage,contrast=1,sharpness=1,brightness=1,color=1):
 	enhancer = ImageEnhance.Sharpness(new_pimage)
 	new_pimage = enhancer.enhance(sharpness)
 
+	return new_pimage
+
+def rotate_pimage(pimage,rotate=0,horizontal_flip=False,vertical_flip=False):
+	new_pimage = pimage
+	if rotate > 0:
+		new_pimage = new_pimage.rotate(-rotate, Image.NEAREST, expand=True)
+	if horizontal_flip:
+		new_pimage = ImageOps.mirror(new_pimage)
+	if vertical_flip:
+		new_pimage = ImageOps.flip(new_pimage)
 	return new_pimage
 
 def cv_imread(filepath):

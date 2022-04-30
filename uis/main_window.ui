@@ -365,7 +365,7 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <layout class="QFormLayout" name="formLayout_3">
+         <layout class="QFormLayout" name="layout_converter_from_main">
           <item row="0" column="0">
            <widget class="QLabel" name="lbl_converter_from">
             <property name="text">
@@ -596,7 +596,7 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
-         <layout class="QFormLayout" name="formLayout_4">
+         <layout class="QFormLayout" name="layout_cropper_from_main">
           <item row="0" column="0">
            <widget class="QLabel" name="lbl_cropper_form_folder">
             <property name="text">
@@ -693,7 +693,7 @@
          </layout>
         </item>
         <item>
-         <layout class="QFormLayout" name="formLayout_5">
+         <layout class="QFormLayout" name="layout_cropper_info">
           <item row="0" column="0">
            <widget class="QLabel" name="lbl_cropper_mode">
             <property name="text">
@@ -1044,6 +1044,9 @@
             </item>
             <item row="3" column="1">
              <widget class="QDoubleSpinBox" name="spin_settings_timeout">
+              <property name="toolTip">
+               <string notr="true">10-120</string>
+              </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
@@ -1093,6 +1096,9 @@
             </item>
             <item row="5" column="1">
              <widget class="QSpinBox" name="spin_settings_book_padding">
+              <property name="toolTip">
+               <string notr="true">1-6</string>
+              </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
@@ -1116,6 +1122,9 @@
             </item>
             <item row="6" column="1">
              <widget class="QSpinBox" name="spin_settings_chapter_padding">
+              <property name="toolTip">
+               <string notr="true">1-6</string>
+              </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
@@ -1139,6 +1148,9 @@
             </item>
             <item row="7" column="1">
              <widget class="QSpinBox" name="spin_settings_image_padding">
+              <property name="toolTip">
+               <string notr="true">1-6</string>
+              </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
@@ -1162,6 +1174,9 @@
             </item>
             <item row="8" column="1">
              <widget class="QSpinBox" name="spin_settings_jpg_quality">
+              <property name="toolTip">
+               <string notr="true">1-100</string>
+              </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
@@ -1185,6 +1200,9 @@
             </item>
             <item row="9" column="1">
              <widget class="QDoubleSpinBox" name="spin_settings_check_is_2_page">
+              <property name="toolTip">
+               <string notr="true">0.7-3.0</string>
+              </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
@@ -1199,6 +1217,52 @@
               </property>
              </widget>
             </item>
+            <item row="10" column="0">
+             <widget class="QLabel" name="lbl_settings_reader_background">
+              <property name="text">
+               <string>Reader background</string>
+              </property>
+             </widget>
+            </item>
+            <item row="10" column="1">
+             <layout class="QHBoxLayout" name="layout_settings_reader_background">
+              <item>
+               <widget class="QLabel" name="lbl_settings_reader_background_preview">
+                <property name="minimumSize">
+                 <size>
+                  <width>23</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>23</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Panel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <property name="text">
+                 <string notr="true"/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="txt_settings_reader_background"/>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btn_settings_reader_background">
+                <property name="text">
+                 <string>Pick a color</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
            </layout>
           </widget>
           <widget class="QWidget" name="tab_settings_anti_ban">
@@ -1207,7 +1271,7 @@
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_9">
             <item>
-             <layout class="QFormLayout" name="formLayout_2">
+             <layout class="QFormLayout" name="layout_settings_anti_ban">
               <item row="0" column="0">
                <widget class="QLabel" name="lbl_settings_page_sleep">
                 <property name="text">
@@ -1360,6 +1424,12 @@
                    <property name="toolTip">
                     <string>IP:PORT</string>
                    </property>
+                   <property name="inputMask">
+                    <string notr="true">000.000.000.000:00000</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -1400,6 +1470,124 @@
                <size>
                 <width>20</width>
                 <height>97</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_settings_cugan">
+           <attribute name="title">
+            <string>Real-CUGAN</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_8">
+            <item>
+             <layout class="QFormLayout" name="layout_settings_cugan_main">
+              <item row="1" column="0">
+               <widget class="QLabel" name="lbl_settings_cugan_location">
+                <property name="text">
+                 <string>EXE Location</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <layout class="QHBoxLayout" name="layout_settings_cugan">
+                <item>
+                 <widget class="QLineEdit" name="txt_settings_cugan_location">
+                  <property name="readOnly">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btn_settings_cugan_browser">
+                  <property name="text">
+                   <string>Browser</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="lbl_settings_cugan_scale">
+                <property name="text">
+                 <string>Scale</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QSpinBox" name="spin_settings_cugan_scale">
+                <property name="toolTip">
+                 <string notr="true">2-4</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+                <property name="minimum">
+                 <number>2</number>
+                </property>
+                <property name="maximum">
+                 <number>4</number>
+                </property>
+                <property name="value">
+                 <number>2</number>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="lbl_settings_cugan_donoise">
+                <property name="text">
+                 <string>Denoise level</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QComboBox" name="cbx_settings_cugan_denoise"/>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="lbl_settings_cugan_download">
+                <property name="text">
+                 <string>Can download from</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="lbl_settings_cugan_link">
+                <property name="text">
+                 <string notr="true">&lt;a href=&quot;https://github.com/nihui/realcugan-ncnn-vulkan&quot;&gt;https://github.com/nihui/realcugan-ncnn-vulkan&lt;/a&gt;</string>
+                </property>
+                <property name="textFormat">
+                 <enum>Qt::RichText</enum>
+                </property>
+                <property name="openExternalLinks">
+                 <bool>true</bool>
+                </property>
+                <property name="textInteractionFlags">
+                 <set>Qt::TextBrowserInteraction</set>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="lbl_settings_cugan_resize">
+                <property name="text">
+                 <string>Resize to same as source image after convert</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="1">
+               <widget class="QComboBox" name="cbx_settings_cugan_resize"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>256</height>
                </size>
               </property>
              </spacer>
@@ -1627,6 +1815,8 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionFileStartReader"/>
+    <addaction name="separator"/>
     <addaction name="actionFileExit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -1658,6 +1848,7 @@
     <addaction name="menuHelpLanguage"/>
     <addaction name="separator"/>
     <addaction name="actionHelpAbout"/>
+    <addaction name="actionHelpAboutQt"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuHelp"/>
@@ -1678,7 +1869,7 @@
      <normaloff>:/icon/info</normaloff>:/icon/info</iconset>
    </property>
    <property name="text">
-    <string>About</string>
+    <string>About Comic Toolbox</string>
    </property>
   </action>
   <action name="action_help_language_tmp_language">
@@ -1700,13 +1891,27 @@
     <string>Default</string>
    </property>
   </action>
+  <action name="actionHelpAboutQt">
+   <property name="text">
+    <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionFileStartReader">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/show</normaloff>:/icon/show</iconset>
+   </property>
+   <property name="text">
+    <string>Start Reader</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="resources.qrc"/>
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="btn_group_settings_sound"/>
   <buttongroup name="btn_group_settings_message"/>
+  <buttongroup name="btn_group_settings_sound"/>
  </buttongroups>
 </ui>

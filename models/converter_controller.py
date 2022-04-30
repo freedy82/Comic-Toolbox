@@ -9,10 +9,12 @@ from models.image_filter_window_controller import ImageFilterWindowController
 
 class ConverterController(object):
 	MODES = [
-		{"from_exts": util.remove_element_of_tuple(IMAGE_EXTS,"jpg"), "to_ext":"jpg"},
-		{"from_exts": util.remove_element_of_tuple(IMAGE_EXTS,"png"), "to_ext":"png"},
-		{"from_exts": IMAGE_EXTS, "to_ext": "jpg"},
-		{"from_exts": IMAGE_EXTS, "to_ext": "png"}
+		{"from_exts": util.remove_element_of_tuple(IMAGE_EXTS,"jpg"), "to_ext":"jpg", "enable_real_cugan": False},
+		{"from_exts": util.remove_element_of_tuple(IMAGE_EXTS,"png"), "to_ext":"png", "enable_real_cugan": False},
+		{"from_exts": IMAGE_EXTS, "to_ext": "jpg", "enable_real_cugan": False},
+		{"from_exts": IMAGE_EXTS, "to_ext": "png", "enable_real_cugan": False},
+		{"from_exts": util.remove_element_of_tuple(IMAGE_EXTS,"gif"), "to_ext": "jpg", "enable_real_cugan": True},
+		{"from_exts": util.remove_element_of_tuple(IMAGE_EXTS,"gif"), "to_ext": "png", "enable_real_cugan": True}
 	]
 
 	def __init__(self, app=None, ui: Ui_MainWindow = None, main_controller=None):
@@ -68,8 +70,10 @@ class ConverterController(object):
 	def retranslateUi(self):
 		for idx,mode in enumerate(self.MODES):
 			label = ", ".join(mode["from_exts"]) + " -> " + mode["to_ext"]
-			if mode["to_ext"] in mode["from_exts"]:
-				label += " ("+TRSM("Force convert mode")+")"
+			if "enable_real_cugan" in mode and mode["enable_real_cugan"]:
+				label += " ( "+TRSM("Real-CUGAN AI enhance mode")+" )"
+			elif mode["to_ext"] in mode["from_exts"]:
+				label += " ( "+TRSM("Force convert mode")+" )"
 			self.ui.cbx_converter_mode.setItemText(idx,label)
 
 		self.ui.cbx_converter_exist.setItemText(0,TRSM("Skip"))
@@ -163,6 +167,12 @@ class ConverterController(object):
 			pass
 
 	def btn_converter_start_clicked(self):
+		# check real-cugan
+		mode_index = self.ui.cbx_converter_mode.currentIndex()
+		if self.MODES[mode_index]["enable_real_cugan"] and MY_CONFIG.get("real-cugan", "exe_location") == "":
+			util.msg_box(TRSM("Please choose the real-cugan exe location in settings"),self.main_controller)
+			return
+
 		total_need_convert_list = []
 		for i in range(self.ui.list_converter_folder.count()):
 			if self.ui.list_converter_folder.item(i).checkState() == QtCore.Qt.Checked:
@@ -170,7 +180,6 @@ class ConverterController(object):
 		#print(total_need_convert_list)
 
 		if len(total_need_convert_list) > 0:
-			mode_index = self.ui.cbx_converter_mode.currentIndex()
 			self.ui.pgb_converter.setMaximum(0)
 			self.ui.pgb_converter.setValue(0)
 			self.ui.btn_converter_start.setEnabled(False)
@@ -185,7 +194,8 @@ class ConverterController(object):
 				is_overwrite=bool(self.ui.cbx_converter_exist.currentIndex()),
 				remove_source=bool(self.ui.cbx_converter_remove_source.currentIndex()),
 				sub_folders=total_need_convert_list,
-				is_use_filter=bool(self.ui.cbx_converter_filter.currentIndex())
+				is_use_filter=bool(self.ui.cbx_converter_filter.currentIndex()),
+				enable_real_cugan=self.MODES[mode_index]["enable_real_cugan"]
 			)
 			self.converter_worker.trigger.connect(self.convert_trigger)
 			self.converter_worker.canceled.connect(self.convert_canceled)

@@ -1,11 +1,9 @@
-/* background:#4D4D4D */
-/* selected:#383838 */
-/* hover:#636363 */
-/* panel:#464646 */
-/* text:#F0F0F0 */
+
+
+
 
 * {
-    background:#4D4D4D;
+    background-color:#4D4D4D;
     color:#F0F0F0;
 }
 
@@ -13,13 +11,20 @@ QListView,QTableView,QTabWidget::pane {
     border:1px solid #353535;
 }
 
+
 QTableView::item:selected,QListView::item:selected {
-    background:#383838;
+    background-color:#383838;
     color:#F0F0F0;
 }
 QTableView::item:hover,QListView::item:hover {
-    background:#636363;
+    background-color:#636363;
     color:#F0F0F0;
+}
+QHeaderView, QHeaderView::section {
+    background-color: #353535;
+}
+QTableCornerButton::section {
+	background-color: #353535;
 }
 
 
@@ -28,37 +33,37 @@ QGroupBox {
     border-radius:5px;
     margin-top: 5px;
 }
-
 QGroupBox::title {
     left: 15px;
     margin-top: -10px;
 }
 
+
 QTabBar::tab {
     color:#F0F0F0;
-    background:#383838;
+    background-color:#383838;
     border-left:1px solid #353535;
     border-top:1px solid #353535;
     border-right:1px solid #353535;
     padding: 5px 10px;
 }
-
 QTabBar::tab:selected, QTabBar::tab:hover {
-    background:#4D4D4D;
+    background-color:#4D4D4D;
 }
 
+
 QProgressBar {
-    background:#4D4D4D;
+    background-color:#4D4D4D;
     border:1px solid #383838;
     text-align:center;
 }
-
 QProgressBar:chunk {
-    background:#353535;
+    background-color:#353535;
 }
 
+
 QPushButton:disabled {
-    background:#808080;
+    background-color:#808080;
 }
 
 QLineEdit,QSpinBox,QDoubleSpinBox {
@@ -69,36 +74,34 @@ QComboBox {
     border:1px solid #383838;
 }
 
+
 QMenu {
     border:1px solid #383838;
 }
-
 QMenu::item:selected,QMenuBar::item:selected {
     color:#F0F0F0;
     border:0px solid #353535;
-    background:#383838;
+    background-color:#383838;
 }
 
-QHeaderView, QHeaderView::section {
-    background: #353535;
-}
 
 QToolTip{
     border:1px solid #353535;
     padding:1px;
     color:#F0F0F0;
-    background:#4D4D4D;
+    background-color:#4D4D4D;
 }
 
 QListView, QTableView, QTextBrowser {
-    background: #464646;
+    background-color: #464646;
 }
 
-/*TextColor:#F0F0F0*/
-/*PanelColor:#464646*/
-/*BorderColor:#353535*/
-/*NormalColorStart:#4D4D4D*/
-/*NormalColorEnd:#383838*/
-/*DarkColorStart:#636363*/
-/*DarkColorEnd:#575757*/
-/*HighColor:#00BB9E*/
+QToolButton:checked {
+	background-color: #383838;
+	border: none;
+}
+
+QSlider::handle {
+	background-color: #383838;
+}
+		

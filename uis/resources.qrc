@@ -1,5 +1,19 @@
 <RCC>
   <qresource prefix="icon">
+    <file alias="open-archive">resources/open-archive.png</file>
+    <file alias="4columns">resources/4columns.png</file>
+    <file alias="2columns">resources/2columns.png</file>
+    <file alias="3columns">resources/3columns.png</file>
+    <file alias="open_folder">resources/opened-folder.png</file>
+    <file alias="fit-width-80">resources/fit_width80.png</file>
+    <file alias="fit-width">resources/fit_width.png</file>
+    <file alias="fit-height">resources/fit_height.png</file>
+    <file alias="fit-both">resources/fit_both.png</file>
+    <file alias="horizontal">resources/horizontal.png</file>
+    <file alias="1column">resources/1column.png</file>
+    <file alias="vertical">resources/vertical.png</file>
+    <file alias="left-to-right">resources/left-to-right.png</file>
+    <file alias="right-to-left">resources/right-to-left.png</file>
     <file alias="theme">resources/theme.png</file>
     <file alias="question">resources/question.png</file>
     <file alias="hide">resources/hide.png</file>
@@ -10,6 +24,7 @@
     <file alias="exit">resources/exit.png</file>
     <file alias="main_icon">resources/icon.png</file>
     <file alias="language">resources/language.png</file>
+    <file alias="full_screen">resources/full-screen.png</file>
     <file alias="help">resources/help.png</file>
   </qresource>
   <qresource prefix="sound">

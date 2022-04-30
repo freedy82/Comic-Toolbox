@@ -1,171 +1,188 @@
 <img src="uis/resources/icon.png" align="right" width="100"/>
 
-# Comic Toolbox 漫畫工具箱
+# Comic Toolbox ( Manga Toolbox )
 
-## 寫在前頭
+[Chinese version please check this page (中文版請看這)](README_ZH.md)
 
-這個工具主要是之前學習Python的練手作，然後有空時會改改，所以整體代碼不是寫得很好😅而且因是學習之作，所以有時你可能會在本工具中發現一些奇怪或無用的功能？！！
+## At the front
 
-另部分功能可能比較偏向方便有用e-ink電子書閱讀器的用者，因我原意是自用的，來給自己的Light 2閱讀器的😅
+This tool is mainly for practicing Python before, and then I will change it when I have time, so the overall code is not very well written 😅 And because it is a learning work, sometimes you may find something strange or useless in this tool function? ! !
 
-另請善待各大漫畫網站，玩壞了，大家都沒得下載了😅
+Another part of the functions may be more convenient and useful for users of e-ink e-book readers, because my original intention is to use it for my own Light 2 reader 😅
 
-請在開始下載之前，自行設定好爬蟲停留時間（在設定介面），本人對被網站封IP不負責哦！
+Please also be kind to the comics websites, if the site is broken, no one has to download it😅
 
-如果覺得本工具對你有所幫助，請點個star關注，感謝支援
+Please set the crawler's delay time (in the setting interface) before starting the download. I am not responsible for the IP blocked by the website!
 
-如有使用中遇到問題，歡迎提ISSUE
+If you think this tool is helpful to you, please click star to follow, thank you for your support
 
-## 參考
+If you encounter problems during use, please submit ISSUE
 
-爬蟲部分有部分代碼參考自 
+## Refer to
 
-- lossme 的 [ComicBook](https://github.com/lossme/ComicBook) （但好像不再維護了）
-- eight04 的 [ComicCrawler](https://github.com/eight04/ComicCrawler)
-- HSSLC 的 [manhuagui-dlr](https://github.com/HSSLC/manhuagui-dlr)
+The crawler part has some code references from
 
-Python 學習自 骆昊 的 [Python - 100天从新手到大师](https://github.com/jackfrued/Python-100-Days) （仍未學完😅仍是新手）
+- [ComicBook](https://github.com/lossme/ComicBook) by lossme (but doesn't seem to be maintained anymore)
+- [ComicCrawler](https://github.com/eight04/ComicCrawler) by eight04
+- [manhuagui-dlr](https://github.com/HSSLC/manhuagui-dlr) for HSSLC
 
-PyQt5 學習自 嗡嗡 的 [今年還是不夠錢買psQQ，不如我們用PyQt自己寫一個](https://www.wongwonggoods.com/category/portfolio/13th_ironman/)
+Learn Python from Luo Hao's [Python - 100 days from novice to master](https://github.com/jackfrued/Python-100-Days) (still not finished yet😅 still a novice)
 
-QSS 暗色主題參考自 书包 的 [QSS-Skin-Builder](https://github.com/satchelwu/QSS-Skin-Builder)
+PyQt5 learned from buzzing [this year is still not enough money to buy psQQ, let's use PyQt to write one by ourselves](https://www.wongwonggoods.com/category/portfolio/13th_ironman/)
 
-部分圖示來自 [Icons8](https://icons8.com/icon/set/show/ios-glyphs)
+QSS dark theme refers to [QSS-Skin-Builder](https://github.com/satchelwu/QSS-Skin-Builder) of Schoolbag
 
-## 支持站點
+Some icons are from [Icons8](https://icons8.com/icon/set/show/ios-glyphs)
+
+## Support site
 
 - 動漫狂 `www.cartoonmad.com`
 - 無限動漫 `www.comicabc.com`
 - 动漫屋 `www.dm5.com`
 - 酷漫屋 `www.kumw5.com`
 - 漫畫柜 `www.mhgui.com`
-- Read Comic Online （美漫） `readcomicsonline.ru`
+- Read Comic Online (American manga) `readcomicsonline.ru`
+- WEBTOON (Korean manga) `www.webtoons.com`
 
-## 本工具特點
+## Main features
 
-- [x] 全GUI介面操作
-- [x] 漫畫批量下載
-- [x] 書簽功能 （ 追更比較方便 ）
-- [x] 分目錄按章節／卷／番外儲存
-- [x] 支持代理（ Proxy ）功能
-- [x] 圖片批量轉檔 （ 例如 webp、gif、png 轉成 jpg ）
-- [x] 圖片批量處理 （ 如改對比度、亮度、銳化度、色彩， 對比較舊的漫畫有點幫助 ）
-- [x] 圖片批量裁剪 （ 支持常見的日式漫畫封面一體化的裁剪，2頁一體化的裁剪，可半自動微調，方便電子書閱讀器 ）
-- [x] 支援產生 cbz、epub、pdf、zip、docx （ 可多章節合併成一個檔案 ）
+- [x] Full GUI interface operation
+- [x] Comic batch download
+- [x] Bookmark function (more convenient to follow)
+- [x] Sub-categories are stored by chapter/volume/extra
+- [x] Support proxy function
+- [x] Batch conversion of images (such as webp, gif, png to jpg)
+- [x] Batch processing of pictures (such as changing contrast, brightness, sharpness, color, supporting Real-CUGAN AI enhancement, which is helpful for older comics)
+- [x] Batch cropping of pictures (supports the integrated cropping of common Japanese manga covers, 2-page integrated cropping, semi-automatic fine-tuning, convenient for e-book readers)
+- [x] Compression tool: support to generate cbz, epub, pdf, zip, docx (multiple chapters can be combined into one file)
+- [x] Reader, supports multi-level subdirectory diversity / CBZ / ZIP / PDF, can set different number of pages, reading order from left to right or right to left, picture ratio, reading method: page or full page Vertical (convenient for Korean comics), support bookmark reading progress, full screen reading
 
-## 安裝／升級步驟
+## Install / upgrade steps
 
-個人是在 Windows 11 中的 Python 3.9 開發的，以下是參考
+Personally developed in Python 3.9 in Windows 11, here is the reference
 
-### 安裝 Python
+### Install Python
 
-安裝檔可以從 Python 官方網站 [https://www.python.org/](https://www.python.org/) 下載。
+The installation file can be downloaded from the official Python website [https://www.python.org/](https://www.python.org/).
 
-安裝時記得要選「Add python.exe to path」，才能使用 pip 指令。
+Remember to select "Add python.exe to path" when installing to use the pip command.
 
-### 安裝 Node.js
+### Install Node.js
 
-部分網站的爬蟲使用 Node.js 來分析 JavaScript 。
+Some web crawlers use Node.js to analyze JavaScript.
 
-安裝檔可以從 Node.js 官方網站 [https://nodejs.org/](https://nodejs.org/) 下載。
+The installation file can be downloaded from the official Node.js website [https://nodejs.org/](https://nodejs.org/).
 
-## 介面簡介
+## Interface Introduction
 
-下載工具
+Download tool
 
-![下載工具](screenshots/downloader.jpg "下載工具")
+![Download Tool](screenshots/en/downloader.jpg "Download Tool")
 
-轉換工具
+Conversion tool
 
-![轉換工具](screenshots/converter.jpg "轉換工具")
+![Converter Tool](screenshots/en/converter.jpg "Converter Tool")
 
-裁剪工具
+Crop tool
 
-![裁剪工具](screenshots/cropper.jpg "裁剪工具")
+![Crop tool](screenshots/en/cropper.jpg "Crop tool")
 
-壓縮工具
+Compression tool
 
-![壓縮工具](screenshots/archiver.jpg "壓縮工具")
+![Compressor](screenshots/en/archiver.jpg "Compressor")
 
-圖片處理
+Image processing
 
-![圖片處理](screenshots/image_filter.jpg "圖片處理")
+![Image processing](screenshots/en/image_filter.jpg "Image processing")
 
-圖片裁剪
+Image cropping
 
-![圖片裁剪](screenshots/image_cropper.jpg "圖片裁剪")
+![Image crop](screenshots/en/image_cropper.jpg "Image crop")
 
-設定 - 防止被禁
+Settings - Prevent Banned
 
-![設定](screenshots/settings_anti-ban.jpg "設定")
+![Settings](screenshots/en/settings_anti-ban.jpg "Settings")
 
-書簽 （ 有些是我在看的，有些是測試的😅 ）
+Bookmarks (some I'm watching, some I'm testing 😅 )
 
-![書簽](screenshots/bookmarks.jpg "書簽")
+![Bookmarks](screenshots/en/bookmarks.jpg "Bookmarks")
 
-暗色主題
+Dark theme
 
-![暗色主題](screenshots/dark_theme.jpg "暗色主題")
+![Dark Theme](screenshots/en/dark_theme.jpg "Dark Theme")
+
+Reader
+
+![Reader](screenshots/en/reader.jpg "Reader")
 
 
-## 注意
+2 times the Real-CUGAN noise reduction effect (the left is the original image, the right is the rendering)
 
-對於轉換工具、裁剪工具、壓縮工具，請在掃描前選擇漫畫系列的文件夾\
-例如：\
-📁 d:\comics\  (下載文件夾)\
-📁 d:\comics\book_name\  (系列的文件夾)\
-📁 d:\comics\book_name\chapter-##\  (章節/卷文件夾)\
-🖼 d:\comics\book_name\chapter-##\\###.jpg  (圖像文件)
+![Real-CUGAN effect](screenshots/real-cugan.jpg "Real-CUGAN effect")
 
-轉換工具目標文件夾建議與源文件夾不同，即使應該沒問題，但為了安全起見😅
+## Notice
 
-## 附註
+For Convert Tool, Crop Tool, Compress Tool, please select the folder of the comic series before scanning\
+E.g:\
+📁 d:\comics\ (download folder)\
+📁 d:\comics\book_name\ (folder of series)\
+📁 d:\comics\book_name\chapter-##\ (chapter/volume folder)\
+🖼 d:\comics\book_name\chapter-##\\###.jpg (image file)
 
-程式隨便拿沒關係，但請不要把他當成自己原創的，謝謝！
+The conversion tool destination folder is suggested to be different from the source folder, even though it should be fine, but to be on the safe side 😅
 
-僅供學術研究交流使用，尊重版權，請支援正版，通過本工具下載或產生的資源**禁止傳播分享！禁止利用本專案進行商業活動！**
+## Notes
 
-## 寫在後頭
+It's okay to take the program casually, but please don't take it as your own, thank you!
 
-因是半學習半編寫的作品，所以一定仍有很多不足的地方，臭蟲(bug)一定是有的，而且可能不少，歡迎提交 issue，因是個人空閒的作品，所以修正回應比較慢啦
+It is only for academic research and exchange, respect copyright, please support genuine, and resources downloaded or generated through this tool** are prohibited from spreading and sharing! It is forbidden to use this project for commercial activities! **
 
-~~想加入Proxy的支持，但線上沒找到一個好用的免費的Proxy~~ (最後用了在本地裝的Proxy代理測試)
+## At the end
 
-另外如有空，再把代碼整理一下吧，如無用的 import，requirements 之類的
+Because it is a work that is half-studied and half-written, there must still be many deficiencies. There must be bugs, and there may be quite a few. Welcome to submit issues. Because it is a personal free work, the response to corrections is relatively slow.
 
-之前在寫初期command line時有加入 [Real-CUGAN](https://github.com/bilibili/ailab/tree/main/Real-CUGAN) 的AI 圖片強化，對舊漫畫效果是不錯，花時間是比較久，但在我的老電腦 GTX 1660 中，經常掛掉，應是GPU Memory 不足，因比較難測試，所以 GUI 就先拿掉了
+~~Want to add Proxy support, but I couldn't find a good free Proxy online~~ (I used the locally installed proxy test in the end)
 
-## 感想+隨想
+~~In addition, if you have time, tidy up the code, such as useless imports, requirements and the like~~
 
-Python 上手挺容易的，但想進階挺難的😅
+## Feelings
 
-QtDesigner 真的挺好用的
+Python is easy to get started, but difficult to advance 😅
 
-OpenCV 應該比 Pillow 快，但好多 sin、cos、tan，對初中已過去好多年的人覺得好難用啊！
+QtDesigner is really useful
 
-## 版本更新
+OpenCV should be faster than Pillow, but a lot of sin, cos, and tan are difficult to use for those who have passed junior high school for many years!
 
-### 下一版
+## New version update
 
-- 加入綠色主題
-- 部分代碼修正
+### v0.8.0
+
+- Added the manga reader!
+
+### v0.7.0
+
+- Added green theme
+- Some code corrections, batch cropping of pictures to join full-screen mode
+- Add rotation, horizontal flip, vertical flip to image batch processing
+- Added support for [Real-CUGAN](https://github.com/nihui/realcugan-ncnn-vulkan) (good for old comics, not very useful for new high-definition comics)
+- Added new support site `www.webtoons.com`
 
 ### v0.6.5
 
-- 加入產生 docx 功能
-- 加入暗色主題
-- 爬蟲部分代碼重新整理，依賴重新整理
-- 加入新支持站點 `www.dm5.com` `readcomicsonline.ru`
+- Added the function of generating docx
+- Added dark theme
+- Reorganized some code of crawler, and reorganized dependencies
+- Added new support sites `www.dm5.com` `readcomicsonline.ru`
 
 ### v0.6.0
 
-- 加入支持代理(Proxy)功能
+- Added support for proxy (Proxy) function
 
 ### v0.5.5
 
-- 加入書簽功能
-- 加入多一點 Tooltips 說明
+- Add bookmark function
+- Add a little more Tooltips description
 
 ### v0.5.0
 
-- 初版
+- First edition

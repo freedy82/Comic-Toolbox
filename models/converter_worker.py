@@ -1,8 +1,10 @@
 import glob
 import shutil
+import os
 from PIL import Image
 from pathlib import Path
 from PyQt5.QtCore import QThread, pyqtSignal
+import subprocess
 
 import util
 from const import *
@@ -12,7 +14,7 @@ class ConverterWorker(QThread):
 	finished = pyqtSignal()
 	canceled = pyqtSignal()
 
-	def __init__(self,from_folder,to_folder,from_exts,to_ext,is_overwrite,remove_source,sub_folders,is_use_filter=False):
+	def __init__(self,from_folder,to_folder,from_exts,to_ext,is_overwrite,remove_source,sub_folders,is_use_filter=False,enable_real_cugan=False):
 		super().__init__()
 		self.from_folder = from_folder
 		self.to_folder = to_folder
@@ -26,6 +28,7 @@ class ConverterWorker(QThread):
 		self.stop_flag = True
 		self.sub_folders = sub_folders
 		self.is_use_filter = is_use_filter
+		self.enable_real_cugan = enable_real_cugan
 
 	def run(self):
 		self.stop_flag = False
@@ -93,10 +96,25 @@ class ConverterWorker(QThread):
 			self.paths_created.append(target_path)
 
 		if not os.path.exists(full_target_file) or self.is_overwrite:
+			if self.enable_real_cugan:
+				real_cugan_exe = MY_CONFIG.get("real-cugan", "exe_location")
+				real_cugan_scale = MY_CONFIG.get("real-cugan", "scale")
+				real_cugan_denoise = MY_CONFIG.get("real-cugan", "denoise_level")
+				if real_cugan_exe != "":
+					cmd = real_cugan_exe + " -s " + real_cugan_scale + " -n " + real_cugan_denoise + " "
+					cmd += "-i \"" + tmp_file + "\" -o \"" + full_target_file + "\" -f " + self.to_ext
+					#os.system(cmd)
+					si = subprocess.STARTUPINFO()
+					si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+					si.wShowWindow = subprocess.SW_HIDE # default
+					subprocess.call(cmd, startupinfo=si)
+					tmp_file = full_target_file
+
 			if ext == self.to_ext and tmp_file != full_target_file and not is_force_convert:
 				shutil.copy(tmp_file, full_target_file)
 				message = TRSM("Copied to %s") % full_target_file
 			else:
+				#if (self.enable_real_cugan and self.is_use_filter) or not self.enable_real_cugan:
 				img = Image.open(tmp_file)
 				if self.is_use_filter:
 					contrast = float(MY_CONFIG.get("filter", "contrast"))
@@ -104,11 +122,24 @@ class ConverterWorker(QThread):
 					brightness = float(MY_CONFIG.get("filter", "sharpness"))
 					color = float(MY_CONFIG.get("filter", "color"))
 					img = util.filter_pimage(img,contrast,sharpness,brightness,color)
+					rotate = int(MY_CONFIG.get("filter", "rotate"))
+					is_horizontal_flip = MY_CONFIG.get("filter", "horizontal_flip") == "True"
+					is_vertical_flip = MY_CONFIG.get("filter", "vertical_flip") == "True"
+					img = util.rotate_pimage(img, rotate*90, is_horizontal_flip, is_vertical_flip)
+
+				if self.enable_real_cugan:
+					if MY_CONFIG.get("real-cugan", "resize") == "1":
+						real_cugan_scale = int(MY_CONFIG.get("real-cugan", "scale"))
+						width, height = img.size
+						new_size = (width//real_cugan_scale, height//real_cugan_scale)
+						img = img.resize(new_size)
 
 				if self.to_ext == "jpg":
+					img = img.convert('RGB')
 					img.save(full_target_file, quality=int(MY_CONFIG.get("general", "jpg_quality")))
 				else:
 					img.save(full_target_file)
+
 				message = TRSM("Converted to %s") % full_target_file
 				if self.remove_source:
 					os.remove(tmp_file)

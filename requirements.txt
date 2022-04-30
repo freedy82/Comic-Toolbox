@@ -12,3 +12,5 @@ imagesize~=1.3.0
 ebooklib~=0.17.1
 python-docx
 jsbeautifier
+pymupdf
+fitz

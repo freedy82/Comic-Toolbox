@@ -1,4 +1,6 @@
+import inspect
 import os.path
+import pkgutil
 import re
 import threading
 import concurrent.futures
@@ -21,6 +23,7 @@ class Site(QThread):
 	chapter_trigger = pyqtSignal(str, int, int)
 	chapter_finished = pyqtSignal()
 	chapter_canceled = pyqtSignal()
+	page_trigger = pyqtSignal(str)
 
 	def __init__(self, web_bot):
 		super().__init__()
@@ -292,6 +295,23 @@ class Site(QThread):
 
 	@staticmethod
 	def find_all_sites_class():
+		# print("mark 1")
+		# print(f"__package__:{__package__}")
+		# print(f"__file__:{__file__}")
+		#
+		# submodules = inspect.getmembers(Site, inspect.ismodule)
+		# print(submodules)
+		# print("mark 2")
+		#
+		# modules = pkgutil.iter_modules(path=["models/sites"])
+		# for loader, mod_name, ispkg in modules:
+		# 	print(mod_name)
+		# print("mark 3")
+		#
+		# dm5_mod = importlib.import_module(".sites.dm5", __package__)
+		# print(dm5_mod)
+		# print("mark 4")
+		#print(results)
 		for file in os.listdir(os.path.join(os.path.dirname(__file__), "sites")):
 			if re.match(r"^[a-zA-Z].*?\.py$", file) and file != "empty.py":
 				importlib.import_module(".sites.{}".format(file.split(".")[0]), __package__)

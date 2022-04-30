@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>780</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Reader</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/icon/main_icon</normaloff>:/icon/main_icon</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QWidget" name="mainwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
+      </property>
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustToContents</enum>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>780</width>
+         <height>425</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: #000000;
+color: #FFFFFF;</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item row="0" column="1">
+         <spacer name="spacer_top">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="0">
+         <spacer name="spacer_left">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="1">
+         <layout class="QGridLayout" name="layout_main">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="lbl_tmp">
+            <property name="minimumSize">
+             <size>
+              <width>50</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>OpenHandCursor</cursorShape>
+            </property>
+            <property name="lineWidth">
+             <number>0</number>
+            </property>
+            <property name="text">
+             <string notr="true">page center</string>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="2">
+         <spacer name="spacer_right">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="1">
+         <spacer name="spacer_bottom">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>780</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionFileOpenFile"/>
+    <addaction name="actionFileOpenFolder"/>
+    <addaction name="separator"/>
+    <addaction name="actionFileExit"/>
+   </widget>
+   <addaction name="menuFile"/>
+  </widget>
+  <widget class="QToolBar" name="tb_main">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="windowTitle">
+    <string notr="true">tb_main</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionFileOpenFolder"/>
+   <addaction name="actionFileOpenFile"/>
+   <addaction name="separator"/>
+   <addaction name="actionScrollFlowLeftRight"/>
+   <addaction name="actionScrollFlowUpDown"/>
+   <addaction name="separator"/>
+   <addaction name="actionFitHeight"/>
+   <addaction name="actionFitWidth"/>
+   <addaction name="actionFitBoth"/>
+   <addaction name="actionFitWidth80"/>
+   <addaction name="separator"/>
+   <addaction name="actionPageModeSingle"/>
+   <addaction name="actionPageModeDouble"/>
+   <addaction name="actionPageModeTriple"/>
+   <addaction name="actionPageModeQuadruple"/>
+   <addaction name="separator"/>
+   <addaction name="actionPageFlowRightToLeft"/>
+   <addaction name="actionPageFlowLeftToRight"/>
+   <addaction name="separator"/>
+   <addaction name="actionFullscreen"/>
+   <addaction name="separator"/>
+   <addaction name="actionAddBookmark"/>
+   <addaction name="actionBookmarkList"/>
+  </widget>
+  <widget class="QToolBar" name="tb_right">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="windowTitle">
+    <string notr="true">tb_right</string>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <action name="actionPageModeSingle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/1column</normaloff>:/icon/1column</iconset>
+   </property>
+   <property name="text">
+    <string>1 Page</string>
+   </property>
+   <property name="toolTip">
+    <string>1 Page</string>
+   </property>
+  </action>
+  <action name="actionFileOpenFile">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/open-archive</normaloff>:/icon/open-archive</iconset>
+   </property>
+   <property name="text">
+    <string>Open File</string>
+   </property>
+  </action>
+  <action name="actionFileOpenFolder">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/open_folder</normaloff>:/icon/open_folder</iconset>
+   </property>
+   <property name="text">
+    <string>Open Folder</string>
+   </property>
+  </action>
+  <action name="actionFileExit">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/exit</normaloff>:/icon/exit</iconset>
+   </property>
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionFullscreen">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/full_screen</normaloff>:/icon/full_screen</iconset>
+   </property>
+   <property name="text">
+    <string>Fullscreen</string>
+   </property>
+   <property name="toolTip">
+    <string>Fullscreen (F11)</string>
+   </property>
+  </action>
+  <action name="actionScrollFlowUpDown">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/horizontal</normaloff>:/icon/horizontal</iconset>
+   </property>
+   <property name="text">
+    <string>Vertical</string>
+   </property>
+   <property name="toolTip">
+    <string>Vertical</string>
+   </property>
+  </action>
+  <action name="actionScrollFlowLeftRight">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/vertical</normaloff>:/icon/vertical</iconset>
+   </property>
+   <property name="text">
+    <string>Horizontal</string>
+   </property>
+   <property name="toolTip">
+    <string>Horizontal</string>
+   </property>
+  </action>
+  <action name="actionPageModeDouble">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/2columns</normaloff>:/icon/2columns</iconset>
+   </property>
+   <property name="text">
+    <string>2 Pages</string>
+   </property>
+   <property name="toolTip">
+    <string>2 Pages</string>
+   </property>
+  </action>
+  <action name="actionPageModeTriple">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/3columns</normaloff>:/icon/3columns</iconset>
+   </property>
+   <property name="text">
+    <string>3 Pages</string>
+   </property>
+   <property name="toolTip">
+    <string>3 Pages</string>
+   </property>
+  </action>
+  <action name="actionFitWidth">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/fit-width</normaloff>:/icon/fit-width</iconset>
+   </property>
+   <property name="text">
+    <string>Fit Width</string>
+   </property>
+   <property name="toolTip">
+    <string>Fit Width</string>
+   </property>
+  </action>
+  <action name="actionFitHeight">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/fit-height</normaloff>:/icon/fit-height</iconset>
+   </property>
+   <property name="text">
+    <string>Fit Height</string>
+   </property>
+   <property name="toolTip">
+    <string>Fit Height</string>
+   </property>
+  </action>
+  <action name="actionFitBoth">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/fit-both</normaloff>:/icon/fit-both</iconset>
+   </property>
+   <property name="text">
+    <string>Fit Both</string>
+   </property>
+   <property name="toolTip">
+    <string>Fit Both</string>
+   </property>
+  </action>
+  <action name="actionFitWidth80">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/fit-width-80</normaloff>:/icon/fit-width-80</iconset>
+   </property>
+   <property name="text">
+    <string>Fit Width 80%</string>
+   </property>
+   <property name="toolTip">
+    <string>Fit Width 80%</string>
+   </property>
+  </action>
+  <action name="actionPageFlowRightToLeft">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/right-to-left</normaloff>:/icon/right-to-left</iconset>
+   </property>
+   <property name="text">
+    <string>Right to Left</string>
+   </property>
+   <property name="toolTip">
+    <string>Right to Left</string>
+   </property>
+  </action>
+  <action name="actionPageFlowLeftToRight">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/left-to-right</normaloff>:/icon/left-to-right</iconset>
+   </property>
+   <property name="text">
+    <string>Left to Right</string>
+   </property>
+   <property name="toolTip">
+    <string>Left to Right</string>
+   </property>
+  </action>
+  <action name="actionPageModeQuadruple">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/4columns</normaloff>:/icon/4columns</iconset>
+   </property>
+   <property name="text">
+    <string>4 Pages</string>
+   </property>
+   <property name="toolTip">
+    <string>4 Pages</string>
+   </property>
+  </action>
+  <action name="actionAddBookmark">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/bookmark</normaloff>:/icon/bookmark</iconset>
+   </property>
+   <property name="text">
+    <string>Add Bookmark</string>
+   </property>
+   <property name="toolTip">
+    <string>Add Bookmark</string>
+   </property>
+  </action>
+  <action name="actionBookmarkList">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/list</normaloff>:/icon/list</iconset>
+   </property>
+   <property name="text">
+    <string>Bookmark List</string>
+   </property>
+   <property name="toolTip">
+    <string>Bookmark List</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

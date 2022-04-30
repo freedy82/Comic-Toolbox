@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import QTimer
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtGui import QIcon, QPixmap, QCursor
 from PyQt5.QtWidgets import QSystemTrayIcon, QMenu
 from PyQt5.QtMultimedia import QSound
 from functools import partial
@@ -13,9 +13,9 @@ from models.converter_controller import ConverterController
 from models.cropper_controller import CropperController
 from models.archiver_controller import ArchiverController
 from models.settings_controller import SettingsController
-from models.about_window_controller import AboutWindowController
+#from models.about_window_controller import AboutWindowController
 from models.help_window_controller import HelpWindowController
-
+from models.reader_window_controller import ReaderWindowController
 
 class MainWindowController(QtWidgets.QMainWindow):
 	def __init__(self,app,trans):
@@ -37,8 +37,9 @@ class MainWindowController(QtWidgets.QMainWindow):
 		self.cropper_controller = CropperController(app=app, ui=self.ui, main_controller=self)
 		self.archiver_controller = ArchiverController(app=app,ui=self.ui,main_controller=self)
 		self.settings_controller = SettingsController(app=app,ui=self.ui,main_controller=self)
+		self.reader_controller = ReaderWindowController(app=app,main_controller=self)
 
-		self.about_window_controller = AboutWindowController(app=self.app, main_controller=self)
+		#self.about_window_controller = AboutWindowController(app=self.app, main_controller=self)
 		self.help_window_controller = HelpWindowController(app=self.app, main_controller=self)
 
 	def setup_control(self):
@@ -47,9 +48,11 @@ class MainWindowController(QtWidgets.QMainWindow):
 		self.setup_tray_icon()
 
 		#action
+		self.ui.actionFileStartReader.triggered.connect(self.on_file_start_reader)
 		self.ui.actionFileExit.triggered.connect(self.on_file_exit)
 		self.ui.actionHelpAbout.triggered.connect(self.on_help_about)
 		self.ui.actionHelpHelp.triggered.connect(self.on_help_help)
+		self.ui.actionHelpAboutQt.triggered.connect(self.on_help_about_qt)
 
 		#self.ui.actionHelpThemeDefault.triggered.connect(partial(self.on_help_theme_select, theme={"name":""}))
 		pass
@@ -63,6 +66,8 @@ class MainWindowController(QtWidgets.QMainWindow):
 			self.tray_icon.setToolTip(TRSM("Comic Toolbox"))
 		if self.help_window_controller:
 			self.help_window_controller.retranslateUi()
+		if self.reader_controller:
+			self.reader_controller.retranslateUi()
 
 		self.setup_themes()
 
@@ -144,6 +149,15 @@ class MainWindowController(QtWidgets.QMainWindow):
 	def show_help(self):
 		self.help_window_controller.show()
 
+	def cursor_busy(self):
+		self.app.setOverrideCursor(QCursor(QtCore.Qt.WaitCursor))
+
+	def cursor_un_busy(self):
+		self.app.restoreOverrideCursor()
+
+	def set_window_opacity(self,opacity):
+		self.setWindowOpacity(opacity)
+
 	#action
 	def on_tray_icon_activated(self, reason):
 		if reason == QSystemTrayIcon.Trigger:
@@ -166,6 +180,9 @@ class MainWindowController(QtWidgets.QMainWindow):
 	def on_show_message(self):
 		self.show_tray_message("This is a message")
 
+	def on_file_start_reader(self):
+		self.reader_controller.show()
+
 	def on_file_exit(self):
 		if util.confirm_box(TRSM("Confirm to quit?"),self):
 			self.app.quit()
@@ -181,7 +198,7 @@ class MainWindowController(QtWidgets.QMainWindow):
 		self.cropper_controller.retranslateUi()
 		self.archiver_controller.retranslateUi()
 		self.settings_controller.retranslateUi()
-		self.about_window_controller.retranslateUi()
+		#self.about_window_controller.retranslateUi()
 
 		self.retranslateUi()
 
@@ -203,11 +220,31 @@ class MainWindowController(QtWidgets.QMainWindow):
 		self.show_help()
 
 	def on_help_about(self):
-		self.about_window_controller.show()
+		#self.about_window_controller.show()
+		message = ""
+		message += "<span style='font-weight:900;font-size:x-large'>" + TRSM("Comic Toolbox") + "</span><br><br>"
+		message += (TRSM("Version: %s") % APP_VERSION) + "<br><br>"
+		message += ("<a href=\"%s\">%s</a>" % (APP_LINK, APP_LINK)) + "<br><br>"
+		message += TRSM("Respect the copyright, please support the genuine version, and the resources downloaded or generated through this tool are prohibited from spreading and sharing!") + "<br>"
+		message += TRSM("It is prohibited to use this project for commercial activities!")
+
+		dlg = QtWidgets.QMessageBox(self)
+		icon = QPixmap(":/icon/main_icon")
+		dlg.setIconPixmap(icon)
+		dlg.about(self,TRSM("About Comic Toolbox"),message)
+
 		pass
+
+	def on_help_about_qt(self):
+		QtWidgets.QMessageBox().aboutQt(self, TRSM("About Qt"))
 
 	def tray_icon_message_clicked(self):
 		self.setVisible(True)
+
+	#debug
+	def show(self):
+		super().show()
+		#self.on_file_start_reader()
 
 	# replace event
 	def closeEvent(self, event):

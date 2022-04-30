@@ -1,3 +1,4 @@
+from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import QListWidgetItem
 
 from const import *
@@ -105,8 +106,10 @@ class DownloaderController(object):
 				self.site = site
 				self.parse_worker = SiteParseWorker(self.site)
 				self.parse_worker.finished.connect(self.parse_site_finish)
+				self.parse_worker.page_trigger.connect(self.parse_site_page_trigger)
 				self.parse_worker.start()
 				self.ui.btn_downloader_check.setEnabled(False)
+				self.main_controller.cursor_busy()
 			else:
 				util.msg_box(TRSM("Unsupported site"),self.main_controller)
 				pass
@@ -196,10 +199,16 @@ class DownloaderController(object):
 		self.update_chapter_list()
 
 	# callback function
+	def parse_site_page_trigger(self,page_no):
+		self.ui.statusbar.showMessage(TRSM("Parsing page %s") % page_no)
+
 	def parse_site_finish(self,item_list):
 		self.ui.btn_downloader_check.setEnabled(True)
-		if len(item_list) <= 0:
-			util.msg_box(TRSM("Can not found list"),self.main_controller)
+		self.main_controller.cursor_un_busy()
+		self.ui.statusbar.showMessage("")
+
+		#if len(item_list) <= 0:
+		#	util.msg_box(TRSM("Can not found list"),self.main_controller)
 
 		self.item_list = item_list
 		#print("get list:")

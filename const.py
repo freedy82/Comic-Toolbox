@@ -13,22 +13,14 @@ TRS = QtCore.QCoreApplication.translate
 def TRSM(str_name):
     return TRS("MainWindow", str_name)
 
-APP_VERSION = "0.6.5"
+APP_VERSION = "0.8.0"
 APP_LINK = "https://github.com/freedy82/Comic-Toolbox"
 
 IMAGE_EXTS = ("jpg","gif","png","jpeg","webp")
 
-# setting for AI
-# REAL_CUGAN_DIR = "E:/Real-CUGAN/"
-# REAL_CUGAN_INPUT = REAL_CUGAN_DIR + "input_dir/"
-# REAL_CUGAN_OUTPUT = REAL_CUGAN_DIR + "output_dir/"
-# REAL_CUGAN_GO = REAL_CUGAN_DIR + "packages100/execc.exe"
-#
-
 # should not change below debug only
 DOWNLOAD_IMAGES_PER_BOOK = 0    # 0 for unlimited, number for fast debug
 BY_PASS_DOWNLOAD = False        # debug
-# BY_PASS_AI = True             # debug
 
 WEB_BOT = WebBot(agent=MY_CONFIG.get("general", "agent"),
                  time_out=float(MY_CONFIG.get("general", "timeout")),

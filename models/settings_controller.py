@@ -1,6 +1,8 @@
 import json
 import re
-from PyQt5.QtWidgets import QFileDialog, QListWidgetItem
+
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QFileDialog, QListWidgetItem, QColorDialog
 
 import util
 from const import *
@@ -18,22 +20,36 @@ class SettingsController(object):
 	def setup_control(self):
 		self.ui.cbx_settings_proxy_mode.addItems([TRSM("Disable proxy"),TRSM("Use proxy and not proxy same time"),TRSM("Only use proxy")])
 		self.ui.cbx_settings_proxy_type.addItems([TRSM("https"),TRSM("http")])
+		self.ui.cbx_settings_cugan_denoise.addItems([TRSM("No effect"),TRSM("Level 0"),TRSM("Level 1"),TRSM("Level 2"),TRSM("Level 3")])
+		self.ui.cbx_settings_cugan_resize.addItems([TRSM("No"),TRSM("Yes")])
 
 		# UI Display
 		self.retranslateUi()
 		self.load_config()
 
-		# Button
+		# action
 		self.ui.btn_settings_save.clicked.connect(self.btn_settings_save_clicked)
 		self.ui.btn_settings_reset.clicked.connect(self.btn_settings_reset_clicked)
 		self.ui.btn_settings_general_folder.clicked.connect(self.btn_settings_general_folder_clicked)
 		self.ui.btn_settings_proxy_add.clicked.connect(self.btn_settings_proxy_add_clicked)
 		self.ui.btn_settings_proxy_delete.clicked.connect(self.btn_settings_proxy_delete_clicked)
+		self.ui.btn_settings_cugan_browser.clicked.connect(self.btn_settings_cugan_browser_clicked)
+		self.ui.btn_settings_reader_background.clicked.connect(self.btn_settings_reader_background_clicked)
+		self.ui.txt_settings_reader_background.textChanged.connect(self.txt_settings_reader_background_text_changed)
 
 	def retranslateUi(self):
 		self.ui.cbx_settings_proxy_mode.setItemText(0,TRSM("Disable proxy"))
 		self.ui.cbx_settings_proxy_mode.setItemText(1,TRSM("Use proxy and not proxy same time"))
 		self.ui.cbx_settings_proxy_mode.setItemText(2,TRSM("Only use proxy"))
+
+		self.ui.cbx_settings_cugan_denoise.setItemText(0,TRSM("No effect"))
+		self.ui.cbx_settings_cugan_denoise.setItemText(1,TRSM("Level 0"))
+		self.ui.cbx_settings_cugan_denoise.setItemText(2,TRSM("Level 1"))
+		self.ui.cbx_settings_cugan_denoise.setItemText(3,TRSM("Level 2"))
+		self.ui.cbx_settings_cugan_denoise.setItemText(4,TRSM("Level 3"))
+
+		self.ui.cbx_settings_cugan_resize.setItemText(0,TRSM("No"))
+		self.ui.cbx_settings_cugan_resize.setItemText(1,TRSM("Yes"))
 
 		pass
 
@@ -46,6 +62,22 @@ class SettingsController(object):
 		if folder_path != "":
 			self.ui.txt_settings_general_folder.setText(folder_path)
 		pass
+
+	def btn_settings_reader_background_clicked(self):
+		old_color = QColor(self.ui.txt_settings_reader_background.text())
+		color = QColorDialog.getColor(old_color,self.main_controller,TRSM("Pick a color"))
+		if color.isValid():
+			color_name = color.name()
+			self.ui.txt_settings_reader_background.setText(color_name)
+			self.ui.lbl_settings_reader_background_preview.setStyleSheet("background-color: "+color_name+";")
+
+	def btn_settings_cugan_browser_clicked(self):
+		old_file_path = self.ui.txt_settings_cugan_location.text()
+		if old_file_path == "":
+			old_file_path = "./"
+		file_path = QFileDialog.getOpenFileName(self.main_controller,TRSM("EXE location"), old_file_path)
+		if len(file_path) >= 2 and file_path[0] != "":
+			self.ui.txt_settings_cugan_location.setText(file_path[0])
 
 	def btn_settings_proxy_add_clicked(self):
 		if self.ui.txt_settings_proxy_ip.text() != "":
@@ -91,6 +123,12 @@ class SettingsController(object):
 
 		pass
 
+	def txt_settings_reader_background_text_changed(self):
+		color_str = self.ui.txt_settings_reader_background.text()
+		q_color = QColor(color_str)
+		if q_color.isValid():
+			self.ui.lbl_settings_reader_background_preview.setStyleSheet("background-color: " + color_str)
+
 	# internal
 	def load_config(self):
 		#general
@@ -123,6 +161,10 @@ class SettingsController(object):
 		check_is_2_page = MY_CONFIG.get("general", "check_is_2_page")
 		self.ui.spin_settings_check_is_2_page.setValue(float(check_is_2_page))
 
+		reader_background = MY_CONFIG.get("reader", "background")
+		self.ui.txt_settings_reader_background.setText(reader_background)
+		self.ui.lbl_settings_reader_background_preview.setStyleSheet("background-color:"+reader_background+";")
+
 		#anti ban
 		page_sleep = MY_CONFIG.get("anti-ban", "page_sleep")
 		self.ui.spin_settings_page_sleep.setValue(float(page_sleep))
@@ -144,6 +186,19 @@ class SettingsController(object):
 				else:
 					item.setCheckState(QtCore.Qt.Unchecked)
 				self.ui.list_settings_proxy.addItem(item)
+
+		#real-cugan
+		exe_location = MY_CONFIG.get("real-cugan", "exe_location")
+		self.ui.txt_settings_cugan_location.setText(exe_location)
+
+		scale = int(MY_CONFIG.get("real-cugan", "scale"))
+		self.ui.spin_settings_cugan_scale.setValue(scale)
+
+		denoise_level = int(MY_CONFIG.get("real-cugan", "denoise_level"))
+		self.ui.cbx_settings_cugan_denoise.setCurrentIndex(denoise_level+1)
+
+		resize = int(MY_CONFIG.get("real-cugan", "resize"))
+		self.ui.cbx_settings_cugan_resize.setCurrentIndex(resize)
 
 		#misc
 		display_message = MY_CONFIG.get("misc", "display_message")
@@ -173,6 +228,7 @@ class SettingsController(object):
 		MY_CONFIG.set("general","image_padding",str(self.ui.spin_settings_image_padding.value()))
 		MY_CONFIG.set("general","jpg_quality",str(self.ui.spin_settings_jpg_quality.value()))
 		MY_CONFIG.set("general","check_is_2_page",str(self.ui.spin_settings_check_is_2_page.value()))
+		MY_CONFIG.set("reader","background",self.ui.txt_settings_reader_background.text())
 
 		#anti ban
 		MY_CONFIG.set("anti-ban","page_sleep",str(self.ui.spin_settings_page_sleep.value()))
@@ -180,6 +236,12 @@ class SettingsController(object):
 		MY_CONFIG.set("anti-ban","download_worker",str(self.ui.spin_settings_download_worker.value()))
 		MY_CONFIG.set("anti-ban","proxy_mode",str(self.ui.cbx_settings_proxy_mode.currentIndex()))
 		MY_CONFIG.set("anti-ban","proxy_list",json.dumps(self.proxy_list_to_json()))
+
+		#real-cugan
+		MY_CONFIG.set("real-cugan","exe_location",self.ui.txt_settings_cugan_location.text())
+		MY_CONFIG.set("real-cugan","scale",str(self.ui.spin_settings_cugan_scale.value()))
+		MY_CONFIG.set("real-cugan","denoise_level",str(self.ui.cbx_settings_cugan_denoise.currentIndex()-1))
+		MY_CONFIG.set("real-cugan","resize",str(self.ui.cbx_settings_cugan_resize.currentIndex()))
 
 		#misc
 		MY_CONFIG.set("misc","display_message",str(self.ui.radio_settings_message_yes.isChecked()))

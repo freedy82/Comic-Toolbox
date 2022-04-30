@@ -9,20 +9,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>420</width>
-    <height>300</height>
+    <width>480</width>
+    <height>320</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>420</width>
-    <height>300</height>
+    <width>480</width>
+    <height>320</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>420</width>
-    <height>300</height>
+    <width>480</width>
+    <height>320</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -40,8 +40,8 @@
     <rect>
      <x>9</x>
      <y>9</y>
-     <width>401</width>
-     <height>251</height>
+     <width>461</width>
+     <height>271</height>
     </rect>
    </property>
    <property name="currentIndex">
@@ -107,9 +107,9 @@ p, li { white-space: pre-wrap; }
   <widget class="QDialogButtonBox" name="btn_box">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>270</y>
-     <width>411</width>
+     <x>10</x>
+     <y>290</y>
+     <width>461</width>
      <height>23</height>
     </rect>
    </property>

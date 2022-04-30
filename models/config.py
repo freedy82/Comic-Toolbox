@@ -1,6 +1,7 @@
 # import configparser
 from __future__ import annotations
 from configparser import RawConfigParser  # ConfigParser, SafeConfigParser, RawConfigParser
+import os
 
 class MyConfig(RawConfigParser):
 	CONFIG_FILE_NAME = ""
@@ -15,11 +16,13 @@ class MyConfig(RawConfigParser):
 		#for name in section_names:
 		#	self.__dict__.update(parser.items(name))
 		if need_init_as_config:
-			self.inti_with_default()
+			self.init_with_default()
 
-	def inti_with_default(self):
+	def init_with_default(self):
 		if self.get("general","language") == "":
-			self.set("general","language","zh_Hant")
+			#todo add system language support
+			#self.set("general","language","zh_Hant")
+			self.set("general","language","en")
 
 		if self.get("general","download_folder") == "":
 			self.set("general","download_folder","./books")
@@ -49,6 +52,16 @@ class MyConfig(RawConfigParser):
 		if self.get("anti-ban","proxy_mode") == "":
 			self.set("anti-ban","proxy_mode","0")
 
+		if self.get("real-cugan","exe_location") == "":
+			if os.path.isfile("./realcugan-ncnn-vulkan/realcugan-ncnn-vulkan.exe"):
+				self.set("real-cugan","exe_location","./realcugan-ncnn-vulkan/realcugan-ncnn-vulkan.exe")
+		if self.get("real-cugan","scale") == "":
+			self.set("real-cugan","scale","2")
+		if self.get("real-cugan","denoise_level") == "":
+			self.set("real-cugan","denoise_level","3")
+		if self.get("real-cugan","resize") == "":
+			self.set("real-cugan","resize","0")
+
 		if self.get("misc","display_message") == "":
 			self.set("misc","display_message","True")
 		if self.get("misc","play_sound") == "":
@@ -62,6 +75,23 @@ class MyConfig(RawConfigParser):
 			self.set("filter","brightness","1.0")
 		if self.get("filter","color") == "":
 			self.set("filter","color","1.0")
+		if self.get("filter","rotate") == "":
+			self.set("filter","rotate","0")
+		if self.get("filter","horizontal_flip") == "":
+			self.set("filter","horizontal_flip","False")
+		if self.get("filter","vertical_flip") == "":
+			self.set("filter","vertical_flip","False")
+
+		if self.get("reader","scroll_flow") == "":
+			self.set("reader","scroll_flow","LEFT_RIGHT")
+		if self.get("reader","page_fit") == "":
+			self.set("reader","page_fit","BOTH")
+		if self.get("reader","page_mode") == "":
+			self.set("reader","page_mode","DOUBLE")
+		if self.get("reader","page_flow") == "":
+			self.set("reader","page_flow","RIGHT_TO_LEFT")
+		if self.get("reader","background") == "":
+			self.set("reader","background","#000000")
 
 		pass
 

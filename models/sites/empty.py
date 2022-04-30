@@ -41,6 +41,7 @@ class Empty(Site):
 	def get_book_item_list_from_html(self, html_code, url):
 		#todo parse book list from html
 		#   can have chapter,book,extra section
+		#   each list item have title,url,index,ref
 		return {}
 
 	def get_image_list_from_html(self,html_code,url):
