@@ -2,7 +2,7 @@
 
 # Comic Toolbox ( Manga Toolbox )
 
-[Chinese version please check this page (中文版請看這)](README_ZH.md)
+[Chinese version please check this page (中文版請看這)](readmes/README_ZH.md)
 
 ## At the front
 
@@ -77,48 +77,48 @@ The installation file can be downloaded from the official Node.js website [https
 
 Download tool
 
-![Download Tool](screenshots/en/downloader.jpg "Download Tool")
+![Download Tool](readmes/screenshots/en/downloader.jpg "Download Tool")
 
 Reader
 
-![Reader](screenshots/en/reader.jpg "Reader")
+![Reader](readmes/screenshots/en/reader.jpg "Reader")
 
 Conversion tool
 
-![Converter Tool](screenshots/en/converter.jpg "Converter Tool")
+![Converter Tool](readmes/screenshots/en/converter.jpg "Converter Tool")
 
 Crop tool
 
-![Crop tool](screenshots/en/cropper.jpg "Crop tool")
+![Crop tool](readmes/screenshots/en/cropper.jpg "Crop tool")
 
 Compression tool
 
-![Compressor](screenshots/en/archiver.jpg "Compressor")
+![Compressor](readmes/screenshots/en/archiver.jpg "Compressor")
 
 Image processing
 
-![Image processing](screenshots/en/image_filter.jpg "Image processing")
+![Image processing](readmes/screenshots/en/image_filter.jpg "Image processing")
 
 Image cropping
 
-![Image crop](screenshots/en/image_cropper.jpg "Image crop")
+![Image crop](readmes/screenshots/en/image_cropper.jpg "Image crop")
 
 Settings - Prevent Banned
 
-![Settings](screenshots/en/settings_anti-ban.jpg "Settings")
+![Settings](readmes/screenshots/en/settings_anti-ban.jpg "Settings")
 
 Bookmarks (some I'm watching, some I'm testing 😅 )
 
-![Bookmarks](screenshots/en/bookmarks.jpg "Bookmarks")
+![Bookmarks](readmes/screenshots/en/bookmarks.jpg "Bookmarks")
 
 Dark theme
 
-![Dark Theme](screenshots/en/dark_theme.jpg "Dark Theme")
+![Dark Theme](readmes/screenshots/en/dark_theme.jpg "Dark Theme")
 
 
 2 times the Real-CUGAN noise reduction effect (the left is the original image, the right is the rendering)
 
-![Real-CUGAN effect](screenshots/real-cugan.jpg "Real-CUGAN effect")
+![Real-CUGAN effect](readmes/screenshots/real-cugan.jpg "Real-CUGAN effect")
 
 ## Notice
 
