@@ -104,6 +104,20 @@
              </widget>
             </item>
             <item>
+             <widget class="QPushButton" name="btn_downloader_bookmark">
+              <property name="toolTip">
+               <string>Add to bookmark</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/icon/bookmark</normaloff>:/icon/bookmark</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QPushButton" name="btn_downloader_list">
               <property name="toolTip">
                <string>Display bookmark list</string>
@@ -121,20 +135,6 @@
              <widget class="QPushButton" name="btn_downloader_check">
               <property name="text">
                <string>Check</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="btn_downloader_bookmark">
-              <property name="toolTip">
-               <string>Add to bookmark</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="resources.qrc">
-                <normaloff>:/icon/bookmark</normaloff>:/icon/bookmark</iconset>
               </property>
              </widget>
             </item>

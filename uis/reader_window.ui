@@ -520,10 +520,10 @@ color: #FFFFFF;</string>
      <normaloff>:/icon/bookmark</normaloff>:/icon/bookmark</iconset>
    </property>
    <property name="text">
-    <string>Add Bookmark</string>
+    <string>Add to bookmark</string>
    </property>
    <property name="toolTip">
-    <string>Add Bookmark</string>
+    <string>Add to bookmark</string>
    </property>
   </action>
   <action name="actionBookmarkList">
@@ -532,10 +532,10 @@ color: #FFFFFF;</string>
      <normaloff>:/icon/list</normaloff>:/icon/list</iconset>
    </property>
    <property name="text">
-    <string>Bookmark List</string>
+    <string>Display bookmark list</string>
    </property>
    <property name="toolTip">
-    <string>Bookmark List</string>
+    <string>Display bookmark list</string>
    </property>
   </action>
  </widget>

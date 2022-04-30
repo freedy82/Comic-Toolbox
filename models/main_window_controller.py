@@ -60,6 +60,8 @@ class MainWindowController(QtWidgets.QMainWindow):
 	def retranslateUi(self):
 		if self.st_showAction:
 			self.st_showAction.setText(TRSM("Show Main Window"))
+		if self.st_hideAction:
+			self.st_hideAction.setText(TRSM("Hide Main Window"))
 		if self.st_exitAction:
 			self.st_exitAction.setText(TRSM("Exit"))
 		if self.tray_icon:

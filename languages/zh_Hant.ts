@@ -14,7 +14,7 @@
         <translation>網址</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="961"/>
+        <location filename="../uis/main_window.py" line="962"/>
         <source>Check</source>
         <translation>檢查</translation>
     </message>
@@ -609,12 +609,12 @@
         <translation>顯示支持的站點列表</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="960"/>
+        <location filename="../uis/reader_window.py" line="273"/>
         <source>Display bookmark list</source>
         <translation>顯示書籤列表</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="962"/>
+        <location filename="../uis/reader_window.py" line="271"/>
         <source>Add to bookmark</source>
         <translation>添加到書籤</translation>
     </message>
@@ -821,12 +821,12 @@
     <message>
         <location filename="../uis/reader_window.py" line="271"/>
         <source>Add Bookmark</source>
-        <translation>加入書簽</translation>
+        <translation type="obsolete">加入書簽</translation>
     </message>
     <message>
         <location filename="../uis/reader_window.py" line="273"/>
         <source>Bookmark List</source>
-        <translation>書簽清單</translation>
+        <translation type="obsolete">書簽清單</translation>
     </message>
     <message>
         <location filename="../uis/main_window.py" line="1043"/>

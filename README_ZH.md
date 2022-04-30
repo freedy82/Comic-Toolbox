@@ -77,6 +77,10 @@ QSS 暗色主題參考自 书包 的 [QSS-Skin-Builder](https://github.com/satch
 
 ![下載工具](screenshots/zh/downloader.jpg "下載工具")
 
+閱讀器
+
+![閱讀器](screenshots/zh/reader.jpg "閱讀器")
+
 轉換工具
 
 ![轉換工具](screenshots/zh/converter.jpg "轉換工具")
@@ -108,11 +112,6 @@ QSS 暗色主題參考自 书包 的 [QSS-Skin-Builder](https://github.com/satch
 暗色主題
 
 ![暗色主題](screenshots/zh/dark_theme.jpg "暗色主題")
-
-閱讀器
-
-![閱讀器](screenshots/zh/reader.jpg "閱讀器")
-
 
 2 倍的 Real-CUGAN 降噪效果 （ 左是原圖，右是效果圖 ）
 

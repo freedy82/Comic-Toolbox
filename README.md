@@ -79,6 +79,10 @@ Download tool
 
 ![Download Tool](screenshots/en/downloader.jpg "Download Tool")
 
+Reader
+
+![Reader](screenshots/en/reader.jpg "Reader")
+
 Conversion tool
 
 ![Converter Tool](screenshots/en/converter.jpg "Converter Tool")
@@ -110,10 +114,6 @@ Bookmarks (some I'm watching, some I'm testing 😅 )
 Dark theme
 
 ![Dark Theme](screenshots/en/dark_theme.jpg "Dark Theme")
-
-Reader
-
-![Reader](screenshots/en/reader.jpg "Reader")
 
 
 2 times the Real-CUGAN noise reduction effect (the left is the original image, the right is the rendering)

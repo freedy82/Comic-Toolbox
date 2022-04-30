@@ -134,5 +134,5 @@ bookmarks.ini
 tools/
 books/
 realcugan-ncnn-vulkan/
-make_exe.bat
 make_zip.bat
+make_exe.bat

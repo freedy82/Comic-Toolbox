@@ -267,10 +267,10 @@ class Ui_MainWindow(object):
         self.actionPageFlowLeftToRight.setToolTip(_translate("MainWindow", "Left to Right"))
         self.actionPageModeQuadruple.setText(_translate("MainWindow", "4 Pages"))
         self.actionPageModeQuadruple.setToolTip(_translate("MainWindow", "4 Pages"))
-        self.actionAddBookmark.setText(_translate("MainWindow", "Add Bookmark"))
-        self.actionAddBookmark.setToolTip(_translate("MainWindow", "Add Bookmark"))
-        self.actionBookmarkList.setText(_translate("MainWindow", "Bookmark List"))
-        self.actionBookmarkList.setToolTip(_translate("MainWindow", "Bookmark List"))
+        self.actionAddBookmark.setText(_translate("MainWindow", "Add to bookmark"))
+        self.actionAddBookmark.setToolTip(_translate("MainWindow", "Add to bookmark"))
+        self.actionBookmarkList.setText(_translate("MainWindow", "Display bookmark list"))
+        self.actionBookmarkList.setToolTip(_translate("MainWindow", "Display bookmark list"))
 from uis import resources_rc
 
 

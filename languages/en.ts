@@ -14,7 +14,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="961"/>
+        <location filename="../uis/main_window.py" line="962"/>
         <source>Check</source>
         <translation type="unfinished"></translation>
     </message>
@@ -529,12 +529,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="960"/>
+        <location filename="../uis/reader_window.py" line="273"/>
         <source>Display bookmark list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="962"/>
+        <location filename="../uis/reader_window.py" line="271"/>
         <source>Add to bookmark</source>
         <translation type="unfinished"></translation>
     </message>
@@ -736,16 +736,6 @@
     <message>
         <location filename="../uis/reader_window.py" line="269"/>
         <source>4 Pages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../uis/reader_window.py" line="271"/>
-        <source>Add Bookmark</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../uis/reader_window.py" line="273"/>
-        <source>Bookmark List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
