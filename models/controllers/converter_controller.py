@@ -3,8 +3,8 @@ from PyQt5.QtWidgets import QFileDialog, QListWidgetItem
 from models import util
 from models.const import *
 from uis.main_window import Ui_MainWindow
-from models.converter_worker import ConverterWorker
-from models.image_filter_window_controller import ImageFilterWindowController
+from models.workers.converter_worker import ConverterWorker
+from models.controllers.image_filter_window_controller import ImageFilterWindowController
 
 
 class ConverterController(object):

@@ -9,9 +9,9 @@ from PyQt5.QtCore import Qt, QEvent, QPoint, QSize, QTimer
 
 from models.const import *
 from models import util
-from uis import reader_window
-from models.bookmark_window_controller import BookmarkWindowController
 from models.reader import Reader
+from uis import reader_window
+from models.controllers.bookmark_window_controller import BookmarkWindowController
 
 class ScrollFlow(Enum):
 	LEFT_RIGHT = 1

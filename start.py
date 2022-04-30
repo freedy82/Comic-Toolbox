@@ -1,7 +1,7 @@
 from PyQt5 import QtCore,QtWidgets
 
 from models.const import *
-from models.main_window_controller import MainWindowController
+from models.controllers.main_window_controller import MainWindowController
 
 if __name__ == '__main__':
     import sys

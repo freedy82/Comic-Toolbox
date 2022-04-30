@@ -8,14 +8,14 @@ from functools import partial
 from models.const import *
 from models import util
 from uis import main_window
-from models.downloader_controller import DownloaderController
-from models.converter_controller import ConverterController
-from models.cropper_controller import CropperController
-from models.archiver_controller import ArchiverController
-from models.settings_controller import SettingsController
+from models.controllers.downloader_controller import DownloaderController
+from models.controllers.converter_controller import ConverterController
+from models.controllers.cropper_controller import CropperController
+from models.controllers.archiver_controller import ArchiverController
+from models.controllers.settings_controller import SettingsController
 #from models.about_window_controller import AboutWindowController
-from models.help_window_controller import HelpWindowController
-from models.reader_window_controller import ReaderWindowController
+from models.controllers.help_window_controller import HelpWindowController
+from models.controllers.reader_window_controller import ReaderWindowController
 
 class MainWindowController(QtWidgets.QMainWindow):
 	def __init__(self,app,trans):

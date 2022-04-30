@@ -7,7 +7,7 @@ from PIL import Image
 from models.const import *
 from models import util
 from uis import crop_window
-from models.crop_frame_controller import CropFrameController
+from models.controllers.crop_frame_controller import CropFrameController
 
 
 class CropWindowController(QtWidgets.QMainWindow):

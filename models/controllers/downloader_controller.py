@@ -3,11 +3,11 @@ from PyQt5.QtWidgets import QListWidgetItem
 
 from models.const import *
 from models import util
-from uis.main_window import Ui_MainWindow
-from models.site_parse_worker import SiteParseWorker
-from models.chapter_download_worker import ChapterDownloadWorker
-from models.bookmark_window_controller import BookmarkWindowController
 from models.site import Site
+from uis.main_window import Ui_MainWindow
+from models.workers.site_parse_worker import SiteParseWorker
+from models.workers.chapter_download_worker import ChapterDownloadWorker
+from models.controllers.bookmark_window_controller import BookmarkWindowController
 
 
 class DownloaderController(object):

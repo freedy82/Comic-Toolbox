@@ -2,8 +2,6 @@ import os.path
 import glob
 import shutil
 import re
-#from concurrent.futures.thread import ThreadPoolExecutor
-
 import imagesize
 import threading
 from pathlib import Path
