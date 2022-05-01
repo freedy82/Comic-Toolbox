@@ -1217,14 +1217,21 @@
               </property>
              </widget>
             </item>
-            <item row="10" column="0">
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_settings_reader">
+           <attribute name="title">
+            <string>Reader</string>
+           </attribute>
+           <layout class="QFormLayout" name="formLayout_2">
+            <item row="0" column="0">
              <widget class="QLabel" name="lbl_settings_reader_background">
               <property name="text">
                <string>Reader background</string>
               </property>
              </widget>
             </item>
-            <item row="10" column="1">
+            <item row="0" column="1">
              <layout class="QHBoxLayout" name="layout_settings_reader_background">
               <item>
                <widget class="QLabel" name="lbl_settings_reader_background_preview">
@@ -1263,14 +1270,14 @@
               </item>
              </layout>
             </item>
-            <item row="11" column="0">
+            <item row="1" column="0">
              <widget class="QLabel" name="lbl_settings_reader_auto_play_interval">
               <property name="text">
                <string>Reader auto play interval</string>
               </property>
              </widget>
             </item>
-            <item row="11" column="1">
+            <item row="1" column="1">
              <widget class="QDoubleSpinBox" name="spin_settings_reader_auto_play_interval">
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1294,6 +1301,16 @@
                <double>5.000000000000000</double>
               </property>
              </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="lbl_settings_reader_auto_play_pgb">
+              <property name="text">
+               <string>Reader auto play display progress bar</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QComboBox" name="cbx_settings_reader_auto_play_pgb"/>
             </item>
            </layout>
           </widget>
@@ -1953,7 +1970,7 @@
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="btn_group_settings_message"/>
   <buttongroup name="btn_group_settings_sound"/>
+  <buttongroup name="btn_group_settings_message"/>
  </buttongroups>
 </ui>

@@ -96,6 +96,8 @@ class MyConfig(RawConfigParser):
 			self.set("reader","background","#000000")
 		if self.get("reader","auto_play_interval") == "":
 			self.set("reader","auto_play_interval","5")
+		if self.get("reader","auto_play_pgb") == "":
+			self.set("reader","auto_play_pgb","1")
 
 		pass
 

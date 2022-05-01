@@ -44,7 +44,7 @@ def get_number_of_images_from_folder(folder,num=1,exts=IMAGE_EXTS):
 		lists = lists[0:num]
 	return lists
 
-def get_image_list_from_folder(folder,results,exts=IMAGE_EXTS,path=""):
+def get_image_list_from_folder(folder,results,main_folder,exts=IMAGE_EXTS,path=""):
 	files = sorted(os.listdir(folder))
 	root_files = []
 	threads = []
@@ -54,11 +54,13 @@ def get_image_list_from_folder(folder,results,exts=IMAGE_EXTS,path=""):
 		if os.path.isdir(full_file):
 			new_path = os.path.join(path,file)
 			new_path = Path(new_path).as_posix()
-			tmp_threading = threading.Thread(target=get_image_list_from_folder, args=(full_file,results,exts,new_path,))
+			tmp_threading = threading.Thread(target=get_image_list_from_folder, args=(full_file,results,main_folder,exts,new_path,))
 			threads.append(tmp_threading)
 			tmp_threading.start()
 		elif get_ext(file) in exts:
-			root_files.append(full_file)
+			#root_files.append(full_file)
+			rel_file = Path(os.path.relpath(full_file,main_folder)).as_posix()
+			root_files.append(rel_file)
 
 	for tmp_threading in threads:
 		tmp_threading.join()

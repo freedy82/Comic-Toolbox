@@ -1,8 +1,13 @@
 ## Changelog
 
-### v0.8.5
+### v0.8.5 ( 2022-05-01 )
 
 - Autoplay function added to comic reader (free your hands)
+- The download tool interface adds a notice of the download completed chapter
+- Add rotate on fly to Reader
+- Reader add right click popup menu
+- Update the render method for 3/4 pages mode of reader
+- Module cleanup
 
 ### v0.8.0
 

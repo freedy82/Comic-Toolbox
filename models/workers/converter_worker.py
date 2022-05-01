@@ -86,6 +86,8 @@ class ConverterWorker(QThread):
 
 	#internal
 	def _image_file_action(self,tmp_file,is_force_convert=False):
+		tmp_file = Path(tmp_file).as_posix()
+
 		to_file_with_path = os.path.relpath(tmp_file, self.from_folder)
 		full_target_file = os.path.join(self.to_folder, to_file_with_path)
 		ext = util.get_ext(full_target_file)
@@ -94,6 +96,8 @@ class ConverterWorker(QThread):
 		if target_path not in self.paths_created:
 			Path(target_path).mkdir(parents=True, exist_ok=True)
 			self.paths_created.append(target_path)
+
+		full_target_file = Path(full_target_file).as_posix()
 
 		if not os.path.exists(full_target_file) or self.is_overwrite:
 			if self.enable_real_cugan:

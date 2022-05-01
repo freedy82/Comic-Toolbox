@@ -34,26 +34,26 @@ class ZipReader(Reader):
 					results[path] = []
 				results[path].append(full_filename)
 
-		new_results = []
+		self.current_file_list = []
 		for path in results:
 			files = results[path]
 			files.sort()
-			new_results.append({"path":path,"files":files})
+			self.current_file_list.append({"path":path,"files":files})
 
-		return new_results
+		return self.current_file_list
 
 	def get_data_from_file(self,file):
 		return self.file_handler.read(file)
 
-	def get_qpixmap_from_file(self,file):
+	def get_q_pixmap_from_file(self,file):
 		q_pixmap = QPixmap()
 		q_pixmap.loadFromData(self.get_data_from_file(file))
-		return q_pixmap
+		return self.get_rotated_image_q_pixmap(file,q_pixmap)
 
 	def get_image_size(self,file):
 		data = self.get_data_from_file(file)
 		im = Image.open(io.BytesIO(data))
 		width, height = im.size
 		if width > 0 and height > 0:
-			return [width, height]
+			return self.get_rotated_image_size(file,[width, height])
 		return [0, 0]

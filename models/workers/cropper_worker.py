@@ -1,5 +1,6 @@
 from PyQt5.QtCore import QThread, pyqtSignal
 from PIL import Image
+from pathlib import Path
 
 from models.const import *
 from models import util
@@ -115,6 +116,8 @@ class CropperWorker(QThread):
 
 	def _start_crop_in_folder(self, folder):
 		full_folder = os.path.join(self.from_folder, folder)
+		full_folder = Path(full_folder).as_posix()
+
 		files = sorted(os.listdir(full_folder))
 		filtered_files = [x for x in files if x.endswith(IMAGE_EXTS)]
 		# get the first file not start with "0"
@@ -131,6 +134,8 @@ class CropperWorker(QThread):
 		if from_file != "" and to_file != "":
 			full_from_file = os.path.join(self.from_folder, folder, from_file)
 			full_to_file = os.path.join(self.from_folder, folder, to_file)
+			full_from_file = Path(full_from_file).as_posix()
+			full_to_file = Path(full_to_file).as_posix()
 			if to_file not in files or self.is_overwrite:
 				# take crop
 				is_cropped = self._start_crop_image(full_from_file,full_to_file)

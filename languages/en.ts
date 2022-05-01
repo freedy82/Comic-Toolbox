@@ -9,67 +9,67 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="976"/>
+        <location filename="../uis/main_window.py" line="987"/>
         <source>URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="980"/>
+        <location filename="../uis/main_window.py" line="991"/>
         <source>Check</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="981"/>
+        <location filename="../uis/main_window.py" line="992"/>
         <source>Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="982"/>
+        <location filename="../uis/main_window.py" line="993"/>
         <source>Author</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="983"/>
+        <location filename="../uis/main_window.py" line="994"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1038"/>
+        <location filename="../uis/main_window.py" line="1049"/>
         <source>Select</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1039"/>
+        <location filename="../uis/main_window.py" line="1050"/>
         <source>Unselect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1040"/>
+        <location filename="../uis/main_window.py" line="1051"/>
         <source>Select All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1041"/>
+        <location filename="../uis/main_window.py" line="1052"/>
         <source>Unselect All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1027"/>
+        <location filename="../uis/main_window.py" line="1038"/>
         <source>If file exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="989"/>
+        <location filename="../uis/main_window.py" line="1000"/>
         <source>Start Download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="990"/>
+        <location filename="../uis/main_window.py" line="1001"/>
         <source>Cancel Download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="991"/>
+        <location filename="../uis/main_window.py" line="1002"/>
         <source>Current download</source>
         <translation type="unfinished"></translation>
     </message>
@@ -79,167 +79,167 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="993"/>
+        <location filename="../uis/main_window.py" line="1004"/>
         <source>Total download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="995"/>
+        <location filename="../uis/main_window.py" line="1006"/>
         <source>Downloader</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1078"/>
+        <location filename="../uis/main_window.py" line="1091"/>
         <source>Browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1025"/>
+        <location filename="../uis/main_window.py" line="1036"/>
         <source>Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1008"/>
+        <location filename="../uis/main_window.py" line="1019"/>
         <source>If destination file exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1009"/>
+        <location filename="../uis/main_window.py" line="1020"/>
         <source>If converted, remove source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1012"/>
+        <location filename="../uis/main_window.py" line="1023"/>
         <source>Start Convert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1013"/>
+        <location filename="../uis/main_window.py" line="1024"/>
         <source>Cancel Convert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1015"/>
+        <location filename="../uis/main_window.py" line="1026"/>
         <source>Converter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1033"/>
+        <location filename="../uis/main_window.py" line="1044"/>
         <source>From folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1026"/>
+        <location filename="../uis/main_window.py" line="1037"/>
         <source>Method</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1037"/>
+        <location filename="../uis/main_window.py" line="1048"/>
         <source>Scan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1042"/>
+        <location filename="../uis/main_window.py" line="1053"/>
         <source>Format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1043"/>
+        <location filename="../uis/main_window.py" line="1054"/>
         <source>If target archiver exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1045"/>
+        <location filename="../uis/main_window.py" line="1056"/>
         <source>Title (prefix)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1046"/>
+        <location filename="../uis/main_window.py" line="1057"/>
         <source>Start Archiver</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1047"/>
+        <location filename="../uis/main_window.py" line="1058"/>
         <source>Cancel Archiver</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1049"/>
+        <location filename="../uis/main_window.py" line="1060"/>
         <source>Archiver</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1050"/>
+        <location filename="../uis/main_window.py" line="1061"/>
         <source>Download folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1052"/>
+        <location filename="../uis/main_window.py" line="1063"/>
         <source>Max retry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1053"/>
+        <location filename="../uis/main_window.py" line="1064"/>
         <source>Timeout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1069"/>
+        <location filename="../uis/main_window.py" line="1082"/>
         <source>s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1055"/>
+        <location filename="../uis/main_window.py" line="1066"/>
         <source>User agent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1056"/>
+        <location filename="../uis/main_window.py" line="1067"/>
         <source>Book folder zero padding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1057"/>
+        <location filename="../uis/main_window.py" line="1068"/>
         <source>Chapter folder zero padding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1058"/>
+        <location filename="../uis/main_window.py" line="1069"/>
         <source>Image file zero padding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1059"/>
+        <location filename="../uis/main_window.py" line="1070"/>
         <source>JPG quality</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1065"/>
+        <location filename="../uis/main_window.py" line="1072"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1066"/>
+        <location filename="../uis/main_window.py" line="1079"/>
         <source>Page sleep</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1068"/>
+        <location filename="../uis/main_window.py" line="1081"/>
         <source>Image sleep</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1070"/>
+        <location filename="../uis/main_window.py" line="1083"/>
         <source>Image parallel download worker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1076"/>
+        <location filename="../uis/main_window.py" line="1089"/>
         <source>Anti Ban</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1091"/>
+        <location filename="../uis/main_window.py" line="1104"/>
         <source>Misc</source>
         <translation type="unfinished"></translation>
     </message>
@@ -249,42 +249,42 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1093"/>
+        <location filename="../uis/main_window.py" line="1106"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1094"/>
+        <location filename="../uis/main_window.py" line="1107"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="247"/>
+        <location filename="../uis/reader_window.py" line="271"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1102"/>
+        <location filename="../uis/main_window.py" line="1115"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1099"/>
+        <location filename="../uis/main_window.py" line="1112"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1097"/>
+        <location filename="../uis/main_window.py" line="1110"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1101"/>
+        <location filename="../uis/main_window.py" line="1114"/>
         <source>List of language...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1044"/>
+        <location filename="../uis/main_window.py" line="1055"/>
         <source>Combine multi folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -384,7 +384,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1032"/>
+        <location filename="../uis/main_window.py" line="1043"/>
         <source>Cropper</source>
         <translation type="unfinished"></translation>
     </message>
@@ -414,12 +414,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1060"/>
+        <location filename="../uis/main_window.py" line="1071"/>
         <source>Check is 2 page, width/height ratio larger than</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1005"/>
+        <location filename="../uis/main_window.py" line="1016"/>
         <source>To folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -429,27 +429,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1084"/>
+        <location filename="../uis/main_window.py" line="1097"/>
         <source>Display message notification after finish download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1088"/>
+        <location filename="../uis/main_window.py" line="1101"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1089"/>
+        <location filename="../uis/main_window.py" line="1102"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1087"/>
+        <location filename="../uis/main_window.py" line="1100"/>
         <source>Play sound notification after finish download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1035"/>
+        <location filename="../uis/main_window.py" line="1046"/>
         <source>Please select the comic series folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -484,12 +484,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1010"/>
+        <location filename="../uis/main_window.py" line="1021"/>
         <source>Use filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1011"/>
+        <location filename="../uis/main_window.py" line="1022"/>
         <source>Change</source>
         <translation type="unfinished"></translation>
     </message>
@@ -499,12 +499,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1029"/>
+        <location filename="../uis/main_window.py" line="1040"/>
         <source>Start Crop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1030"/>
+        <location filename="../uis/main_window.py" line="1041"/>
         <source>Cancel Crop</source>
         <translation type="unfinished"></translation>
     </message>
@@ -524,17 +524,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="977"/>
+        <location filename="../uis/main_window.py" line="988"/>
         <source>Display supported site list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="280"/>
+        <location filename="../uis/reader_window.py" line="304"/>
         <source>Display bookmark list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="278"/>
+        <location filename="../uis/reader_window.py" line="302"/>
         <source>Add to bookmark</source>
         <translation type="unfinished"></translation>
     </message>
@@ -554,62 +554,62 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1071"/>
+        <location filename="../uis/main_window.py" line="1084"/>
         <source>Proxy mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1072"/>
+        <location filename="../uis/main_window.py" line="1085"/>
         <source>Proxy List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1074"/>
+        <location filename="../uis/main_window.py" line="1087"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1073"/>
+        <location filename="../uis/main_window.py" line="1086"/>
         <source>IP:PORT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1098"/>
+        <location filename="../uis/main_window.py" line="1111"/>
         <source>Theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1103"/>
+        <location filename="../uis/main_window.py" line="1116"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1077"/>
+        <location filename="../uis/main_window.py" line="1090"/>
         <source>EXE Location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1079"/>
+        <location filename="../uis/main_window.py" line="1092"/>
         <source>Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1080"/>
+        <location filename="../uis/main_window.py" line="1093"/>
         <source>Denoise level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1081"/>
+        <location filename="../uis/main_window.py" line="1094"/>
         <source>Can download from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1083"/>
+        <location filename="../uis/main_window.py" line="1096"/>
         <source>Real-CUGAN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1082"/>
+        <location filename="../uis/main_window.py" line="1095"/>
         <source>Resize to same as source image after convert</source>
         <translation type="unfinished"></translation>
     </message>
@@ -619,12 +619,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1104"/>
+        <location filename="../uis/main_window.py" line="1117"/>
         <source>About Qt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/image_filter_window.py" line="247"/>
+        <location filename="../uis/reader_rotate_dialog.py" line="67"/>
         <source>Rotate</source>
         <translation type="unfinished"></translation>
     </message>
@@ -644,128 +644,153 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1105"/>
+        <location filename="../uis/main_window.py" line="1118"/>
         <source>Start Reader</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="250"/>
+        <location filename="../uis/reader_window.py" line="274"/>
         <source>Open File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="251"/>
+        <location filename="../uis/reader_window.py" line="275"/>
         <source>Open Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="252"/>
+        <location filename="../uis/reader_window.py" line="276"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="253"/>
+        <location filename="../uis/reader_window.py" line="277"/>
         <source>Fullscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="256"/>
+        <location filename="../uis/reader_window.py" line="280"/>
         <source>Vertical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="258"/>
+        <location filename="../uis/reader_window.py" line="282"/>
         <source>Horizontal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="264"/>
+        <location filename="../uis/reader_window.py" line="288"/>
         <source>Fit Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="266"/>
+        <location filename="../uis/reader_window.py" line="290"/>
         <source>Fit Height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="268"/>
+        <location filename="../uis/reader_window.py" line="292"/>
         <source>Fit Both</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="270"/>
+        <location filename="../uis/reader_window.py" line="294"/>
         <source>Fit Width 80%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="249"/>
+        <location filename="../uis/reader_window.py" line="273"/>
         <source>1 Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="260"/>
+        <location filename="../uis/reader_window.py" line="284"/>
         <source>2 Pages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="262"/>
+        <location filename="../uis/reader_window.py" line="286"/>
         <source>3 Pages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="272"/>
+        <location filename="../uis/reader_window.py" line="296"/>
         <source>Right to Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="274"/>
+        <location filename="../uis/reader_window.py" line="298"/>
         <source>Left to Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="254"/>
+        <location filename="../uis/reader_window.py" line="278"/>
         <source>Fullscreen (F11)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="276"/>
+        <location filename="../uis/reader_window.py" line="300"/>
         <source>4 Pages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1061"/>
+        <location filename="../uis/main_window.py" line="1073"/>
         <source>Reader background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1062"/>
+        <location filename="../uis/main_window.py" line="1074"/>
         <source>Pick a color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="281"/>
+        <location filename="../uis/reader_window.py" line="305"/>
         <source>Start or Pause Auto Play</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="282"/>
+        <location filename="../uis/reader_window.py" line="306"/>
         <source>Start or Pause Auto Play (k)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1063"/>
+        <location filename="../uis/main_window.py" line="1075"/>
         <source>Reader auto play interval</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1090"/>
+        <location filename="../uis/main_window.py" line="1103"/>
         <source>When close main window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/reader_window.py" line="246"/>
+        <location filename="../uis/reader_window.py" line="270"/>
         <source>Comic Reader</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../uis/reader_rotate_dialog.py" line="66"/>
+        <source>Target image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../uis/reader_rotate_dialog.py" line="68"/>
+        <source>Change mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../uis/reader_window.py" line="308"/>
+        <source>Rotate all image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../uis/main_window.py" line="1077"/>
+        <source>Reader auto play display progress bar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../uis/main_window.py" line="1078"/>
+        <source>Reader</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

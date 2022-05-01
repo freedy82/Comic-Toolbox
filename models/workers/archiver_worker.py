@@ -4,6 +4,7 @@ from docx import Document
 #from docx.shared import Inches
 from PIL import Image
 from PyQt5.QtCore import QThread, pyqtSignal
+from pathlib import Path
 
 from models import util
 from models.const import *
@@ -74,6 +75,7 @@ class ArchiverWorker(QThread):
 				target_name = self.title + "-" + target_name
 
 			full_target_file = os.path.join(self.from_folder,target_name)
+			full_target_file = Path(full_target_file).as_posix()
 
 			if self.is_overwrite or not os.path.exists(full_target_file):
 				results.append({"folders":final_folders,"to_file":target_name})
@@ -118,6 +120,8 @@ class ArchiverWorker(QThread):
 								continue
 
 						full_file = os.path.join(full_folder, filename)
+						full_file = Path(full_file).as_posix()
+
 						if self.to_format == "cbz":
 							file_name_in_zip = folder + "-" + filename
 						else:
@@ -131,6 +135,7 @@ class ArchiverWorker(QThread):
 
 	def _make_pdf_from_multi_folder(self, folders, pdf_file):
 		full_pdf_file = os.path.join(self.from_folder,pdf_file)
+		full_pdf_file = Path(full_pdf_file).as_posix()
 
 		images_datas = []
 		for folder in folders:
@@ -152,9 +157,10 @@ class ArchiverWorker(QThread):
 					if util.get_ext(filename) not in IMAGE_EXTS:
 						continue
 					full_file = os.path.join(full_folder, filename)
+					full_file = Path(full_file).as_posix()
 
 					tmp_image = Image.open(full_file)
-					tmp_image.convert('RGB')
+					tmp_image = tmp_image.convert('RGB')
 					images_datas.append(tmp_image)
 
 					message = TRSM("Adding %s") % full_file
@@ -179,6 +185,7 @@ class ArchiverWorker(QThread):
 
 	def _make_epub_from_multi_folder(self, folders, epub_file):
 		full_epub_file = os.path.join(self.from_folder,epub_file)
+		full_epub_file = Path(full_epub_file).as_posix()
 
 		book = epub.EpubBook()
 		book.set_title(epub_file.replace(".epub",""))
@@ -211,6 +218,8 @@ class ArchiverWorker(QThread):
 						continue
 
 					full_file = os.path.join(full_folder, filename)
+					full_file = Path(full_file).as_posix()
+
 					message = TRSM("Adding %s") % full_file
 					self.trigger.emit(message,self.current_action_count,self.total_action_count)
 
@@ -252,6 +261,7 @@ class ArchiverWorker(QThread):
 
 	def _make_docx_from_multi_folder(self, folders, docx_file):
 		full_docx_file = os.path.join(self.from_folder,docx_file)
+		full_docx_file = Path(full_docx_file).as_posix()
 
 		images_files = []
 		document = Document()
@@ -275,6 +285,7 @@ class ArchiverWorker(QThread):
 					if util.get_ext(filename) not in IMAGE_EXTS:
 						continue
 					full_file = os.path.join(full_folder, filename)
+					full_file = Path(full_file).as_posix()
 
 					if len(images_files) > 0:
 						document.add_section(2)   # add new section with new page

@@ -18,6 +18,7 @@ class SettingsController(object):
 		pass
 
 	def setup_control(self):
+		self.ui.cbx_settings_reader_auto_play_pgb.addItems([TRSM("No"),TRSM("Yes")])
 		self.ui.cbx_settings_proxy_mode.addItems([TRSM("Disable proxy"),TRSM("Use proxy and not proxy same time"),TRSM("Only use proxy")])
 		self.ui.cbx_settings_proxy_type.addItems([TRSM("https"),TRSM("http")])
 		self.ui.cbx_settings_cugan_denoise.addItems([TRSM("No effect"),TRSM("Level 0"),TRSM("Level 1"),TRSM("Level 2"),TRSM("Level 3")])
@@ -39,6 +40,9 @@ class SettingsController(object):
 		self.ui.txt_settings_reader_background.textChanged.connect(self.txt_settings_reader_background_text_changed)
 
 	def retranslateUi(self):
+		self.ui.cbx_settings_reader_auto_play_pgb.setItemText(0,TRSM("No"))
+		self.ui.cbx_settings_reader_auto_play_pgb.setItemText(1,TRSM("Yes"))
+
 		self.ui.cbx_settings_proxy_mode.setItemText(0,TRSM("Disable proxy"))
 		self.ui.cbx_settings_proxy_mode.setItemText(1,TRSM("Use proxy and not proxy same time"))
 		self.ui.cbx_settings_proxy_mode.setItemText(2,TRSM("Only use proxy"))
@@ -120,6 +124,7 @@ class SettingsController(object):
 		self.ui.spin_settings_check_is_2_page.setValue(1.0)
 		self.ui.txt_settings_reader_background.setText("#000000")
 		self.ui.spin_settings_reader_auto_play_interval.setValue(5.0)
+		self.ui.cbx_settings_reader_auto_play_pgb.setCurrentIndex(1)
 
 		self.ui.spin_settings_page_sleep.setValue(10)
 		self.ui.spin_settings_image_sleep.setValue(1)
@@ -177,6 +182,8 @@ class SettingsController(object):
 		self.ui.lbl_settings_reader_background_preview.setStyleSheet("background-color:"+reader_background+";")
 		reader_auto_play_interval = MY_CONFIG.get("reader", "auto_play_interval")
 		self.ui.spin_settings_reader_auto_play_interval.setValue(float(reader_auto_play_interval))
+		reader_auto_play_pgb = MY_CONFIG.get("reader", "auto_play_pgb")
+		self.ui.cbx_settings_reader_auto_play_pgb.setCurrentIndex(int(reader_auto_play_pgb))
 
 		#anti ban
 		page_sleep = MY_CONFIG.get("anti-ban", "page_sleep")
@@ -244,6 +251,7 @@ class SettingsController(object):
 		MY_CONFIG.set("general","check_is_2_page",str(self.ui.spin_settings_check_is_2_page.value()))
 		MY_CONFIG.set("reader","background",self.ui.txt_settings_reader_background.text())
 		MY_CONFIG.set("reader","auto_play_interval",str(self.ui.spin_settings_reader_auto_play_interval.value()))
+		MY_CONFIG.set("reader","auto_play_pgb",str(self.ui.cbx_settings_reader_auto_play_pgb.currentIndex()))
 
 		#anti ban
 		MY_CONFIG.set("anti-ban","page_sleep",str(self.ui.spin_settings_page_sleep.value()))

@@ -1,4 +1,6 @@
 import fitz
+import sys
+import time
 from PyQt5.QtGui import QPixmap
 from PIL import Image, ImageQt
 
@@ -9,10 +11,6 @@ class PDFReader(Reader):
 	FILE_FILTER = [{"name":"Portable Document Format","filters":"*.pdf"}]
 
 	name = "PDFReader"
-	pixmap_buffer = {}
-	size_buffer = {}
-	qimg_buffer = {}
-	qpixmap_buffer = {}
 
 	def __init__(self):
 		super().__init__()
@@ -27,58 +25,49 @@ class PDFReader(Reader):
 
 		pages = []
 		for page_no in range(len(self.file_handler)):
-			#print(f"page no {page_no}")
-			#file_name = str(page_no+1).zfill(5)+".png"
 			file_name = "Page " + str(page_no+1)
 			pages.append(file_name)
-			page = self.file_handler[page_no]
-			pixmap = page.get_pixmap()
-			# below convert failed in some pdf!
-			#fmt = QImage.Format_RGBA8888 if pixmap.alpha else QImage.Format_RGB888
-			#print(f"image width:{pixmap.width}, height:{pixmap.height}, fmt: {fmt}")
-			#q_img = QImage(pixmap.samples_ptr, pixmap.width, pixmap.height, fmt)
 
-			mode = "RGBA" if pixmap.alpha else "RGB"
-			img = Image.frombytes(mode, [pixmap.width, pixmap.height], pixmap.samples)
-			q_img = ImageQt.ImageQt(img)
+		self.current_file_list = [{"path":"","files":pages}]
 
-			#print(f"mark d page no {page_no}")
-			#print(f"q_img:{q_img}")
-			try:
-				q_pixmap = QPixmap.fromImage(q_img)
-			except Exception as exc:
-				#print('Convert PDF to image failed %s' % exc)
-				q_pixmap = None
-				pass
-			#print(f"mark 1 page no {page_no}")
-
-			self.pixmap_buffer[file_name] = pixmap
-			self.size_buffer[file_name] = [pixmap.width, pixmap.height]
-			self.qimg_buffer[file_name] = q_img
-			self.qpixmap_buffer[file_name] = q_pixmap
-			#print(f"mark 5 page no {page_no}")
-
-		#print(self.size_buffer)
-
-		new_results = [{"path":"","files":pages}]
-
-		return new_results
+		return self.current_file_list
 
 	def get_data_from_file(self,file):
-		#page_no = int(file.replace(".png",""))
-		#page = self.file_handler[page_no]
-		#return page.get_pixmap()
-		return self.pixmap_buffer[file]
+		if file in self.data_buffer:
+			return self.data_buffer[file]
 
-	def get_qpixmap_from_file(self,file):
-		if file in self.qpixmap_buffer:
-			return self.qpixmap_buffer[file]
-		return None
+		page_index = self.get_page_index(file)
+		page = self.file_handler[page_index]
+		pixmap = page.get_pixmap()
+		self.data_buffer[file] = pixmap
+		return pixmap
+
+	def get_q_pixmap_from_file(self,file):
+		if file in self.q_pixmap_buffer:
+			return self.get_rotated_image_q_pixmap(file,self.q_pixmap_buffer[file])
+		if file in self.q_img_buffer:
+			q_pixmap = QPixmap.fromImage(self.q_img_buffer[file])
+			self.q_pixmap_buffer[file] = q_pixmap
+			return self.get_rotated_image_q_pixmap(file,q_pixmap)
+		pixmap = self.get_data_from_file(file)
+		mode = "RGBA" if pixmap.alpha else "RGB"
+		img = Image.frombytes(mode, [pixmap.width, pixmap.height], pixmap.samples)
+		q_img = ImageQt.ImageQt(img)
+		self.q_img_buffer[file] = q_img
+		q_pixmap = QPixmap.fromImage(q_img)
+		self.q_pixmap_buffer[file] = q_pixmap
+		return self.get_rotated_image_q_pixmap(file,q_pixmap)
 
 	def get_image_size(self,file):
 		if file in self.size_buffer:
-			return self.size_buffer[file]
-		return [0, 0]
+			#print(f"{file} size in buffer {self.size_buffer[file]}")
+			return self.get_rotated_image_size(file,self.size_buffer[file])
+		pixmap = self.get_data_from_file(file)
+		size = [pixmap.width, pixmap.height]
+		self.size_buffer[file] = size
+		return self.get_rotated_image_size(file,size)
 
-
+	@staticmethod
+	def get_page_index(file):
+		return int(file.replace("Page ",""))-1
 

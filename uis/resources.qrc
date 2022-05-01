@@ -1,6 +1,10 @@
 <RCC>
   <qresource prefix="icon">
+    <file alias="autoplay">resources/autoplay.png</file>
+    <file alias="rotate-right">resources/rotate-right.png</file>
     <file alias="play">resources/play.png</file>
+    <file alias="circle">resources/circle.png</file>
+    <file alias="tick">resources/tick.png</file>
     <file alias="pause">resources/pause.png</file>
     <file alias="open-archive">resources/open-archive.png</file>
     <file alias="4columns">resources/4columns.png</file>

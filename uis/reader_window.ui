@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>840</width>
     <height>480</height>
    </rect>
   </property>
@@ -24,9 +24,12 @@
    <string notr="true"/>
   </property>
   <widget class="QWidget" name="mainwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
      <number>0</number>
+    </property>
+    <property name="sizeConstraint">
+     <enum>QLayout::SetDefaultConstraint</enum>
     </property>
     <property name="leftMargin">
      <number>0</number>
@@ -40,6 +43,36 @@
     <property name="bottomMargin">
      <number>0</number>
     </property>
+    <item>
+     <widget class="QProgressBar" name="pgb_auto_play">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>1</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QProgressBar
+{
+border: 0px;
+background-color: #000000;
+}
+QProgressBar::chunk 
+{
+background-color: #888888;
+}</string>
+      </property>
+      <property name="value">
+       <number>0</number>
+      </property>
+      <property name="textVisible">
+       <bool>false</bool>
+      </property>
+      <property name="format">
+       <string notr="true">%p%</string>
+      </property>
+     </widget>
+    </item>
     <item>
      <widget class="QScrollArea" name="scrollArea">
       <property name="styleSheet">
@@ -68,8 +101,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>800</width>
-         <height>425</height>
+         <width>840</width>
+         <height>424</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -108,8 +141,24 @@ color: #FFFFFF;</string>
           </property>
          </spacer>
         </item>
-        <item row="1" column="0">
-         <spacer name="spacer_left">
+        <item row="2" column="1">
+         <spacer name="spacer_bottom">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="2">
+         <spacer name="spacer_right">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -156,26 +205,10 @@ color: #FFFFFF;</string>
           </item>
          </layout>
         </item>
-        <item row="1" column="2">
-         <spacer name="spacer_right">
+        <item row="1" column="0">
+         <spacer name="spacer_left">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="2" column="1">
-         <spacer name="spacer_bottom">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeType">
            <enum>QSizePolicy::Expanding</enum>
@@ -199,7 +232,7 @@ color: #FFFFFF;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>840</width>
      <height>21</height>
     </rect>
    </property>
@@ -262,6 +295,8 @@ color: #FFFFFF;</string>
    <addaction name="separator"/>
    <addaction name="actionPageFlowRightToLeft"/>
    <addaction name="actionPageFlowLeftToRight"/>
+   <addaction name="separator"/>
+   <addaction name="actionRotateAllImage"/>
    <addaction name="separator"/>
    <addaction name="actionFullscreen"/>
    <addaction name="separator"/>
@@ -550,6 +585,18 @@ color: #FFFFFF;</string>
    </property>
    <property name="toolTip">
     <string>Start or Pause Auto Play (k)</string>
+   </property>
+  </action>
+  <action name="actionRotateAllImage">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/rotate-right</normaloff>:/icon/rotate-right</iconset>
+   </property>
+   <property name="text">
+    <string>Rotate all image</string>
+   </property>
+   <property name="toolTip">
+    <string>Rotate all image</string>
    </property>
   </action>
  </widget>

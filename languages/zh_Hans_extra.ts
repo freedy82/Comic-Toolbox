@@ -454,6 +454,34 @@
         <source>Close window</source>
         <translation>关闭窗口</translation>
     </message>
+    <message>
+        <source>Rotate this image</source>
+        <translation>旋转这个图片</translation>
+    </message>
+    <message>
+        <source>All image</source>
+        <translation>所有图片</translation>
+    </message>
+    <message>
+        <source>Memory</source>
+        <translation>内存</translation>
+    </message>
+    <message>
+        <source>Autoplay</source>
+        <translation>自动播放</translation>
+    </message>
+    <message>
+        <source>Show autoplay progress bar</source>
+        <translation>显示自动播放进度条</translation>
+    </message>
+    <message>
+        <source>Hidden autoplay progress bar</source>
+        <translation>隐藏的自动播放进度条</translation>
+    </message>
+    <message>
+        <source>Start autoplay</source>
+        <translation>开始自动播放</translation>
+    </message>
 
 </context>
 </TS>

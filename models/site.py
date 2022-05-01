@@ -168,6 +168,7 @@ class Site(QThread):
 			# debug
 			data = self._web_bot.get_web_content_raw(url=image_url, ref=page_ref, cookie=self._cookies)
 			if data:
+				target_file = Path(target_file).as_posix()
 				fp = open(target_file, mode="wb")
 				fp.write(data)
 				fp.close()

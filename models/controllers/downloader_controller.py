@@ -1,4 +1,6 @@
-from PyQt5.QtGui import QCursor
+from pathlib import Path
+
+from PyQt5 import QtGui
 from PyQt5.QtWidgets import QListWidgetItem
 
 from models.const import *
@@ -286,6 +288,15 @@ class DownloaderController(object):
 		self.ui.txt_downloader_url.setText(url)
 		self.btn_downloader_check_clicked()
 
+	def check_is_downloaded(self,sub_title):
+		download_folder = MY_CONFIG.get("general","download_folder")
+		series_title = self.ui.txt_downloader_title.text()
+		folder = self.current_type + "-" + sub_title
+		full_path = Path(os.path.join(download_folder,series_title,folder)).as_posix()
+		if os.path.isdir(full_path):
+			return True
+		return False
+
 	def update_chapter_list(self):
 		self.ui.list_downloader_chapter.clear()
 
@@ -299,13 +310,21 @@ class DownloaderController(object):
 				tmp_title += str(tmp_chapter["index"]).zfill(int(MY_CONFIG.get("general", "book_padding")))
 			else:
 				tmp_title += str(tmp_chapter["index"]).zfill(int(MY_CONFIG.get("general", "chapter_padding")))
+			is_downloaded = self.check_is_downloaded(tmp_title)
 			tmp_title += " - " + tmp_chapter["title"]
 			item.setText(tmp_title)
 			item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
-			#if idx < 3:
-			#	item.setCheckState(QtCore.Qt.Checked)
-			#else:
-			item.setCheckState(QtCore.Qt.Unchecked)
+
+			q_icon = QtGui.QIcon()
+			if is_downloaded:
+				q_icon.addPixmap(QtGui.QPixmap(":/icon/tick"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+				item.setCheckState(QtCore.Qt.Unchecked)
+			else:
+				q_icon.addPixmap(QtGui.QPixmap(":/icon/circle"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+				item.setCheckState(QtCore.Qt.Checked)
+			item.setIcon(q_icon)
+
+			#item.setCheckState(QtCore.Qt.Unchecked)
 			self.ui.list_downloader_chapter.addItem(item)
 
 		if self.ui.list_downloader_chapter.count() > 0:
