@@ -5,8 +5,8 @@
 ### v0.9.0
 
 - Add page gap setting for reader
-- Add new supported site `mangadex.org`
 - Add language switch to downloader
+- Add new supported site `mangadex.org`,`dmzj.com`
 
 ### v0.8.5 ( 2022-05-01 )
 

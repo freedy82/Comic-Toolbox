@@ -1229,115 +1229,6 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tab_settings_reader">
-           <attribute name="title">
-            <string>Reader</string>
-           </attribute>
-           <layout class="QFormLayout" name="formLayout_2">
-            <item row="0" column="0">
-             <widget class="QLabel" name="lbl_settings_reader_background">
-              <property name="text">
-               <string>Reader background</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <layout class="QHBoxLayout" name="layout_settings_reader_background">
-              <item>
-               <widget class="QLabel" name="lbl_settings_reader_background_preview">
-                <property name="minimumSize">
-                 <size>
-                  <width>23</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>23</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::Panel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <property name="text">
-                 <string notr="true"/>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="txt_settings_reader_background"/>
-              </item>
-              <item>
-               <widget class="QPushButton" name="btn_settings_reader_background">
-                <property name="text">
-                 <string>Pick a color</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="lbl_settings_reader_auto_play_interval">
-              <property name="text">
-               <string>Reader auto play interval</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="spin_settings_reader_auto_play_interval">
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-              <property name="suffix">
-               <string>s</string>
-              </property>
-              <property name="decimals">
-               <number>1</number>
-              </property>
-              <property name="minimum">
-               <double>0.500000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>20.000000000000000</double>
-              </property>
-              <property name="singleStep">
-               <double>0.500000000000000</double>
-              </property>
-              <property name="value">
-               <double>5.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="lbl_settings_reader_auto_play_pgb">
-              <property name="text">
-               <string>Reader auto play display progress bar</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QComboBox" name="cbx_settings_reader_auto_play_pgb"/>
-            </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="lbl_settings_reader_page_gap">
-              <property name="text">
-               <string>Reader page gap</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QSpinBox" name="spin_settings_reader_page_gap">
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
           <widget class="QWidget" name="tab_settings_anti_ban">
            <attribute name="title">
             <string>Anti Ban</string>
@@ -1546,6 +1437,115 @@
                </size>
               </property>
              </spacer>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_settings_reader">
+           <attribute name="title">
+            <string>Reader</string>
+           </attribute>
+           <layout class="QFormLayout" name="formLayout_2">
+            <item row="0" column="0">
+             <widget class="QLabel" name="lbl_settings_reader_background">
+              <property name="text">
+               <string>Reader background</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <layout class="QHBoxLayout" name="layout_settings_reader_background">
+              <item>
+               <widget class="QLabel" name="lbl_settings_reader_background_preview">
+                <property name="minimumSize">
+                 <size>
+                  <width>23</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>23</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Panel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <property name="text">
+                 <string notr="true"/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="txt_settings_reader_background"/>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btn_settings_reader_background">
+                <property name="text">
+                 <string>Pick a color</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="lbl_settings_reader_auto_play_interval">
+              <property name="text">
+               <string>Reader auto play interval</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QDoubleSpinBox" name="spin_settings_reader_auto_play_interval">
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+              <property name="suffix">
+               <string>s</string>
+              </property>
+              <property name="decimals">
+               <number>1</number>
+              </property>
+              <property name="minimum">
+               <double>0.500000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>20.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>0.500000000000000</double>
+              </property>
+              <property name="value">
+               <double>5.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="lbl_settings_reader_auto_play_pgb">
+              <property name="text">
+               <string>Reader auto play display progress bar</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QComboBox" name="cbx_settings_reader_auto_play_pgb"/>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="lbl_settings_reader_page_gap">
+              <property name="text">
+               <string>Reader page gap</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QSpinBox" name="spin_settings_reader_page_gap">
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -1994,7 +1994,7 @@
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="btn_group_settings_message"/>
   <buttongroup name="btn_group_settings_sound"/>
+  <buttongroup name="btn_group_settings_message"/>
  </buttongroups>
 </ui>

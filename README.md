@@ -39,6 +39,7 @@ Some icons are from [Icons8](https://icons8.com/icon/set/show/ios-glyphs)
 - 動漫狂 `www.cartoonmad.com`
 - 無限動漫 `www.comicabc.com`
 - 动漫屋 `www.dm5.com`
+- 动漫之家 `www.dmzj.com`
 - 酷漫屋 `www.kumw5.com`
 - 漫畫柜 `www.mhgui.com`
 - Read Comic Online (American manga) `readcomicsonline.ru`
@@ -108,7 +109,7 @@ Settings - Prevent Banned
 
 ![Settings](readmes/screenshots/en/settings_anti-ban.jpg "Settings")
 
-Bookmarks (some I'm watching, some I'm testing 😅 )
+Bookmarks of downloader (some I'm watching, some I'm testing 😅 )
 
 ![Bookmarks](readmes/screenshots/en/bookmarks.jpg "Bookmarks")
 

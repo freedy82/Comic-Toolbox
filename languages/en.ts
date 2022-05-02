@@ -184,7 +184,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1097"/>
+        <location filename="../uis/main_window.py" line="1101"/>
         <source>s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -219,22 +219,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1094"/>
+        <location filename="../uis/main_window.py" line="1087"/>
         <source>Page sleep</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1096"/>
+        <location filename="../uis/main_window.py" line="1089"/>
         <source>Image sleep</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1098"/>
+        <location filename="../uis/main_window.py" line="1091"/>
         <source>Image parallel download worker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1104"/>
+        <location filename="../uis/main_window.py" line="1097"/>
         <source>Anti Ban</source>
         <translation type="unfinished"></translation>
     </message>
@@ -554,22 +554,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1099"/>
+        <location filename="../uis/main_window.py" line="1092"/>
         <source>Proxy mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1100"/>
+        <location filename="../uis/main_window.py" line="1093"/>
         <source>Proxy List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1102"/>
+        <location filename="../uis/main_window.py" line="1095"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1101"/>
+        <location filename="../uis/main_window.py" line="1094"/>
         <source>IP:PORT</source>
         <translation type="unfinished"></translation>
     </message>
@@ -734,12 +734,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1087"/>
+        <location filename="../uis/main_window.py" line="1098"/>
         <source>Reader background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1088"/>
+        <location filename="../uis/main_window.py" line="1099"/>
         <source>Pick a color</source>
         <translation type="unfinished"></translation>
     </message>
@@ -754,7 +754,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1089"/>
+        <location filename="../uis/main_window.py" line="1100"/>
         <source>Reader auto play interval</source>
         <translation type="unfinished"></translation>
     </message>
@@ -784,17 +784,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1091"/>
+        <location filename="../uis/main_window.py" line="1102"/>
         <source>Reader auto play display progress bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1093"/>
+        <location filename="../uis/main_window.py" line="1104"/>
         <source>Reader</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1092"/>
+        <location filename="../uis/main_window.py" line="1103"/>
         <source>Reader page gap</source>
         <translation type="unfinished"></translation>
     </message>

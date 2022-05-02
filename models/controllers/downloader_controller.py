@@ -42,6 +42,7 @@ class DownloaderController(object):
 		#self.ui.txt_downloader_url.setText("https://www.manhuagui.com/comic/1128/")  # ONE PIECE航海王
 		#self.ui.txt_downloader_url.setText("https://mangadex.org/title/859e3107-f37e-46b8-954c-1318b5c63c9c/ghost-in-the-shell-stand-alone-complex")  # Ghost in the shell
 		#self.ui.txt_downloader_url.setText("https://mangadex.org/title/80422e14-b9ad-4fda-970f-de370d5fa4e5/made-in-abyss?page=1")  # Made in Abyss
+		#self.ui.txt_downloader_url.setText("https://manhua.dmzj.com/yaojingdeweibabainianrenwu/")  # 妖精的尾巴 百年任务
 
 		self.ui.cbx_downloader_file_exist.addItems([TRSM("Skip"),TRSM("Overwrite")])
 
@@ -113,6 +114,7 @@ class DownloaderController(object):
 				self.ui.btn_downloader_unselect_all.setEnabled(False)
 				self.ui.btn_downloader_start.setEnabled(False)
 				self.ui.btn_downloader_cancel.setEnabled(False)
+				self.ui.list_downloader_chapter.clear()
 
 				self.site = site
 				self.parse_worker = SiteParseWorker(self.site)

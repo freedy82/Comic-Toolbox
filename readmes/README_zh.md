@@ -37,6 +37,7 @@ QSS 暗色主題參考自 书包 的 [QSS-Skin-Builder](https://github.com/satch
 - 動漫狂 `www.cartoonmad.com`
 - 無限動漫 `www.comicabc.com`
 - 动漫屋 `www.dm5.com`
+- 动漫之家 `www.dmzj.com`
 - 酷漫屋 `www.kumw5.com`
 - 漫畫柜 `www.mhgui.com`
 - Read Comic Online （美漫） `readcomicsonline.ru`
@@ -106,7 +107,7 @@ QSS 暗色主題參考自 书包 的 [QSS-Skin-Builder](https://github.com/satch
 
 ![設定](screenshots/zh/settings_anti-ban.jpg "設定")
 
-書簽 （ 有些是我在看的，有些是測試的😅 ）
+下載工具的書簽 （ 有些是我在看的，有些是測試的😅 ）
 
 ![書簽](screenshots/zh/bookmarks.jpg "書簽")
 

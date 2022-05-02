@@ -214,7 +214,7 @@
         <translation>連接超時</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1097"/>
+        <location filename="../uis/main_window.py" line="1101"/>
         <source>s</source>
         <translation>秒</translation>
     </message>
@@ -249,22 +249,22 @@
         <translation>基本</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1094"/>
+        <location filename="../uis/main_window.py" line="1087"/>
         <source>Page sleep</source>
         <translation>網頁停留</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1096"/>
+        <location filename="../uis/main_window.py" line="1089"/>
         <source>Image sleep</source>
         <translation>圖片停留</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1098"/>
+        <location filename="../uis/main_window.py" line="1091"/>
         <source>Image parallel download worker</source>
         <translation>圖片同步下載數</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1104"/>
+        <location filename="../uis/main_window.py" line="1097"/>
         <source>Anti Ban</source>
         <translation>防止被禁</translation>
     </message>
@@ -634,22 +634,22 @@
         <translation>載入</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1099"/>
+        <location filename="../uis/main_window.py" line="1092"/>
         <source>Proxy mode</source>
         <translation>代理模式</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1100"/>
+        <location filename="../uis/main_window.py" line="1093"/>
         <source>Proxy List</source>
         <translation>代理名單</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1102"/>
+        <location filename="../uis/main_window.py" line="1095"/>
         <source>Add</source>
         <translation>添加</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1101"/>
+        <location filename="../uis/main_window.py" line="1094"/>
         <source>IP:PORT</source>
         <translation>IP:PORT</translation>
     </message>
@@ -724,7 +724,7 @@
         <translation>垂直翻轉</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1093"/>
+        <location filename="../uis/main_window.py" line="1104"/>
         <source>Reader</source>
         <translation>閱讀器</translation>
     </message>
@@ -829,12 +829,12 @@
         <translation type="obsolete">書簽清單</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1087"/>
+        <location filename="../uis/main_window.py" line="1098"/>
         <source>Reader background</source>
         <translation>閱讀器背景色</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1088"/>
+        <location filename="../uis/main_window.py" line="1099"/>
         <source>Pick a color</source>
         <translation>選擇顏色</translation>
     </message>
@@ -849,7 +849,7 @@
         <translation>开始或暂停自动播放 (k)</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1089"/>
+        <location filename="../uis/main_window.py" line="1100"/>
         <source>Reader auto play interval</source>
         <translation>閱讀器自动播放時間</translation>
     </message>
@@ -879,12 +879,12 @@
         <translation>旋轉所有圖片</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1091"/>
+        <location filename="../uis/main_window.py" line="1102"/>
         <source>Reader auto play display progress bar</source>
         <translation>閱讀器自動播放顯示進度條</translation>
     </message>
     <message>
-        <location filename="../uis/main_window.py" line="1092"/>
+        <location filename="../uis/main_window.py" line="1103"/>
         <source>Reader page gap</source>
         <translation>閱讀器頁面間隙</translation>
     </message>
