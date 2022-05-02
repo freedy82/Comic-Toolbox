@@ -154,3 +154,7 @@ OpenCV 應該比 Pillow 快，但好多 sin、cos、tan，對初中已過去好�
 ## 版本更新
 
 查看 [版本更新](change_log_zh.md)
+
+## License / 許可證
+
+**Comic Toolbox 漫畫工具箱** 使用 [GPL v3.0 license](../LICENSE)

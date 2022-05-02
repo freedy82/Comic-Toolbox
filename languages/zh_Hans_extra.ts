@@ -486,6 +486,10 @@
         <source>All</source>
         <translation>全部</translation>
     </message>
+    <message>
+        <source>License</source>
+        <translation>许可证</translation>
+    </message>
 
 </context>
 </TS>

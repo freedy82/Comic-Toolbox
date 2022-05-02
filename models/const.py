@@ -15,6 +15,10 @@ def TRSM(str_name):
 
 APP_VERSION = "0.8.5"
 APP_LINK = "https://github.com/freedy82/Comic-Toolbox"
+APP_LICENSE = "GNU General Public License v3.0"
+APP_LICENSE_LINK = "https://github.com/freedy82/Comic-Toolbox/blob/main/LICENSE"
+APP_AUTHOR = "Freedy Lam"
+APP_AUTHOR_LINK = "https://github.com/freedy82"
 
 IMAGE_EXTS = ("jpg","gif","png","jpeg","webp")
 

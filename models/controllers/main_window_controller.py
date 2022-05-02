@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtGui import QIcon, QPixmap, QCursor
 from PyQt5.QtWidgets import QSystemTrayIcon, QMenu
 from PyQt5.QtMultimedia import QSound
@@ -226,14 +226,23 @@ class MainWindowController(QtWidgets.QMainWindow):
 		message = ""
 		message += "<span style='font-weight:900;font-size:x-large'>" + TRSM("Comic Toolbox") + "</span><br><br>"
 		message += (TRSM("Version: %s") % APP_VERSION) + "<br><br>"
+		message += TRSM("Author") + ": "
+		message += ("<a href=\"%s\">%s</a>" % (APP_AUTHOR_LINK, APP_AUTHOR))
+		message += "<br><br>"
 		message += ("<a href=\"%s\">%s</a>" % (APP_LINK, APP_LINK)) + "<br><br>"
 		message += TRSM("Respect the copyright, please support the genuine version, and the resources downloaded or generated through this tool are prohibited from spreading and sharing!") + "<br>"
 		message += TRSM("It is prohibited to use this project for commercial activities!")
+		message += "<br><br>"
+		message += TRSM("License") + ":<br>"
+		message += ("<a href=\"%s\">%s</a>" % (APP_LICENSE_LINK, APP_LICENSE))
 
 		dlg = QtWidgets.QMessageBox(self)
-		icon = QPixmap(":/icon/main_icon")
-		dlg.setIconPixmap(icon)
-		dlg.about(self,TRSM("About Comic Toolbox"),message)
+		icon_pixmap = QPixmap(":/icon/main_icon")
+		icon_pixmap = icon_pixmap.scaled(60,60,transformMode=Qt.SmoothTransformation)
+		dlg.setIconPixmap(icon_pixmap)
+		dlg.setWindowTitle(TRSM("About Comic Toolbox"))
+		dlg.setText(message)
+		dlg.show()
 
 		pass
 

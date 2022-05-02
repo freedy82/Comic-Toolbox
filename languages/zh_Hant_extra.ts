@@ -488,6 +488,10 @@
         <source>All</source>
         <translation>全部</translation>
     </message>
+    <message>
+        <source>License</source>
+        <translation>許可證</translation>
+    </message>
 
 
     <message>

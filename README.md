@@ -157,3 +157,7 @@ OpenCV should be faster than Pillow, but a lot of sin, cos, and tan are difficul
 ## Changelog
 
 View [Changelog](readmes/change_log.md)
+
+## License
+
+**Comic Toolbox** is licensed under [GPL v3.0 license](LICENSE)

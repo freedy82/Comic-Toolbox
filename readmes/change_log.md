@@ -1,5 +1,7 @@
 ## Changelog
 
+[Chinese version please check this page (中文版請看這)](change_log_zh.md)
+
 ### v0.9.0
 
 - Add page gap setting for reader
