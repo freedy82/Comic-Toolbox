@@ -87,6 +87,8 @@ class CropperWorker(QThread):
 
 	def _start_scan_2_page_in_folder(self, folder):
 		full_folder = os.path.join(self.from_folder, folder)
+		full_folder = Path(full_folder).as_posix()
+
 		files = sorted(os.listdir(full_folder))
 		filtered_files = [x for x in files if x.endswith(IMAGE_EXTS)]
 		pages_ratio_require = float(MY_CONFIG.get("general", "check_is_2_page"))
@@ -106,10 +108,15 @@ class CropperWorker(QThread):
 				else:
 					# check image ratio
 					from_file_full = os.path.join(self.from_folder, folder, file)
+					from_file_full = Path(from_file_full).as_posix()
+
 					img_width, img_height = util.get_image_size(from_file_full)
 					if img_width/img_height >= pages_ratio_require:
 						to_file_1_full = os.path.join(self.from_folder, folder, target1)
 						to_file_2_full = os.path.join(self.from_folder, folder, target2)
+						to_file_1_full = Path(to_file_1_full).as_posix()
+						to_file_2_full = Path(to_file_2_full).as_posix()
+
 						task = {"from": from_file_full, "to": [to_file_1_full,to_file_2_full]}
 						#print("add task",task)
 						self.process_list.append(task)

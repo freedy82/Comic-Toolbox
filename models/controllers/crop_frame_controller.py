@@ -85,17 +85,21 @@ class CropFrameController(QtWidgets.QMainWindow):
 
 	def update_real_pos_by_frame_changed(self):
 		current_frame = self.ui.frame.frameGeometry()
+		#print(f"current_frame: {current_frame}")
 		image_ratio = self.parent_controller.get_current_image_ratio()
-		x1_change = (current_frame.x() - self.org_frame_rect.x()) * image_ratio
-		y1_change = (current_frame.y() - self.org_frame_rect.y()) * image_ratio
-		x2_change = (current_frame.x() + current_frame.width() - self.org_frame_rect.x() - self.org_frame_rect.width()) * image_ratio
-		y2_change = (current_frame.y() + current_frame.height() - self.org_frame_rect.y() - self.org_frame_rect.height()) * image_ratio
+		#print(f"image_ratio: {image_ratio}")
+		x1_change = (current_frame.x() - self.org_frame_rect.x()) / image_ratio
+		y1_change = (current_frame.y() - self.org_frame_rect.y()) / image_ratio
+		x2_change = (current_frame.x() + current_frame.width() - self.org_frame_rect.x() - self.org_frame_rect.width()) / image_ratio
+		y2_change = (current_frame.y() + current_frame.height() - self.org_frame_rect.y() - self.org_frame_rect.height()) / image_ratio
+		#print(f"change: {x1_change}-{y1_change}-{x2_change}-{y2_change}")
 		self.real_pos_rect = {
 			"x1": int(self.real_pos_rect["x1"] + x1_change),
 			"y1": int(self.real_pos_rect["y1"] + y1_change),
 			"x2": int(self.real_pos_rect["x2"] + x2_change),
 			"y2": int(self.real_pos_rect["y2"] + y2_change),
 		}
+		#print(f"self.real_pos_rect: {self.real_pos_rect}")
 		#print(f"{x1_change} - {y1_change} - {x2_change} - {y2_change}")
 
 	#action
