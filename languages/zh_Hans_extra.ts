@@ -482,6 +482,10 @@
         <source>Start autoplay</source>
         <translation>开始自动播放</translation>
     </message>
+    <message>
+        <source>All</source>
+        <translation>全部</translation>
+    </message>
 
 </context>
 </TS>

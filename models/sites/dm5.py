@@ -128,6 +128,6 @@ class DM5(Site):
 		index = 1
 		for plist in plists:
 			tmp_url = urljoin(url, plist[0])
-			results.append({"title": plist[3], "url": tmp_url, "index": index, "ref": url})
+			results.append({"title": plist[3], "url": tmp_url, "index": str(index), "ref": url})
 			index += 1
 		return results

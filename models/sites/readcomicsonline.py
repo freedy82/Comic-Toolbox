@@ -55,7 +55,7 @@ class ReadComicsOnline(Site):
 				#print(chapter_info)
 				if len(chapter_info) > 0:
 					tmp_url = urljoin(url, chapter_info[0][0])
-					results["chapter"].append({"title": chapter_info[0][1], "url": tmp_url, "index": index, "ref":url})
+					results["chapter"].append({"title": chapter_info[0][1], "url": tmp_url, "index": str(index), "ref":url})
 					index += 1
 		return results
 

@@ -98,6 +98,8 @@ class MyConfig(RawConfigParser):
 			self.set("reader","auto_play_interval","5")
 		if self.get("reader","auto_play_pgb") == "":
 			self.set("reader","auto_play_pgb","1")
+		if self.get("reader","page_gap") == "":
+			self.set("reader","page_gap","0")
 
 		pass
 

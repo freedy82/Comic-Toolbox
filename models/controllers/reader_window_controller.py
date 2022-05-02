@@ -17,7 +17,8 @@ from models.controllers.bookmark_window_controller import BookmarkWindowControll
 from models.controllers.reader_rotate_dialog_controller import ReaderRotateDialogController
 
 class ReaderWindowController(QtWidgets.QMainWindow):
-	AUTO_PLAY_TIME_INTERVAL = [2.0,3.0,4.0,5.0,6.0,7.0,8.0]
+	AUTO_PLAY_TIME_INTERVAL = [1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0]
+	PAGE_GAPS = [0,1,2,3,4,5,10,15,20,30,40,50]
 
 	def __init__(self,app,main_controller):
 		super().__init__()
@@ -42,6 +43,7 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		self.reader_auto_play_interval = float(MY_CONFIG.get("reader", "auto_play_interval"))*1000
 		self.reader_auto_play_time = 0
 		self.reader_auto_play_step = 100
+		self.current_page_gap = 0
 
 		self.scroll_flow = ScrollFlow[MY_CONFIG.get("reader", "scroll_flow")]
 		self.page_fit = PageFit[MY_CONFIG.get("reader", "page_fit")]
@@ -165,7 +167,7 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 	# override
 	def show(self):
 		super().show()
-		self.update_background()
+		self.update_layout()
 		self.setup_timer()
 		self.force_hidden_auto_play_pgb()
 		#self.get_image_list_from_file_or_folder("F:/comics/全知讀者視角")
@@ -587,7 +589,7 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		area_size = self.ui.scrollArea.size()
 		total_width, total_height = ReaderImageProcess.update_image_size_inner(
 			area_size,self.page_mode,self.page_fit,self.scroll_flow,self.pages_ratio_require,
-			self.ui.layout_main,self.ui.scrollArea)
+			self.ui.layout_main,self.ui.scrollArea,self.current_page_gap)
 
 		#fix the scroll bar update delay
 		if total_height-area_size.height() > 0:
@@ -704,34 +706,57 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 			self.ui.scrollArea.horizontalScrollBar().setValue(0)
 		self.auto_play_timer_reset_time()
 
+	def update_layout(self):
+		self.update_background()
+		self.set_reader_page_gap(int(MY_CONFIG.get("reader", "page_gap")))
+
 	def update_background(self):
 		reader_background = MY_CONFIG.get("reader", "background")
 		self.ui.scrollAreaWidgetContents.setStyleSheet("background-color:"+reader_background+";")
+
+	def set_reader_page_gap(self,gap):
+		self.current_page_gap = gap
+		self.ui.layout_main.setHorizontalSpacing(self.current_page_gap)
+		#self.ui.layout_main.setVerticalSpacing(self.current_page_gap)
+		MY_CONFIG.set("reader", "page_gap",str(self.current_page_gap))
+		MY_CONFIG.save()
+		self.update_images_size()
 
 	# event filter
 	def eventFilter(self, source, event:QEvent):
 		if source == self.ui.scrollArea:
 			#self.handle_scroll_area_event(event)
-			self.last_time_move = ReaderScrollBarHelper.handle_scroll_area_event(self.last_time_move, event, self.page_flow, self.ui.scrollArea, self.go_prev_page, self.go_next_page)
+			if event.type() == QEvent.MouseButtonPress and event.button() == QtCore.Qt.RightButton:
+				self.handle_right_click_from_image(source,event)
+			else:
+				self.last_time_move = ReaderScrollBarHelper.handle_scroll_area_event(
+					self.last_time_move, event, self.page_flow, self.ui.scrollArea, self.go_prev_page,
+					self.go_next_page)
 		if type(source) is QtWidgets.QLabel and event.type() == QEvent.MouseButtonPress and event.button() == QtCore.Qt.RightButton:
 			self.handle_right_click_from_image(source,event)
+			# prevent to fire the scroll area event
+			return True
 		return QWidget.eventFilter(self, source, event)
 
-	def handle_right_click_from_image(self,source_label,event:QEvent):
-		source = cast(QtWidgets.QLabel, source_label)
-		file = source.windowFilePath()
-		#print(file)
+	def handle_right_click_from_image(self,source,event:QEvent):
+		if type(source) is QtWidgets.QLabel:
+			file = source.windowFilePath()
+		else:
+			file = ""
 
 		menu_popup = QMenu()
 		# rotate
-		icon_rotate_right = QIcon()
-		icon_rotate_right.addPixmap(QPixmap(":/icon/rotate-right"), QIcon.Normal, QIcon.Off)
-		menu_rotate = menu_popup.addMenu(TRSM("Rotate"))
-		menu_rotate.setIcon(icon_rotate_right)
-		action_rotate_this = menu_rotate.addAction(TRSM("Rotate this image"))
-		action_rotate_this.setIcon(icon_rotate_right)
-		action_rotate_this.triggered.connect(lambda: self.show_rotate_dialog(file))
-		menu_rotate.addAction(self.ui.actionRotateAllImage)
+		if file != "":
+			icon_rotate_right = QIcon()
+			icon_rotate_right.addPixmap(QPixmap(":/icon/rotate-right"), QIcon.Normal, QIcon.Off)
+			menu_rotate = menu_popup.addMenu(TRSM("Rotate"))
+			menu_rotate.setIcon(icon_rotate_right)
+			action_rotate_this = menu_rotate.addAction(TRSM("Rotate this image"))
+			action_rotate_this.setIcon(icon_rotate_right)
+			action_rotate_this.triggered.connect(lambda: self.show_rotate_dialog(file))
+			menu_rotate.addAction(self.ui.actionRotateAllImage)
+		else:
+			menu_popup.addAction(self.ui.actionRotateAllImage)
 
 		# autoplay
 		icon_autoplay = QIcon()
@@ -751,15 +776,28 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		action_toggle_auto_play_pgb.setIcon(icon_autoplay_pgb)
 		action_toggle_auto_play_pgb.triggered.connect(self.on_toggle_auto_play_pgb)
 		menu_autoplay.addSeparator()
-
+		#start play interval list
 		icon_play = QIcon()
 		icon_play.addPixmap(QPixmap(":/icon/play"), QIcon.Normal, QIcon.Off)
 		tmp_auto_play_interval = float(MY_CONFIG.get("reader", "auto_play_interval"))
 		self.create_submenu_action_of_auto_play_time(menu_autoplay,tmp_auto_play_interval,icon_play)
+		menu_autoplay.addSeparator()
 		for tmp_time in self.AUTO_PLAY_TIME_INTERVAL:
 			if tmp_time == tmp_auto_play_interval:
 				continue
 			self.create_submenu_action_of_auto_play_time(menu_autoplay,tmp_time,icon_play)
+
+		icon_gap = QIcon()
+		icon_gap.addPixmap(QPixmap(":/icon/gap"), QIcon.Normal, QIcon.Off)
+		menu_page_gap = menu_popup.addMenu(TRSM("Reader page gap"))
+		menu_page_gap.setIcon(icon_gap)
+		tmp_page_gap = int(MY_CONFIG.get("reader", "page_gap"))
+		self.create_submenu_action_of_page_gap(menu_page_gap,tmp_page_gap,icon_gap)
+		menu_page_gap.addSeparator()
+		for tmp_gap in self.PAGE_GAPS:
+			if tmp_gap == tmp_page_gap:
+				continue
+			self.create_submenu_action_of_page_gap(menu_page_gap,tmp_gap,icon_gap)
 
 		# background color
 		bg_color = MY_CONFIG.get("reader","background")
@@ -786,6 +824,13 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		action_auto_play_tmp.triggered.connect(lambda: self.start_auto_play_with_time(time_interval))
 		return action_auto_play_tmp
 
+	def create_submenu_action_of_page_gap(self,menu_parent,gap,icon_gap):
+		action_page_gap_tmp = menu_parent.addAction(
+			TRSM("Reader page gap") + ": " + str(gap) + "")
+		action_page_gap_tmp.setIcon(icon_gap)
+		action_page_gap_tmp.triggered.connect(lambda: self.set_reader_page_gap(gap))
+		return action_page_gap_tmp
+
 	def show_rotate_dialog(self,file=""):
 		self.current_rotate_dialog = ReaderRotateDialogController(self.app,self,file,self.current_reader)
 		self.current_rotate_dialog.finished.connect(self.rotate_dialog_finished)
@@ -804,15 +849,15 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		self.cursor_busy()
 		self.current_reader.rotate_file(file,rotate,mode)
 		self.cursor_un_busy()
-		if file != "":
-			self.update_single_image(file)
-		else:
-			#force re-layout
-			old_current_image_file = self.current_image_file
-			self.start_load_current_path_list()
-			#self.update_images()
-			old_page_index = self.get_page_index_from_file(old_current_image_file)
-			self.go_page_index(old_page_index)
+		#if file != "":
+		#	self.update_single_image(file)
+		#else:
+		#force re-layout
+		old_current_image_file = self.current_image_file
+		self.start_load_current_path_list()
+		#self.update_images()
+		old_page_index = self.get_page_index_from_file(old_current_image_file)
+		self.go_page_index(old_page_index)
 
 	def get_page_index_from_file(self,image_file):
 		target_list = self.get_current_target_list()

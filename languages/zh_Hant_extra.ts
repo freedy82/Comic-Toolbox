@@ -484,6 +484,10 @@
         <source>Start autoplay</source>
         <translation>開始自動播放</translation>
     </message>
+    <message>
+        <source>All</source>
+        <translation>全部</translation>
+    </message>
 
 
     <message>

@@ -90,7 +90,7 @@ class MHGui(Site):
 
 			for plist in plists:
 				tmp_url = urljoin(url, plist[0])
-				results.append({"title":plist[1], "url":tmp_url, "index": index, "ref":url})
+				results.append({"title":plist[1], "url":tmp_url, "index": str(index), "ref":url})
 				index += 1
 				#print("add %s %s" % (plist[1], plist[0]))
 

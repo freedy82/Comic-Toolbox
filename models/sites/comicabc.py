@@ -152,6 +152,6 @@ class ComicABC(Site):
 			bs_ch = bs4.BeautifulSoup(tmp_ch_title, 'html.parser')
 			tmp_ch_title = bs_ch.getText().strip()
 			prefix, ch = tmp_url.split("?ch=")
-			return {"title": tmp_ch_title, "url": tmp_url, "index": int(ch), "ref": url}
+			return {"title": tmp_ch_title, "url": tmp_url, "index": ch, "ref": url}
 		return None
 

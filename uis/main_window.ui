@@ -66,109 +66,119 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <layout class="QFormLayout" name="layout_downloader_info">
-          <item row="0" column="0">
+         <layout class="QHBoxLayout" name="layout_downloader_check">
+          <item>
            <widget class="QLabel" name="lbl_downloader_url">
             <property name="text">
              <string>URL</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <layout class="QHBoxLayout" name="layout_downloader_check">
-            <item>
-             <widget class="QPushButton" name="btn_downloader_url_help">
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Display supported site list</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="resources.qrc">
-                <normaloff>:/icon/question</normaloff>:/icon/question</iconset>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="txt_downloader_url">
-              <property name="clearButtonEnabled">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="btn_downloader_bookmark">
-              <property name="toolTip">
-               <string>Add to bookmark</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="resources.qrc">
-                <normaloff>:/icon/bookmark</normaloff>:/icon/bookmark</iconset>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="btn_downloader_list">
-              <property name="toolTip">
-               <string>Display bookmark list</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="resources.qrc">
-                <normaloff>:/icon/list</normaloff>:/icon/list</iconset>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="btn_downloader_check">
-              <property name="text">
-               <string>Check</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="lbl_downloader_title">
+          <item>
+           <widget class="QPushButton" name="btn_downloader_url_help">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>Display supported site list</string>
+            </property>
             <property name="text">
-             <string>Title</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/icon/question</normaloff>:/icon/question</iconset>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="txt_downloader_title">
-            <property name="readOnly">
-             <bool>true</bool>
+          <item>
+           <widget class="QLineEdit" name="txt_downloader_url">
+            <property name="clearButtonEnabled">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="lbl_downloader_author">
+          <item>
+           <widget class="QPushButton" name="btn_downloader_bookmark">
+            <property name="toolTip">
+             <string>Add to bookmark</string>
+            </property>
             <property name="text">
-             <string>Author</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/icon/bookmark</normaloff>:/icon/bookmark</iconset>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item>
+           <widget class="QPushButton" name="btn_downloader_list">
+            <property name="toolTip">
+             <string>Display bookmark list</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/icon/list</normaloff>:/icon/list</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_downloader_check">
+            <property name="text">
+             <string>Check</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="layout_downloader_info">
+          <item row="0" column="3">
            <widget class="QLineEdit" name="txt_downloader_author">
             <property name="readOnly">
              <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="txt_downloader_title">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="lbl_downloader_title">
+            <property name="text">
+             <string>Title</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="lbl_downloader_author">
+            <property name="text">
+             <string>Author</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lbl_downloader_language">
+            <property name="text">
+             <string>Language</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="cbx_downloader_language"/>
+          </item>
+          <item row="1" column="2">
            <widget class="QLabel" name="lbl_downloader_type">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
@@ -181,7 +191,7 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="1" column="3">
            <widget class="QComboBox" name="cbx_downloader_type">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -1312,6 +1322,20 @@
             <item row="2" column="1">
              <widget class="QComboBox" name="cbx_settings_reader_auto_play_pgb"/>
             </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="lbl_settings_reader_page_gap">
+              <property name="text">
+               <string>Reader page gap</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QSpinBox" name="spin_settings_reader_page_gap">
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
           <widget class="QWidget" name="tab_settings_anti_ban">
@@ -1970,7 +1994,7 @@
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="btn_group_settings_sound"/>
   <buttongroup name="btn_group_settings_message"/>
+  <buttongroup name="btn_group_settings_sound"/>
  </buttongroups>
 </ui>

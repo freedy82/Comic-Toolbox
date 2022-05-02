@@ -1,5 +1,11 @@
 ## Changelog
 
+### v0.9.0
+
+- Add page gap setting for reader
+- Add new supported site `mangadex.org`
+- Add language switch to downloader
+
 ### v0.8.5 ( 2022-05-01 )
 
 - Autoplay function added to comic reader (free your hands)

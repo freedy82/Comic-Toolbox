@@ -43,6 +43,7 @@ Some icons are from [Icons8](https://icons8.com/icon/set/show/ios-glyphs)
 - 漫畫柜 `www.mhgui.com`
 - Read Comic Online (American manga) `readcomicsonline.ru`
 - WEBTOON (Korean manga) `www.webtoons.com`
+- MangaDex (Multi-language manga) `mangadex.org`
 
 ## Main features
 

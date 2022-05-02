@@ -203,7 +203,7 @@ class ReaderImageProcess:
 		return tmp_current_image_file
 
 	@staticmethod
-	def update_image_size_inner(area_size,page_mode:PageMode,page_fit:PageFit,scroll_flow:ScrollFlow,pages_ratio_require:float,layout_main:QGridLayout,scroll_area:QScrollArea):
+	def update_image_size_inner(area_size,page_mode:PageMode,page_fit:PageFit,scroll_flow:ScrollFlow,pages_ratio_require:float,layout_main:QGridLayout,scroll_area:QScrollArea,page_gap):
 		rows = layout_main.rowCount()
 		#cols = self.ui.layout_main.columnCount()
 		cols = page_mode.value
@@ -225,6 +225,8 @@ class ReaderImageProcess:
 							image_size = tmp_widget.pixmap().size()
 							item_idx = layout_main.indexOf(layout_main.itemAtPosition(row,col))
 							from_row,from_col,from_rowspan,from_colspan = layout_main.getItemPosition(item_idx)
+							total_cols_in_row = ReaderImageProcess.get_cols_in_row(layout_main,row,cols)
+							#print(f"row {row} have col {total_cols_in_row}")
 
 							if image_size.width() / image_size.height() > pages_ratio_require and from_colspan > 1:
 								# 2 page already!
@@ -232,25 +234,28 @@ class ReaderImageProcess:
 								target_width_ratio = from_colspan/page_mode.value
 								#print(f"area size {area_size}")
 								if scroll_flow == ScrollFlow.UP_DOWN and page_mode.value > 2:
+									# 3 or 4 pages
+									#todo handle page gap
 									new_image_size = ReaderImageProcess.get_fit_image_size(
-										QSize(int(area_size.width() * target_width_ratio)-int(v_scrollbar_size * target_width_ratio) - 1, area_size.height()),
+										QSize(int((area_size.width() - (page_gap * (total_cols_in_row - 1))) * target_width_ratio)-int(v_scrollbar_size * target_width_ratio) - 1, area_size.height()),
 										image_size, 0, h_scrollbar_size, page_fit,
 										scroll_flow)
 									#print("use small area")
 								else:
 									new_image_size = ReaderImageProcess.get_fit_image_size(
-										QSize(int(area_size.width()*target_width_ratio), area_size.height()), image_size,
+										QSize(int((area_size.width() - (page_gap * (total_cols_in_row - 1)))*target_width_ratio), area_size.height()), image_size,
 										int(v_scrollbar_size*target_width_ratio), h_scrollbar_size,page_fit,scroll_flow)
 								#print(f"new_image_size {new_image_size}")
 							else:
 								#print(f"{tmp_widget.windowFilePath()} is 1 page")
 								if scroll_flow == ScrollFlow.UP_DOWN and page_mode.value > 2:
+									# force display the scroll bar case
 									new_image_size = ReaderImageProcess.get_fit_image_size(
-										QSize(area_size.width() / cols - (v_scrollbar_size / cols) - 1, area_size.height()), image_size,
+										QSize((area_size.width() - (page_gap * (total_cols_in_row - 1))) / cols - (v_scrollbar_size / cols) - 1, area_size.height()), image_size,
 										0, h_scrollbar_size, page_fit, scroll_flow)
 								else:
 									new_image_size = ReaderImageProcess.get_fit_image_size(
-										QSize(area_size.width() / cols, area_size.height()),image_size,
+										QSize((area_size.width() - (page_gap * (total_cols_in_row - 1))) / cols, area_size.height()),image_size,
 										v_scrollbar_size / cols, h_scrollbar_size,page_fit,scroll_flow)
 								#print(f"new_image_size {new_image_size}")
 							tmp_widget.setFixedSize(new_image_size.width(), new_image_size.height())
@@ -261,6 +266,24 @@ class ReaderImageProcess:
 			total_height += row_height
 		#print(f"total_width:{total_width}, total_height:{total_height}")
 		return total_width, total_height
+
+	@staticmethod
+	def get_cols_in_row(layout_main:QGridLayout,row:int,total_check_col:int):
+		total_col = 0
+		current_col = 0
+		while current_col < total_check_col:
+			#print(f"row:{row} current_col: {current_col}")
+			tmp_item = layout_main.itemAtPosition(row, current_col)
+			if tmp_item is not None:
+				item_idx = layout_main.indexOf(tmp_item)
+				from_row, from_col, from_rowspan, from_colspan = layout_main.getItemPosition(item_idx)
+				#print(f"total check {total_check_col}, cel info: {from_row}, {from_col}, {from_rowspan}, {from_colspan}")
+				total_col += 1
+				current_col += from_colspan
+			else:
+				total_col += 1
+				current_col += 1
+		return total_col
 
 	@staticmethod
 	def update_single_image(file,page_mode:PageMode,layout_main:QGridLayout,current_reader:Reader):

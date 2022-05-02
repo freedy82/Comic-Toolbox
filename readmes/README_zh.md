@@ -41,6 +41,7 @@ QSS 暗色主題參考自 书包 的 [QSS-Skin-Builder](https://github.com/satch
 - 漫畫柜 `www.mhgui.com`
 - Read Comic Online （美漫） `readcomicsonline.ru`
 - WEBTOON （韓漫） `www.webtoons.com`
+- MangaDex （多國語言漫畫） `mangadex.org`
 
 ## 本工具特點
 

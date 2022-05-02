@@ -56,7 +56,7 @@ class Kumw5(Site):
 			for idx, tmp_chapter in enumerate(chapter_list, start=1):
 				tmp_chapter_title = re.sub("<span>(.*?)</span>","",tmp_chapter[1])
 				tmp_url = urljoin(url, tmp_chapter[0])
-				chapters.append({"url":tmp_url,"title":tmp_chapter_title,"index":idx,"ref":url})
+				chapters.append({"url":tmp_url,"title":tmp_chapter_title,"index":str(idx),"ref":url})
 			results["chapter"] = chapters
 		return results
 

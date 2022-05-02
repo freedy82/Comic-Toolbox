@@ -125,6 +125,7 @@ class SettingsController(object):
 		self.ui.txt_settings_reader_background.setText("#000000")
 		self.ui.spin_settings_reader_auto_play_interval.setValue(5.0)
 		self.ui.cbx_settings_reader_auto_play_pgb.setCurrentIndex(1)
+		self.ui.spin_settings_reader_page_gap.setValue(0)
 
 		self.ui.spin_settings_page_sleep.setValue(10)
 		self.ui.spin_settings_image_sleep.setValue(1)
@@ -184,6 +185,8 @@ class SettingsController(object):
 		self.ui.spin_settings_reader_auto_play_interval.setValue(float(reader_auto_play_interval))
 		reader_auto_play_pgb = MY_CONFIG.get("reader", "auto_play_pgb")
 		self.ui.cbx_settings_reader_auto_play_pgb.setCurrentIndex(int(reader_auto_play_pgb))
+		reader_page_gap = MY_CONFIG.get("reader", "page_gap")
+		self.ui.spin_settings_reader_page_gap.setValue(int(reader_page_gap))
 
 		#anti ban
 		page_sleep = MY_CONFIG.get("anti-ban", "page_sleep")
@@ -252,6 +255,7 @@ class SettingsController(object):
 		MY_CONFIG.set("reader","background",self.ui.txt_settings_reader_background.text())
 		MY_CONFIG.set("reader","auto_play_interval",str(self.ui.spin_settings_reader_auto_play_interval.value()))
 		MY_CONFIG.set("reader","auto_play_pgb",str(self.ui.cbx_settings_reader_auto_play_pgb.currentIndex()))
+		MY_CONFIG.set("reader","page_gap",str(self.ui.spin_settings_reader_page_gap.value()))
 
 		#anti ban
 		MY_CONFIG.set("anti-ban","page_sleep",str(self.ui.spin_settings_page_sleep.value()))

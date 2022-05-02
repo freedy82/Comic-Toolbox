@@ -25,6 +25,7 @@ class DownloaderController(object):
 		self.item_list = None
 		self.type_list = []
 		self.current_type = ""
+		self.current_lang = ""
 
 		self.bookmark_controller = BookmarkWindowController(self.app,self.main_controller,self)
 
@@ -39,6 +40,8 @@ class DownloaderController(object):
 		#self.ui.txt_downloader_url.setText("https://www.cartoonmad.com/comic/4462.html")  #  OVERLORD
 		#self.ui.txt_downloader_url.setText("https://www.cartoonmad.com/comic/5033.html") # 火影忍者博人傳
 		#self.ui.txt_downloader_url.setText("https://www.manhuagui.com/comic/1128/")  # ONE PIECE航海王
+		#self.ui.txt_downloader_url.setText("https://mangadex.org/title/859e3107-f37e-46b8-954c-1318b5c63c9c/ghost-in-the-shell-stand-alone-complex")  # Ghost in the shell
+		#self.ui.txt_downloader_url.setText("https://mangadex.org/title/80422e14-b9ad-4fda-970f-de370d5fa4e5/made-in-abyss?page=1")  # Made in Abyss
 
 		self.ui.cbx_downloader_file_exist.addItems([TRSM("Skip"),TRSM("Overwrite")])
 
@@ -50,6 +53,7 @@ class DownloaderController(object):
 		self.ui.btn_downloader_list.clicked.connect(self.btn_downloader_list_clicked)
 		self.ui.btn_downloader_bookmark.clicked.connect(self.btn_downloader_bookmark_clicked)
 		self.ui.cbx_downloader_type.currentIndexChanged.connect(self.cbx_downloader_type_changed)
+		self.ui.cbx_downloader_language.currentIndexChanged.connect(self.cbx_downloader_lang_changed)
 
 		self.ui.btn_downloader_select.clicked.connect(self.btn_downloader_select_clicked)
 		self.ui.btn_downloader_unselect.clicked.connect(self.btn_downloader_unselect_clicked)
@@ -97,7 +101,12 @@ class DownloaderController(object):
 				self.ui.txt_downloader_title.setText("")
 				self.ui.txt_downloader_author.setText("")
 				self.type_list = []
+				self.ui.cbx_downloader_type.blockSignals(True)
 				self.ui.cbx_downloader_type.clear()
+				self.ui.cbx_downloader_type.blockSignals(False)
+				self.ui.cbx_downloader_language.blockSignals(True)
+				self.ui.cbx_downloader_language.clear()
+				self.ui.cbx_downloader_language.blockSignals(False)
 				self.ui.btn_downloader_select.setEnabled(False)
 				self.ui.btn_downloader_unselect.setEnabled(False)
 				self.ui.btn_downloader_select_all.setEnabled(False)
@@ -155,15 +164,23 @@ class DownloaderController(object):
 			self.ui.list_downloader_chapter.item(i).setCheckState(QtCore.Qt.Unchecked)
 
 	def btn_downloader_start_clicked(self):
-		total_need_download_list = []
+		need_download_item_list = []
+		need_download_index_list = []
 		for i in range(self.ui.list_downloader_chapter.count()):
 			if self.ui.list_downloader_chapter.item(i).checkState() == QtCore.Qt.Checked:
-				total_need_download_list.append(self.item_list[self.current_type][i])
+				need_download_index_list.append(i)
+				#need_download_item_list.append(self.item_list[self.current_type][i])
+		tmp_current_index = -1
+		for tmp_item in self.item_list[self.current_type]:
+			if self.current_lang == "" or self.current_lang == tmp_item["lang"]:
+				tmp_current_index += 1
+				if tmp_current_index in need_download_index_list:
+					need_download_item_list.append(tmp_item)
 
-		if len(total_need_download_list) > 0:
+		if len(need_download_item_list) > 0:
 			self.chapter_download_worker = ChapterDownloadWorker(
 				site=self.site,
-				items=total_need_download_list,
+				items=need_download_item_list,
 				title=self.item_list["title"],
 				author=self.item_list["author"],
 				current_type=self.current_type,
@@ -178,7 +195,7 @@ class DownloaderController(object):
 			self.ui.pgb_downloader_current.setValue(0)
 			self.ui.pgb_downloader_current.setMaximum(0)
 			self.ui.pgb_downloader_total.setValue(0)
-			self.ui.pgb_downloader_total.setMaximum(len(total_need_download_list))
+			self.ui.pgb_downloader_total.setMaximum(len(need_download_item_list))
 			self.ui.txt_downloader_log.clear()
 
 			pass
@@ -198,6 +215,13 @@ class DownloaderController(object):
 				self.current_type = current_type_text
 		else:
 			self.current_type = ""
+		self.update_chapter_list()
+
+	def cbx_downloader_lang_changed(self):
+		if self.ui.cbx_downloader_language.currentIndex() > 0:
+			self.current_lang = self.ui.cbx_downloader_language.currentText()
+		else:
+			self.current_lang = ""
 		self.update_chapter_list()
 
 	# callback function
@@ -224,6 +248,7 @@ class DownloaderController(object):
 			if self.item_list["author"] != "":
 				self.ui.txt_downloader_author.setText(TRSM(self.item_list["author"]))
 
+			self.ui.cbx_downloader_type.blockSignals(True)
 			self.ui.cbx_downloader_type.clear()
 			self.type_list = []
 			if "chapter" in self.item_list and len(self.item_list["chapter"]) > 0:
@@ -235,6 +260,8 @@ class DownloaderController(object):
 			if "extra" in self.item_list and len(self.item_list["extra"]) > 0:
 				self.type_list.append("extra")
 				self.ui.cbx_downloader_type.addItem(TRSM("extra"))
+			self.ui.cbx_downloader_type.blockSignals(False)
+			self.update_lang_list()
 
 		if self.ui.cbx_downloader_type.count() > 0:
 			self.ui.cbx_downloader_type.setCurrentIndex(0)
@@ -244,8 +271,6 @@ class DownloaderController(object):
 				pass
 		else:
 			util.msg_box(TRSM("Can not found list"),self.main_controller)
-
-		pass
 
 	def chapter_download_trigger(self, message, current_page, total_page, current_chapter, total_chapter):
 		if message != "":
@@ -297,6 +322,22 @@ class DownloaderController(object):
 			return True
 		return False
 
+	def update_lang_list(self):
+		langs = []
+		for tmp_type in self.type_list:
+			for tmp_chapter in self.item_list[tmp_type]:
+				if "lang" in tmp_chapter:
+					tmp_lang = tmp_chapter["lang"]
+					if tmp_lang not in langs:
+						langs.append(tmp_lang)
+		langs.sort()
+		langs = [TRSM("All")] + langs
+		self.ui.cbx_downloader_language.blockSignals(True)
+		self.ui.cbx_downloader_language.clear()
+		self.ui.cbx_downloader_language.addItems(langs)
+		self.ui.cbx_downloader_language.blockSignals(False)
+		self.current_lang = ""
+
 	def update_chapter_list(self):
 		self.ui.list_downloader_chapter.clear()
 
@@ -304,12 +345,16 @@ class DownloaderController(object):
 			return
 
 		for idx, tmp_chapter in enumerate(self.item_list[self.current_type]):
+			if self.current_lang != "":
+				if "lang" not in tmp_chapter or tmp_chapter["lang"] != self.current_lang:
+					continue
+
 			item = QListWidgetItem()
 			tmp_title = ""
 			if self.current_type == "book":
-				tmp_title += str(tmp_chapter["index"]).zfill(int(MY_CONFIG.get("general", "book_padding")))
+				tmp_title += tmp_chapter["index"].zfill(int(MY_CONFIG.get("general", "book_padding")))
 			else:
-				tmp_title += str(tmp_chapter["index"]).zfill(int(MY_CONFIG.get("general", "chapter_padding")))
+				tmp_title += tmp_chapter["index"].zfill(int(MY_CONFIG.get("general", "chapter_padding")))
 			is_downloaded = self.check_is_downloaded(tmp_title)
 			tmp_title += " - " + tmp_chapter["title"]
 			item.setText(tmp_title)

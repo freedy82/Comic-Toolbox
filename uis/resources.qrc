@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icon">
+    <file alias="gap">resources/gap.png</file>
     <file alias="autoplay">resources/autoplay.png</file>
     <file alias="rotate-right">resources/rotate-right.png</file>
     <file alias="play">resources/play.png</file>

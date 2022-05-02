@@ -93,7 +93,7 @@ class Webtoons(Site):
 		for li in bs.find('ul', {'id': '_listUl'}).find_all('li'):
 			href = li.a.get('href')
 			title = li.find('span', {'class': 'subj'}).text.strip()
-			index = int(li.find('span', {'class': 'tx'}).text.replace("#",""))
+			index = li.find('span', {'class': 'tx'}).text.replace("#","")
 			chapter_url = urljoin(url, href)
 			chapters.append({"url":chapter_url,"title":title,"index":index,"ref":url})
 		return chapters

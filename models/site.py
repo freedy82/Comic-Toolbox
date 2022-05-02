@@ -83,6 +83,7 @@ class Site(QThread):
 			author = self.get_book_author_from_html(html_code)
 			lists = self.get_book_item_list_from_html(html_code,self._main_url)
 			if lists is not None:
+				title = ''.join(e for e in title if e.isalnum() or e == " ")
 				lists["title"] = title
 				lists["author"] = author
 
@@ -92,9 +93,9 @@ class Site(QThread):
 		self._stop_flag = False
 
 		if item_type == "book":
-			tmp_output_dir = item_type + "-" + str(item["index"]).zfill(int(MY_CONFIG.get("general", "book_padding")))
+			tmp_output_dir = item_type + "-" + item["index"].zfill(int(MY_CONFIG.get("general", "book_padding")))
 		else:
-			tmp_output_dir = item_type + "-" + str(item["index"]).zfill(int(MY_CONFIG.get("general", "chapter_padding")))
+			tmp_output_dir = item_type + "-" + item["index"].zfill(int(MY_CONFIG.get("general", "chapter_padding")))
 
 		output_dir = os.path.join(MY_CONFIG.get("general", "download_folder"), title, tmp_output_dir)
 		Path(output_dir).mkdir(parents=True, exist_ok=True)
