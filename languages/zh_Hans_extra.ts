@@ -171,7 +171,7 @@
         <translation>封面已存在 %s</translation>
     </message>
     <message>
-        <source>Can find file to crop in %s</source>
+        <source>Can not find file to crop in %s</source>
         <translation>在 %s 中找不到文件来裁剪</translation>
     </message>
     <message>
@@ -490,6 +490,123 @@
         <source>License</source>
         <translation>许可证</translation>
     </message>
+    <message>
+        <source>Page gap</source>
+        <translation>页面间隙</translation>
+    </message>
+    <message>
+        <source>Background color</source>
+        <translation>背景色</translation>
+    </message>
+    <message>
+        <source>Loaded page %s (%d/%d)</source>
+        <translation>已加载页面 %s (%d/%d)</translation>
+    </message>
+    <message>
+        <source>Generated page %s (%d/%d)</source>
+        <translation>生成页面 %s (%d/%d)</translation>
+    </message>
+    <message>
+        <source>Long page (Korean comic style)</source>
+        <translation>长页（韩式漫画风格）</translation>
+    </message>
+    <message>
+        <source>Auto re-page korean comic (Simple Rules)</source>
+        <translation>自动重新分页韩式漫画（简单规则）</translation>
+    </message>
+    <message>
+        <source>File already exist %s</source>
+        <translation>文件已存在 %s</translation>
+    </message>
+    <message>
+        <source>Can not find file to re-page in %s</source>
+        <translation>在 %s 中找不到文件可重新分页</translation>
+    </message>
+    <message>
+        <source>Multi page</source>
+        <translation>多页</translation>
+    </message>
+    <message>
+        <source>Download failed: %s (%d/%d)</source>
+        <translation>下载失败: %s (%d/%d)</translation>
+    </message>
+    <message>
+        <source>Stop autoplay</source>
+        <translation>停止自動播放</translation>
+    </message>
+    <message>
+        <source>jpn_vert</source>
+        <translation>日文纵排</translation>
+    </message>
+    <message>
+        <source>chi_tra_vert</source>
+        <translation>繁体中文纵排</translation>
+    </message>
+    <message>
+        <source>chi_sim_vert</source>
+        <translation>简体中文纵排</translation>
+    </message>
+    <message>
+        <source>kor_vert</source>
+        <translation>韩文纵排</translation>
+    </message>
+    <message>
+        <source>jpn</source>
+        <translation>日文横排</translation>
+    </message>
+    <message>
+        <source>chi_tra</source>
+        <translation>繁体中文横排</translation>
+    </message>
+    <message>
+        <source>chi_sim</source>
+        <translation>简体中文横排</translation>
+    </message>
+    <message>
+        <source>kor</source>
+        <translation>韩文横排</translation>
+    </message>
+    <message>
+        <source>eng</source>
+        <translation>英文</translation>
+    </message>
+    <message>
+        <source>WHITE_BG_BLACK_TEXT</source>
+        <translation>白底黑字</translation>
+    </message>
+    <message>
+        <source>BLACK_BG_WHITE_TEXT</source>
+        <translation>黑底白字</translation>
+    </message>
+    <message>
+        <source>NO_BG_BLACK_TEXT</source>
+        <translation>无底黑字</translation>
+    </message>
+    <message>
+        <source>NO_BG_WHITE_TEXT</source>
+        <translation>无底白字</translation>
+    </message>
+    <message>
+        <source>LINE_START</source>
+        <translation>行首</translation>
+    </message>
+    <message>
+        <source>LINE_MIDDLE</source>
+        <translation>行中</translation>
+    </message>
+    <message>
+        <source>LINE_END</source>
+        <translation>行尾</translation>
+    </message>
+    <message>
+        <source>Finish all image</source>
+        <translation>已完成所有图象</translation>
+    </message>
+    <message>
+        <source>Please choose other folder than from folder</source>
+        <translation>请选择和来源不同的文档夹</translation>
+    </message>
+
 
 </context>
 </TS>

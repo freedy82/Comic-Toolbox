@@ -246,9 +246,11 @@ class DownloaderController(object):
 		if self.item_list:
 			if self.item_list["title"] != "":
 				self.ui.txt_downloader_title.setText(TRSM(self.item_list["title"]))
+				self.ui.txt_downloader_title.home(False)
 
 			if self.item_list["author"] != "":
 				self.ui.txt_downloader_author.setText(TRSM(self.item_list["author"]))
+				self.ui.txt_downloader_author.home(False)
 
 			self.ui.cbx_downloader_type.blockSignals(True)
 			self.ui.cbx_downloader_type.clear()

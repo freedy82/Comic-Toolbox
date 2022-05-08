@@ -23,6 +23,8 @@ class MyConfig(RawConfigParser):
 			#todo add system language support
 			#self.set("general","language","zh_Hant")
 			self.set("general","language","en")
+		if self.get("general","theme") == "":
+			self.set("general","theme","default")
 
 		if self.get("general","download_folder") == "":
 			self.set("general","download_folder","./books")
@@ -88,6 +90,8 @@ class MyConfig(RawConfigParser):
 			self.set("reader","scroll_flow","LEFT_RIGHT")
 		if self.get("reader","page_fit") == "":
 			self.set("reader","page_fit","BOTH")
+		if self.get("reader","free_width") == "":
+			self.set("reader","free_width","100")
 		if self.get("reader","page_mode") == "":
 			self.set("reader","page_mode","DOUBLE")
 		if self.get("reader","page_flow") == "":

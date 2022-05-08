@@ -18,34 +18,6 @@ If you think this tool is helpful to you, please click star to follow, thank you
 
 If you encounter problems during use, please submit ISSUE
 
-## Refer to
-
-The crawler part has some code references from
-
-- [ComicBook](https://github.com/lossme/ComicBook) by lossme (but doesn't seem to be maintained anymore)
-- [ComicCrawler](https://github.com/eight04/ComicCrawler) by eight04
-- [manhuagui-dlr](https://github.com/HSSLC/manhuagui-dlr) for HSSLC
-
-Learn Python from Luo Hao's [Python - 100 days from novice to master](https://github.com/jackfrued/Python-100-Days) (still not finished yet😅 still a novice)
-
-PyQt5 learned from buzzing [this year is still not enough money to buy psQQ, let's use PyQt to write one by ourselves](https://www.wongwonggoods.com/category/portfolio/13th_ironman/)
-
-QSS dark theme refers to [QSS-Skin-Builder](https://github.com/satchelwu/QSS-Skin-Builder) of Schoolbag
-
-Some icons are from [Icons8](https://icons8.com/icon/set/show/ios-glyphs)
-
-## Support site
-
-- 動漫狂 `www.cartoonmad.com`
-- 無限動漫 `www.comicabc.com`
-- 动漫屋 `www.dm5.com`
-- 动漫之家 `www.dmzj.com`
-- 酷漫屋 `www.kumw5.com`
-- 漫畫柜 `www.mhgui.com`
-- Read Comic Online (American manga) `readcomicsonline.ru`
-- WEBTOON (Korean manga) `www.webtoons.com`
-- MangaDex (Multi-language manga) `mangadex.org`
-
 ## Main features
 
 - [x] Full GUI interface operation
@@ -57,23 +29,20 @@ Some icons are from [Icons8](https://icons8.com/icon/set/show/ios-glyphs)
 - [x] Batch processing of pictures (such as changing contrast, brightness, sharpness, color, supporting Real-CUGAN AI enhancement, which is helpful for older comics)
 - [x] Batch cropping of pictures (supports the integrated cropping of common Japanese manga covers, 2-page integrated cropping, semi-automatic fine-tuning, convenient for e-book readers)
 - [x] Compression tool: support to generate cbz, epub, pdf, zip, docx (multiple chapters can be combined into one file)
-- [x] Reader, supports multi-level subdirectory diversity / CBZ / ZIP / PDF, can set different number of pages, reading order from left to right or right to left, picture ratio, reading method: page or full page Vertical (convenient for Korean comics), support bookmark reading progress, full screen reading
+- [x] Reader, supports multi-level subdirectory diversity / CBZ / ZIP / PDF, can set different number of pages, reading order from left to right or right to left, page ratio, reading method: page or full page Vertical (convenient for Korean comics), support bookmark reading progress, full screen reading
+- [x] Translator tool supports simple automatic dialog detection, OCR, translation, generating new translated images
 
-## Install / upgrade steps
+## Supported download site
 
-Personally developed in Python 3.9 in Windows 11, here is the reference
-
-### Install Python
-
-The installation file can be downloaded from the official Python website [https://www.python.org/](https://www.python.org/).
-
-Remember to select "Add python.exe to path" when installing to use the pip command.
-
-### Install Node.js
-
-Some web crawlers use Node.js to analyze JavaScript.
-
-The installation file can be downloaded from the official Node.js website [https://nodejs.org/](https://nodejs.org/).
+- 動漫狂 `www.cartoonmad.com`
+- 無限動漫 `www.comicabc.com`
+- 动漫屋 `www.dm5.com`
+- 动漫之家 `www.dmzj.com`
+- 酷漫屋 `www.kumw5.com`
+- 漫畫柜 `www.mhgui.com`
+- Read Comic Online (American manga) `readcomicsonline.ru`
+- WEBTOON (Korean manga) `www.webtoons.com`
+- MangaDex (Multi-language manga) `mangadex.org`
 
 ## Interface Introduction
 
@@ -105,6 +74,12 @@ Image cropping
 
 ![Image crop](readmes/screenshots/en/image_cropper.jpg "Image crop")
 
+Translator
+
+(Page credit from https://www.mangaz.com/book/detail/44851 )
+
+![Translator](readmes/screenshots/en/translator.jpg "Translator")
+
 Settings - Prevent Banned
 
 ![Settings](readmes/screenshots/en/settings_anti-ban.jpg "Settings")
@@ -135,29 +110,33 @@ The conversion tool destination folder is suggested to be different from the sou
 
 ## Notes
 
-It's okay to take the program casually, but please don't take it as your own, thank you!
+It is only for academic research and exchange, respect copyright, please support genuine, and resources downloaded or generated through this tool ** are prohibited from spreading and sharing! It is forbidden to use this project for commercial activities! **
 
-It is only for academic research and exchange, respect copyright, please support genuine, and resources downloaded or generated through this tool** are prohibited from spreading and sharing! It is forbidden to use this project for commercial activities! **
+## Installation
 
-## At the end
-
-Because it is a work that is half-studied and half-written, there must still be many deficiencies. There must be bugs, and there may be quite a few. Welcome to submit issues. Because it is a personal free work, the response to corrections is relatively slow.
-
-~~Want to add Proxy support, but I couldn't find a good free Proxy online~~ (I used the locally installed proxy test in the end)
-
-~~In addition, if you have time, tidy up the code, such as useless imports, requirements and the like~~
-
-## Feelings
-
-Python is easy to get started, but difficult to advance 😅
-
-QtDesigner is really useful
-
-OpenCV should be faster than Pillow, but a lot of sin, cos, and tan are difficult to use for those who have passed junior high school for many years!
+View [Installation](readmes/installation.md)
 
 ## Changelog
 
 View [Changelog](readmes/change_log.md)
+
+## Refer to
+
+The crawler part has some code references from
+
+- [ComicBook](https://github.com/lossme/ComicBook) by lossme (but doesn't seem to be maintained anymore)
+- [ComicCrawler](https://github.com/eight04/ComicCrawler) by eight04
+- [manhuagui-dlr](https://github.com/HSSLC/manhuagui-dlr) by HSSLC
+
+Dialog detection [ComicVision](https://github.com/jemsbhai/comicvision/blob/master/Comic%20Vision.ipynb) by Muntaser Syed 
+
+Learn Python from Luo Hao's [Python - 100 days from novice to master](https://github.com/jackfrued/Python-100-Days) (still not finished yet😅 still a novice)
+
+PyQt5 learned from buzzing [this year is still not enough money to buy psQQ, let's use PyQt to write one by ourselves](https://www.wongwonggoods.com/category/portfolio/13th_ironman/)
+
+QSS dark theme refers to [QSS-Skin-Builder](https://github.com/satchelwu/QSS-Skin-Builder) of Schoolbag
+
+Some icons are from [Icons8](https://icons8.com/icon/set/show/ios-glyphs)
 
 ## License
 

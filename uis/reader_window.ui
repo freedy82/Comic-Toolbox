@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>840</width>
+    <width>878</width>
     <height>480</height>
    </rect>
   </property>
@@ -101,7 +101,7 @@ background-color: #888888;
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>840</width>
+         <width>878</width>
          <height>424</height>
         </rect>
        </property>
@@ -232,7 +232,7 @@ color: #FFFFFF;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>840</width>
+     <width>878</width>
      <height>21</height>
     </rect>
    </property>
@@ -257,8 +257,11 @@ color: #FFFFFF;</string>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::PreventContextMenu</enum>
+   </property>
    <property name="windowTitle">
-    <string notr="true">tb_main</string>
+    <string>Main Toolbar</string>
    </property>
    <property name="styleSheet">
     <string notr="true"/>
@@ -278,21 +281,14 @@ color: #FFFFFF;</string>
    <addaction name="actionFileOpenFolder"/>
    <addaction name="actionFileOpenFile"/>
    <addaction name="separator"/>
-   <addaction name="actionAutoPlay"/>
-   <addaction name="separator"/>
    <addaction name="actionScrollFlowLeftRight"/>
    <addaction name="actionScrollFlowUpDown"/>
    <addaction name="separator"/>
    <addaction name="actionFitHeight"/>
    <addaction name="actionFitWidth"/>
    <addaction name="actionFitBoth"/>
-   <addaction name="actionFitWidth80"/>
-   <addaction name="separator"/>
    <addaction name="actionPageModeSingle"/>
    <addaction name="actionPageModeDouble"/>
-   <addaction name="actionPageModeTriple"/>
-   <addaction name="actionPageModeQuadruple"/>
-   <addaction name="separator"/>
    <addaction name="actionPageFlowRightToLeft"/>
    <addaction name="actionPageFlowLeftToRight"/>
    <addaction name="separator"/>
@@ -302,32 +298,6 @@ color: #FFFFFF;</string>
    <addaction name="separator"/>
    <addaction name="actionAddBookmark"/>
    <addaction name="actionBookmarkList"/>
-  </widget>
-  <widget class="QToolBar" name="tb_right">
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="windowTitle">
-    <string notr="true">tb_right</string>
-   </property>
-   <property name="layoutDirection">
-    <enum>Qt::LeftToRight</enum>
-   </property>
-   <property name="movable">
-    <bool>false</bool>
-   </property>
-   <property name="floatable">
-    <bool>false</bool>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
   </widget>
   <action name="actionPageModeSingle">
    <property name="checkable">
@@ -359,7 +329,7 @@ color: #FFFFFF;</string>
   <action name="actionFileOpenFolder">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/icon/open_folder</normaloff>:/icon/open_folder</iconset>
+     <normaloff>:/icon/open-folder</normaloff>:/icon/open-folder</iconset>
    </property>
    <property name="text">
     <string>Open Folder</string>
@@ -377,7 +347,7 @@ color: #FFFFFF;</string>
   <action name="actionFullscreen">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/icon/full_screen</normaloff>:/icon/full_screen</iconset>
+     <normaloff>:/icon/full-screen</normaloff>:/icon/full-screen</iconset>
    </property>
    <property name="text">
     <string>Fullscreen</string>
@@ -497,7 +467,7 @@ color: #FFFFFF;</string>
    </property>
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/icon/fit-width-80</normaloff>:/icon/fit-width-80</iconset>
+     <normaloff>:/icon/fit-width-num</normaloff>:/icon/fit-width-num</iconset>
    </property>
    <property name="text">
     <string>Fit Width 80%</string>

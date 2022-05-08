@@ -1899,6 +1899,7 @@
      <string>File</string>
     </property>
     <addaction name="actionFileStartReader"/>
+    <addaction name="actionFileStartTranslator"/>
     <addaction name="separator"/>
     <addaction name="actionFileExit"/>
    </widget>
@@ -1988,13 +1989,22 @@
     <string>Start Reader</string>
    </property>
   </action>
+  <action name="actionFileStartTranslator">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icon/translate</normaloff>:/icon/translate</iconset>
+   </property>
+   <property name="text">
+    <string>Start Translator</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="resources.qrc"/>
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="btn_group_settings_sound"/>
   <buttongroup name="btn_group_settings_message"/>
+  <buttongroup name="btn_group_settings_sound"/>
  </buttongroups>
 </ui>

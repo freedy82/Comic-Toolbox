@@ -23,6 +23,9 @@ class BookmarkWindowController(QtWidgets.QMainWindow):
 		self.setWindowFlag(Qt.WindowMinimizeButtonHint, False)
 		if self.is_reader:
 			self.ui.table_bookmark.setEditTriggers(QAbstractItemView.NoEditTriggers)
+		#header = self.ui.table_bookmark.horizontalHeader()
+		#header.setSectionResizeMode(0, QtWidgets.QHeaderView.Interactive)
+		#header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
 
 		# GUI
 		self.retranslateUi()
@@ -93,8 +96,10 @@ class BookmarkWindowController(QtWidgets.QMainWindow):
 		self.bookmarks = self._table_to_json()
 		self._save_bookmarks()
 
-	def table_bookmark_double_clicked(self):
+	def table_bookmark_double_clicked(self, from_cell:QtCore.QModelIndex):
 		if self.is_reader:
+			self.btn_load_clicked()
+		elif from_cell.column() == 1:
 			self.btn_load_clicked()
 
 	# internal function
@@ -125,9 +130,23 @@ class BookmarkWindowController(QtWidgets.QMainWindow):
 		self.ui.table_bookmark.setRowCount(len(self.bookmarks))
 		for idx,bookmark in enumerate(self.bookmarks):
 			self.ui.table_bookmark.setItem(idx, 0, QTableWidgetItem(bookmark["title"]))
-			self.ui.table_bookmark.setItem(idx, 1, QTableWidgetItem(bookmark["url"]))
+			tmp_url_item = QTableWidgetItem(bookmark["url"])
+			tmp_url_item.setFlags(tmp_url_item.flags() & ~ Qt.ItemIsEditable)
+			self.ui.table_bookmark.setItem(idx, 1, tmp_url_item)
 		self.ui.table_bookmark.resizeColumnsToContents()
 		self.ui.table_bookmark.blockSignals(False)
+
+	def _update_table_col_size(self):
+		table_width = self.ui.table_bookmark.frameGeometry().width()
+		header_width = self.ui.table_bookmark.verticalHeader().sizeHint().width()
+		scroll_width = self.ui.table_bookmark.verticalScrollBar().sizeHint().width()
+		table_width = table_width - header_width - scroll_width - 1
+		if self.is_reader:
+			self.ui.table_bookmark.setColumnWidth(0, table_width * 2 // 3)
+			self.ui.table_bookmark.setColumnWidth(1, table_width // 3)
+		else:
+			self.ui.table_bookmark.setColumnWidth(0,table_width // 3)
+			self.ui.table_bookmark.setColumnWidth(1,table_width * 2 // 3)
 
 	def _table_to_json(self):
 		result = []
@@ -143,4 +162,5 @@ class BookmarkWindowController(QtWidgets.QMainWindow):
 		super().show()
 		self._load_bookmarks()
 		self._update_table()
+		self._update_table_col_size()
 		pass

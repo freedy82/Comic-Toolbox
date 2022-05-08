@@ -16,34 +16,6 @@
 
 如有使用中遇到問題，歡迎提ISSUE
 
-## 參考
-
-爬蟲部分有部分代碼參考自 
-
-- lossme 的 [ComicBook](https://github.com/lossme/ComicBook) （但好像不再維護了）
-- eight04 的 [ComicCrawler](https://github.com/eight04/ComicCrawler)
-- HSSLC 的 [manhuagui-dlr](https://github.com/HSSLC/manhuagui-dlr)
-
-Python 學習自 骆昊 的 [Python - 100天从新手到大师](https://github.com/jackfrued/Python-100-Days) （仍未學完😅仍是新手）
-
-PyQt5 學習自 嗡嗡 的 [今年還是不夠錢買psQQ，不如我們用PyQt自己寫一個](https://www.wongwonggoods.com/category/portfolio/13th_ironman/)
-
-QSS 暗色主題參考自 书包 的 [QSS-Skin-Builder](https://github.com/satchelwu/QSS-Skin-Builder)
-
-部分圖示來自 [Icons8](https://icons8.com/icon/set/show/ios-glyphs)
-
-## 支持站點
-
-- 動漫狂 `www.cartoonmad.com`
-- 無限動漫 `www.comicabc.com`
-- 动漫屋 `www.dm5.com`
-- 动漫之家 `www.dmzj.com`
-- 酷漫屋 `www.kumw5.com`
-- 漫畫柜 `www.mhgui.com`
-- Read Comic Online （美漫） `readcomicsonline.ru`
-- WEBTOON （韓漫） `www.webtoons.com`
-- MangaDex （多國語言漫畫） `mangadex.org`
-
 ## 本工具特點
 
 - [x] 全GUI介面操作
@@ -56,22 +28,19 @@ QSS 暗色主題參考自 书包 的 [QSS-Skin-Builder](https://github.com/satch
 - [x] 圖片批量裁剪 （ 支持常見的日式漫畫封面一體化的裁剪，2頁一體化的裁剪，可半自動微調，方便電子書閱讀器 ）
 - [x] 壓縮工具：支援產生 cbz、epub、pdf、zip、docx （ 可多章節合併成一個檔案 ）
 - [x] 閱讀器，支援多層子目錄的分集／CBZ／ZIP／PDF，可設定不同分頁數，閱讀次序由左至右或由右至左，圖片比例，閱讀方式：分頁或一整頁垂直（方便韓漫），支持書簽閱讀進度，全屏閱讀
+- [x] 翻譯工具支持簡單自動對話框檢測、OCR、翻譯、生成新已翻譯的圖片
 
-## 安裝／升級步驟
+## 支持下載站點
 
-個人是在 Windows 11 中的 Python 3.9 開發的，以下是參考
-
-### 安裝 Python
-
-安裝檔可以從 Python 官方網站 [https://www.python.org/](https://www.python.org/) 下載。
-
-安裝時記得要選「Add python.exe to path」，才能使用 pip 指令。
-
-### 安裝 Node.js
-
-部分網站的爬蟲使用 Node.js 來分析 JavaScript 。
-
-安裝檔可以從 Node.js 官方網站 [https://nodejs.org/](https://nodejs.org/) 下載。
+- 動漫狂 `www.cartoonmad.com`
+- 無限動漫 `www.comicabc.com`
+- 动漫屋 `www.dm5.com`
+- 动漫之家 `www.dmzj.com`
+- 酷漫屋 `www.kumw5.com`
+- 漫畫柜 `www.mhgui.com`
+- Read Comic Online （美漫） `readcomicsonline.ru`
+- WEBTOON （韓漫） `www.webtoons.com`
+- MangaDex （多國語言漫畫） `mangadex.org`
 
 ## 介面簡介
 
@@ -103,6 +72,12 @@ QSS 暗色主題參考自 书包 的 [QSS-Skin-Builder](https://github.com/satch
 
 ![圖片裁剪](screenshots/zh/image_cropper.jpg "圖片裁剪")
 
+翻譯工具
+
+(圖片來自 https://www.mangaz.com/book/detail/44851 )
+
+![翻譯工具](screenshots/zh/translator.jpg "翻譯工具")
+
 設定 - 防止被禁
 
 ![設定](screenshots/zh/settings_anti-ban.jpg "設定")
@@ -132,29 +107,33 @@ QSS 暗色主題參考自 书包 的 [QSS-Skin-Builder](https://github.com/satch
 
 ## 附註
 
-程式隨便拿沒關係，但請不要把他當成自己原創的，謝謝！
-
 僅供學術研究交流使用，尊重版權，請支援正版，通過本工具下載或產生的資源**禁止傳播分享！禁止利用本專案進行商業活動！**
 
-## 寫在後頭
+## 安裝步驟
 
-因是半學習半編寫的作品，所以一定仍有很多不足的地方，臭蟲(bug)一定是有的，而且可能不少，歡迎提交 issue，因是個人空閒的作品，所以修正回應比較慢啦
-
-~~想加入Proxy的支持，但線上沒找到一個好用的免費的Proxy~~ (最後用了在本地裝的Proxy代理測試)
-
-~~另外如有空，再把代碼整理一下吧，如無用的 import，requirements 之類的~~
-
-## 感想+隨想
-
-Python 上手挺容易的，但想進階挺難的😅
-
-QtDesigner 真的挺好用的
-
-OpenCV 應該比 Pillow 快，但好多 sin、cos、tan，對初中已過去好多年的人覺得好難用啊！
+查看 [安裝步驟](installation_zh.md)
 
 ## 版本更新
 
 查看 [版本更新](change_log_zh.md)
+
+## 參考
+
+爬蟲部分有部分代碼參考自 
+
+- lossme 的 [ComicBook](https://github.com/lossme/ComicBook) （但好像不再維護了）
+- eight04 的 [ComicCrawler](https://github.com/eight04/ComicCrawler)
+- HSSLC 的 [manhuagui-dlr](https://github.com/HSSLC/manhuagui-dlr)
+
+Muntaser Syed 的對話框檢測 [ComicVision](https://github.com/jemsbhai/comicvision/blob/master/Comic%20Vision.ipynb)
+
+Python 學習自 骆昊 的 [Python - 100天从新手到大师](https://github.com/jackfrued/Python-100-Days) （仍未學完😅仍是新手）
+
+PyQt5 學習自 嗡嗡 的 [今年還是不夠錢買psQQ，不如我們用PyQt自己寫一個](https://www.wongwonggoods.com/category/portfolio/13th_ironman/)
+
+QSS 暗色主題參考自 书包 的 [QSS-Skin-Builder](https://github.com/satchelwu/QSS-Skin-Builder)
+
+部分圖示來自 [Icons8](https://icons8.com/icon/set/show/ios-glyphs)
 
 ## License / 許可證
 

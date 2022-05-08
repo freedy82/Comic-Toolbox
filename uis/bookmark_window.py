@@ -27,6 +27,8 @@ class Ui_MainWindow(object):
         self.table_bookmark.setEditTriggers(QtWidgets.QAbstractItemView.DoubleClicked)
         self.table_bookmark.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.table_bookmark.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.table_bookmark.setVerticalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
+        self.table_bookmark.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollPerPixel)
         self.table_bookmark.setColumnCount(2)
         self.table_bookmark.setObjectName("table_bookmark")
         self.table_bookmark.setRowCount(0)

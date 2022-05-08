@@ -975,7 +975,13 @@ class Ui_MainWindow(object):
         icon9.addPixmap(QtGui.QPixmap(":/icon/show"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionFileStartReader.setIcon(icon9)
         self.actionFileStartReader.setObjectName("actionFileStartReader")
+        self.actionFileStartTranslator = QtWidgets.QAction(MainWindow)
+        icon10 = QtGui.QIcon()
+        icon10.addPixmap(QtGui.QPixmap(":/icon/translate"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionFileStartTranslator.setIcon(icon10)
+        self.actionFileStartTranslator.setObjectName("actionFileStartTranslator")
         self.menuFile.addAction(self.actionFileStartReader)
+        self.menuFile.addAction(self.actionFileStartTranslator)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionFileExit)
         self.menuHelpLanguage.addAction(self.action_help_language_tmp_language)
@@ -1131,6 +1137,7 @@ class Ui_MainWindow(object):
         self.actionHelpThemeDefault.setText(_translate("MainWindow", "Default"))
         self.actionHelpAboutQt.setText(_translate("MainWindow", "About Qt"))
         self.actionFileStartReader.setText(_translate("MainWindow", "Start Reader"))
+        self.actionFileStartTranslator.setText(_translate("MainWindow", "Start Translator"))
 from uis import resources_rc
 
 

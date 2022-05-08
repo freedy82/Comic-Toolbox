@@ -16,6 +16,7 @@ from models.controllers.settings_controller import SettingsController
 #from models.about_window_controller import AboutWindowController
 from models.controllers.help_window_controller import HelpWindowController
 from models.controllers.reader_window_controller import ReaderWindowController
+from models.controllers.translator_window_controller import TranslatorWindowController
 
 class MainWindowController(QtWidgets.QMainWindow):
 	def __init__(self,app,trans):
@@ -49,6 +50,7 @@ class MainWindowController(QtWidgets.QMainWindow):
 
 		#action
 		self.ui.actionFileStartReader.triggered.connect(self.on_file_start_reader)
+		self.ui.actionFileStartTranslator.triggered.connect(self.on_file_start_translator)
 		self.ui.actionFileExit.triggered.connect(self.on_file_exit)
 		self.ui.actionHelpAbout.triggered.connect(self.on_help_about)
 		self.ui.actionHelpHelp.triggered.connect(self.on_help_help)
@@ -87,7 +89,7 @@ class MainWindowController(QtWidgets.QMainWindow):
 
 		tmp_theme_action = QtWidgets.QAction(self)
 		tmp_theme_action.setText(TRSM("Default"))
-		tmp_theme_action.triggered.connect(partial(self.on_help_theme_select, theme={"name":""}))
+		tmp_theme_action.triggered.connect(partial(self.on_help_theme_select, theme={"name":"default"}))
 		self.ui.menuHelpTheme.addAction(tmp_theme_action)
 
 		themes = util.find_all_themes()
@@ -184,6 +186,12 @@ class MainWindowController(QtWidgets.QMainWindow):
 
 	def on_file_start_reader(self):
 		self.reader_controller.show()
+		self.reader_controller.activateWindow()
+
+	def on_file_start_translator(self):
+		self.translator = TranslatorWindowController(app=self.app,main_controller=self)
+		self.translator.show()
+		self.translator.activateWindow()
 
 	def on_file_exit(self):
 		if util.confirm_box(TRSM("Confirm to quit?"),self):
@@ -256,6 +264,8 @@ class MainWindowController(QtWidgets.QMainWindow):
 	def show(self):
 		super().show()
 		#self.on_file_start_reader()
+		#self.ui.tabMainWidget.setCurrentIndex(2)
+		#self.on_file_start_translator()
 
 	# replace event
 	def closeEvent(self, event):

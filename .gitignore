@@ -137,3 +137,4 @@ realcugan-ncnn-vulkan/
 make_zip.bat
 make_exe.bat
 uis/ui2py.bat
+models/test_sites/

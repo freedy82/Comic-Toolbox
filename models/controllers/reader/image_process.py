@@ -108,7 +108,7 @@ class ReaderImageProcess:
 		return results1,results2,results3,results4
 
 	@staticmethod
-	def get_fit_image_size(area_size,image_size,v_scrollbar_size,h_scrollbar_size,page_fit:PageFit,scroll_flow:ScrollFlow):
+	def get_fit_image_size(area_size,image_size,v_scrollbar_size,h_scrollbar_size,page_fit:PageFit,scroll_flow:ScrollFlow,free_width):
 		new_width = image_size.width()
 		new_height = image_size.height()
 		width_rate = height_rate = 1
@@ -125,9 +125,9 @@ class ReaderImageProcess:
 			if new_width > area_size.width():
 				new_height -= h_scrollbar_size
 				new_width = new_height/image_size.height() * image_size.width()
-		elif page_fit == PageFit.WIDTH or page_fit == PageFit.WIDTH80 or (page_fit == PageFit.BOTH and width_rate >= height_rate):
-			if page_fit == PageFit.WIDTH80:
-				new_width = area_size.width()*0.8
+		elif page_fit == PageFit.WIDTH or page_fit == PageFit.WIDTH_FREE or (page_fit == PageFit.BOTH and width_rate >= height_rate):
+			if page_fit == PageFit.WIDTH_FREE:
+				new_width = area_size.width()*free_width/100
 			else:
 				new_width = area_size.width()
 			new_height = new_width/image_size.width() * image_size.height()
@@ -203,7 +203,9 @@ class ReaderImageProcess:
 		return tmp_current_image_file
 
 	@staticmethod
-	def update_image_size_inner(area_size,page_mode:PageMode,page_fit:PageFit,scroll_flow:ScrollFlow,pages_ratio_require:float,layout_main:QGridLayout,scroll_area:QScrollArea,page_gap):
+	def update_image_size_inner(
+			area_size,page_mode:PageMode,page_fit:PageFit,scroll_flow:ScrollFlow,pages_ratio_require:float,
+			layout_main:QGridLayout,scroll_area:QScrollArea,page_gap,free_width):
 		rows = layout_main.rowCount()
 		#cols = self.ui.layout_main.columnCount()
 		cols = page_mode.value
@@ -235,16 +237,15 @@ class ReaderImageProcess:
 								#print(f"area size {area_size}")
 								if scroll_flow == ScrollFlow.UP_DOWN and page_mode.value > 2:
 									# 3 or 4 pages
-									#todo handle page gap
 									new_image_size = ReaderImageProcess.get_fit_image_size(
 										QSize(int((area_size.width() - (page_gap * (total_cols_in_row - 1))) * target_width_ratio)-int(v_scrollbar_size * target_width_ratio) - 1, area_size.height()),
 										image_size, 0, h_scrollbar_size, page_fit,
-										scroll_flow)
+										scroll_flow,free_width)
 									#print("use small area")
 								else:
 									new_image_size = ReaderImageProcess.get_fit_image_size(
 										QSize(int((area_size.width() - (page_gap * (total_cols_in_row - 1)))*target_width_ratio), area_size.height()), image_size,
-										int(v_scrollbar_size*target_width_ratio), h_scrollbar_size,page_fit,scroll_flow)
+										int(v_scrollbar_size*target_width_ratio), h_scrollbar_size,page_fit,scroll_flow,free_width)
 								#print(f"new_image_size {new_image_size}")
 							else:
 								#print(f"{tmp_widget.windowFilePath()} is 1 page")
@@ -252,11 +253,11 @@ class ReaderImageProcess:
 									# force display the scroll bar case
 									new_image_size = ReaderImageProcess.get_fit_image_size(
 										QSize((area_size.width() - (page_gap * (total_cols_in_row - 1))) / cols - (v_scrollbar_size / cols) - 1, area_size.height()), image_size,
-										0, h_scrollbar_size, page_fit, scroll_flow)
+										0, h_scrollbar_size, page_fit, scroll_flow,free_width)
 								else:
 									new_image_size = ReaderImageProcess.get_fit_image_size(
 										QSize((area_size.width() - (page_gap * (total_cols_in_row - 1))) / cols, area_size.height()),image_size,
-										v_scrollbar_size / cols, h_scrollbar_size,page_fit,scroll_flow)
+										v_scrollbar_size / cols, h_scrollbar_size,page_fit,scroll_flow,free_width)
 								#print(f"new_image_size {new_image_size}")
 							tmp_widget.setFixedSize(new_image_size.width(), new_image_size.height())
 							#print(f"row:{row},col:{col}, width:{new_image_size.width()},height:{new_image_size.height()}")

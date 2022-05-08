@@ -47,6 +47,8 @@ class Empty(Site):
 	def get_image_list_from_html(self,html_code,url):
 		#todo parse page/image list
 		#   each page/image include {"url":"","ref":""}
+		#       PS: each item have option with "post_download_action" for post image action
+		#           call back will with image_in_disk and image_url as param
 		#   for image list use {"images":image_urls}
 		#   for page list use {"pages":page_urls}
 		return {}

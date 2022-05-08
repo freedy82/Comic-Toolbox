@@ -43,10 +43,15 @@ class CropperController(object):
 				"crop_y2": 1
 			}
 		]},
-		{"name":"Manual Crop", "rules":[]}
+		{"name":"Manual Crop", "rules":[]},
+		{"name":"Auto re-page korean comic (Simple Rules)", "rules":[
+			{
+				"fix_w_h_ratio": 13/18,
+				"force_width": 800
+			}]}
 	]
 
-	MODES = [{"name":"Cover mode"},{"name":"2 page split mode"}]
+	MODES = [{"name":"Cover mode"},{"name":"2 page split mode"},{"name":"Long page (Korean comic style)"}]
 
 	def __init__(self, app=None, ui: Ui_MainWindow = None, main_controller=None):
 		self.app = app
@@ -75,6 +80,10 @@ class CropperController(object):
 
 		self.ui.cbx_cropper_file_exist.addItems([TRSM("Skip"),TRSM("Overwrite")])
 		self.ui.cbx_cropper_remove_source.addItems([TRSM("No"),TRSM("Yes")])
+
+		#self.ui.cbx_cropper_mode.setCurrentIndex(2)
+
+		self._update_method_base_on_mode()
 
 		self.retranslateUi()
 		#self.ui.cbx_cropper_method.setCurrentIndex(1)
@@ -191,9 +200,8 @@ class CropperController(object):
 			)
 			self.cropper_worker.set_crop_mode(self.ui.cbx_cropper_mode.currentIndex() + 1)
 
-			if method_index == 0:
+			if method_index == 0 or method_index == 2:
 				self.cropper_worker.set_is_only_get_list(False)
-				pass
 			elif method_index == 1:
 				self.cropper_worker.set_is_only_get_list(True)
 
@@ -214,11 +222,11 @@ class CropperController(object):
 	def cbx_cropper_mode_changed(self):
 		idx = self.ui.cbx_cropper_mode.currentIndex()
 		if idx == 1:
-			self.ui.cbx_cropper_method.setCurrentIndex(1)
-			self.ui.cbx_cropper_method.setEnabled(False)
 			self.ui.cbx_cropper_remove_source.setCurrentIndex(1)
-		else:
-			self.ui.cbx_cropper_method.setEnabled(True)
+		elif idx == 2:
+			# todo change later to 1
+			self.ui.cbx_cropper_remove_source.setCurrentIndex(0)
+		self._update_method_base_on_mode()
 
 	#callback
 	def cropper_trigger(self, message, current_action, total_action):
@@ -231,7 +239,7 @@ class CropperController(object):
 	def cropper_finished(self):
 		if self.cropper_worker.get_is_only_get_list():
 			image_list = self.cropper_worker.get_process_list()
-			if len(image_list)>0:
+			if len(image_list) > 0:
 				self.crop_window_controller.set_image_list(image_list)
 				self.crop_window_controller.set_is_remove_source(bool(self.ui.cbx_cropper_remove_source.currentIndex()))
 				self.crop_window_controller.show()
@@ -257,6 +265,26 @@ class CropperController(object):
 		self.cropper_worker = None
 
 	#internal
+	def _update_method_base_on_mode(self):
+		current_mode = self.ui.cbx_cropper_mode.currentIndex()
+		if current_mode == 0:
+			if self.ui.cbx_cropper_method.currentIndex() == 2:
+				self.ui.cbx_cropper_method.setCurrentIndex(0)
+			self.ui.cbx_cropper_method.model().item(0).setEnabled(True)
+			self.ui.cbx_cropper_method.model().item(1).setEnabled(True)
+			self.ui.cbx_cropper_method.model().item(2).setEnabled(False)
+		elif current_mode == 1:
+			self.ui.cbx_cropper_method.setCurrentIndex(1)
+			self.ui.cbx_cropper_method.model().item(0).setEnabled(False)
+			self.ui.cbx_cropper_method.model().item(1).setEnabled(True)
+			self.ui.cbx_cropper_method.model().item(2).setEnabled(False)
+		elif current_mode == 2:
+			self.ui.cbx_cropper_method.setCurrentIndex(2)
+			self.ui.cbx_cropper_method.model().item(0).setEnabled(False)
+			self.ui.cbx_cropper_method.model().item(1).setEnabled(False)
+			self.ui.cbx_cropper_method.model().item(2).setEnabled(True)
+		pass
+
 	def _update_folder_list(self):
 		self.ui.list_cropper_folder.clear()
 

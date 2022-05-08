@@ -8,7 +8,7 @@ class PageFit(Enum):
 	HEIGHT = 1
 	WIDTH = 2
 	BOTH = 3
-	WIDTH80 = 4
+	WIDTH_FREE = 4
 
 class PageMode(Enum):
 	SINGLE = 1

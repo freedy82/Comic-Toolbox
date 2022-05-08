@@ -29,7 +29,7 @@ class ReaderRotateDialogController(QtWidgets.QDialog):
 		self.ui.cbx_target_image.addItems([TRSM("All image")])
 		self.ui.cbx_rotate.addItems([TRSM("Rotate")+" 90°",TRSM("Rotate")+" 180°",TRSM("Rotate")+" 270°"])
 		self.ui.cbx_change_mode.addItems([TRSM("Memory")])
-		if self.reader.support_rotate_file_in_disk():
+		if self.reader and self.reader.support_rotate_file_in_disk():
 			self.ui.cbx_change_mode.addItems([TRSM("File")])
 
 		# GUI

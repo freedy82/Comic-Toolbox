@@ -2,11 +2,16 @@
 
 [Chinese version please check this page (中文版請看這)](change_log_zh.md)
 
-### v0.9.0
+### v0.9.0 ( 2022-05-08 ) - Happy Mothers' Day
 
 - Add page gap setting for reader
 - Add language switch to downloader
 - Add new supported site `mangadex.org`,`dmzj.com`
+- Update reader GUI
+- Crop tool: add auto re-page for korean style long page manga
+- Download tool to add supported with single book
+- Fix some bug of reader about language switched text was not update
+- Add first release of translator
 
 ### v0.8.5 ( 2022-05-01 )
 

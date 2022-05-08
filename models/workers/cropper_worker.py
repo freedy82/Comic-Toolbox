@@ -1,3 +1,5 @@
+import math
+
 from PyQt5.QtCore import QThread, pyqtSignal
 from PIL import Image
 from pathlib import Path
@@ -48,6 +50,8 @@ class CropperWorker(QThread):
 					self._start_crop_in_folder(folder_info)
 				elif self.crop_mode == 2:
 					self._start_scan_2_page_in_folder(folder_info)
+				elif self.crop_mode == 3:
+					self._start_scan_un_crop_page_in_folder(folder_info)
 				self.current_action_count += 1
 				if not self.stop_flag and not self.is_only_get_list:
 					message = TRSM("Finish %s") % folder_info
@@ -85,12 +89,83 @@ class CropperWorker(QThread):
 				final_folders.append(folder)
 		return final_folders
 
-	def _start_scan_2_page_in_folder(self, folder):
-		full_folder = os.path.join(self.from_folder, folder)
-		full_folder = Path(full_folder).as_posix()
+	def _start_scan_un_crop_page_in_folder(self,folder):
+		full_folder, filtered_files = self._get_all_image(folder)
+		un_cropped_image_files = [x for x in filtered_files if not x.startswith("resized_")]
 
-		files = sorted(os.listdir(full_folder))
-		filtered_files = [x for x in files if x.endswith(IMAGE_EXTS)]
+		max_width = 0
+		image_sizes = []
+		for file in un_cropped_image_files:
+			from_file_full = os.path.join(full_folder, file)
+			from_file_full = Path(from_file_full).as_posix()
+			img_width, img_height = util.get_image_size(from_file_full)
+			image_sizes.append([img_width, img_height])
+			max_width = max(max_width,img_width)
+
+		if max_width > 0:
+			if "force_width" in self.methods["rules"][0]:
+				max_width = self.methods["rules"][0]["force_width"]
+			ratio = self.methods["rules"][0]["fix_w_h_ratio"]
+			page_height = int(max_width / ratio)
+			total_height = 0
+			for image_size in image_sizes:
+				total_height += math.floor(max_width/image_size[0] * image_size[1])
+			total_height = int(total_height)
+
+			# create all images into board
+			final_all_image = Image.new("RGB",(max_width,total_height))
+			current_y = 0
+			for idx, file in enumerate(un_cropped_image_files, start=1):
+				from_file_full = os.path.join(full_folder, file)
+				from_file_full = Path(from_file_full).as_posix()
+				tmp_img = Image.open(from_file_full)
+				target_height = math.floor(max_width/tmp_img.size[0] * tmp_img.size[1])
+				if tmp_img.size[0] != max_width:
+					tmp_img = tmp_img.resize((max_width,target_height))
+				#print(f"file:{file}-y:{current_y}, target_height:{target_height}, total_height:{total_height}",flush=True)
+				final_all_image.paste(tmp_img, box=(0,current_y,max_width,current_y+target_height))
+				message = TRSM("Loaded page %s (%d/%d)") % (from_file_full,idx, len(un_cropped_image_files))
+				self.trigger.emit(message, self.current_action_count, self.total_action_count)
+				current_y += target_height
+			#final_all_image.save(os.path.join(full_folder,"resized_all.png"))
+			current_y = 0
+			current_index = 1
+			total_pages = math.ceil(total_height/page_height)
+			while current_y < total_height:
+				tmp_img = final_all_image.crop((0,current_y,max_width,current_y+page_height))
+				tmp_file_name = "resized_" + str(current_index).zfill(int(MY_CONFIG.get("general", "image_padding"))) + ".jpg"
+				tmp_full_file_name = os.path.join(full_folder, tmp_file_name)
+				tmp_full_file_name = Path(tmp_full_file_name).as_posix()
+				if os.path.isfile(tmp_full_file_name) and not self.is_overwrite:
+					message = TRSM("File already exist %s") % tmp_full_file_name
+					self.trigger.emit(message, self.current_action_count, self.total_action_count)
+				else:
+					tmp_img.save(tmp_full_file_name, quality=int(MY_CONFIG.get("general", "jpg_quality")))
+					message = TRSM("Generated page %s (%d/%d)") % (tmp_full_file_name,current_index, total_pages)
+					self.trigger.emit(message, self.current_action_count, self.total_action_count)
+				current_y += page_height
+				current_index += 1
+			#print(f"max_width:{max_width}")
+			#print(f"page_height: {page_height}")
+			#print(f"total_height: {total_height}")
+
+			if self.is_remove_source:
+				for file in un_cropped_image_files:
+					from_file_full = os.path.join(full_folder, file)
+					from_file_full = Path(from_file_full).as_posix()
+					os.remove(from_file_full)
+		else:
+			message = TRSM("Can not find file to re-page in %s") % full_folder
+			self.trigger.emit(message, self.current_action_count, self.total_action_count)
+
+	def _start_scan_2_page_in_folder(self, folder):
+		# full_folder = os.path.join(self.from_folder, folder)
+		# full_folder = Path(full_folder).as_posix()
+		#
+		# files = sorted(os.listdir(full_folder))
+		# filtered_files = [x for x in files if x.endswith(IMAGE_EXTS)]
+		full_folder, filtered_files = self._get_all_image(folder)
+
 		pages_ratio_require = float(MY_CONFIG.get("general", "check_is_2_page"))
 		for file in filtered_files:
 			tmp_ext = util.get_ext(file)
@@ -122,11 +197,13 @@ class CropperWorker(QThread):
 						self.process_list.append(task)
 
 	def _start_crop_in_folder(self, folder):
-		full_folder = os.path.join(self.from_folder, folder)
-		full_folder = Path(full_folder).as_posix()
+		# full_folder = os.path.join(self.from_folder, folder)
+		# full_folder = Path(full_folder).as_posix()
+		#
+		# files = sorted(os.listdir(full_folder))
+		# filtered_files = [x for x in files if x.endswith(IMAGE_EXTS)]
+		full_folder, filtered_files = self._get_all_image(folder)
 
-		files = sorted(os.listdir(full_folder))
-		filtered_files = [x for x in files if x.endswith(IMAGE_EXTS)]
 		# get the first file not start with "0"
 		from_file = ""
 		to_file = ""
@@ -143,7 +220,7 @@ class CropperWorker(QThread):
 			full_to_file = os.path.join(self.from_folder, folder, to_file)
 			full_from_file = Path(full_from_file).as_posix()
 			full_to_file = Path(full_to_file).as_posix()
-			if to_file not in files or self.is_overwrite:
+			if to_file not in filtered_files or self.is_overwrite:
 				# take crop
 				is_cropped = self._start_crop_image(full_from_file,full_to_file)
 				if is_cropped:
@@ -153,15 +230,23 @@ class CropperWorker(QThread):
 					if not self.is_only_get_list:
 						message = TRSM("Not match rule to crop %s") % full_from_file
 						self.trigger.emit(message, self.current_action_count, self.total_action_count)
-			elif to_file in files:
+			elif to_file in filtered_files:
 				message = TRSM("Cover file already exist %s") % full_to_file
 				self.trigger.emit(message, self.current_action_count, self.total_action_count)
 		else:
-			message = TRSM("Can find file to crop in %s") % full_folder
+			message = TRSM("Can not find file to crop in %s") % full_folder
 			self.trigger.emit(message, self.current_action_count, self.total_action_count)
 
 		#print(final_cover)
 		pass
+
+	def _get_all_image(self,folder):
+		full_folder = os.path.join(self.from_folder, folder)
+		full_folder = Path(full_folder).as_posix()
+
+		files = sorted(os.listdir(full_folder))
+		filtered_files = [x for x in files if x.endswith(IMAGE_EXTS)]
+		return full_folder,filtered_files
 
 	def _start_crop_image(self,from_file,to_file):
 		if self.is_only_get_list:

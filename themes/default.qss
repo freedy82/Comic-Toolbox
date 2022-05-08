@@ -1,0 +1,3 @@
+QLineEdit {
+    qproperty-cursorPosition: 0;
+}

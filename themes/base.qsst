@@ -119,3 +119,6 @@ QSlider::handle {
 	background-color: $selected;
 }
 		
+QLineEdit {
+    qproperty-cursorPosition: 0;
+}

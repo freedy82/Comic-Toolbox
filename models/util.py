@@ -5,6 +5,8 @@ import re
 import imagesize
 import threading
 from pathlib import Path
+
+from PyQt5 import QtWidgets
 from langcodes import Language
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import QRect
@@ -29,9 +31,18 @@ def find_all_themes():
 	for file in os.listdir(os.path.join(ROOT_DIR, "themes")):
 		if re.match(r"^[a-zA-Z_].*?\.qss$", file):
 			file_name = get_file_name(file)
-			themes.append({"name":file_name})
+			if file_name != "default":
+				themes.append({"name":file_name})
 	sorted(themes, key=lambda theme: theme["name"])
 	return themes
+
+def find_all_fonts():
+	fonts = []
+	for file in os.listdir(os.path.join(ROOT_DIR, "fonts")):
+		if re.match(r"^[a-zA-Z_].*?\.tt[f|c]$", file):
+			full_path = Path(os.path.join(ROOT_DIR, "fonts",file)).as_posix()
+			fonts.append({"name":file,"file":full_path})
+	return fonts
 
 def get_number_of_images_from_folder(folder,num=1,exts=IMAGE_EXTS):
 	lists = []
@@ -44,7 +55,9 @@ def get_number_of_images_from_folder(folder,num=1,exts=IMAGE_EXTS):
 		lists = lists[0:num]
 	return lists
 
-def get_image_list_from_folder(folder,results,main_folder,exts=IMAGE_EXTS,path=""):
+def get_image_list_from_folder(folder,results,main_folder="",exts=IMAGE_EXTS,path=""):
+	if main_folder == "":
+		main_folder = folder
 	files = sorted(os.listdir(folder))
 	root_files = []
 	threads = []
@@ -122,11 +135,19 @@ def cv_imread(filepath):
 	# return cv_img
 	pass
 
-def msg_box(message,parent=None):
-	QMessageBox.information(parent, TRSM("Comic Toolbox"), message)
+def msg_box(message,parent:QtWidgets.QMainWindow = None):
+	if parent is not None:
+		title = parent.windowTitle()
+	else:
+		title = TRSM("Comic Toolbox")
+	QMessageBox.information(parent, title, message)
 
-def confirm_box(message,parent=None):
-	reply = QMessageBox.question(parent, TRSM("Comic Toolbox"), message, QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+def confirm_box(message,parent:QtWidgets.QMainWindow = None):
+	if parent is not None:
+		title = parent.windowTitle()
+	else:
+		title = TRSM("Comic Toolbox")
+	reply = QMessageBox.question(parent, title, message, QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 	if reply == QMessageBox.Yes:
 		return True
 	else:

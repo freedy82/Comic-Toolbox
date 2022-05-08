@@ -1,5 +1,15 @@
 <RCC>
   <qresource prefix="icon">
+    <file alias="ocr-bubble">resources/ocr_bubble.png</file>
+    <file alias="translate-bubble">resources/translate_bubble.png</file>
+    <file alias="refresh-preview">resources/refresh-preview.png</file>
+    <file alias="save">resources/save.png</file>
+    <file alias="translate">resources/translate.png</file>
+    <file alias="ocr">resources/ocr.png</file>
+    <file alias="bubble-add">resources/bubble-add.png</file>
+    <file alias="bubble-search">resources/bubble-search.png</file>
+    <file alias="num-column">resources/num_column.png</file>
+    <file alias="fit-width-num">resources/fit_width_num.png</file>
     <file alias="gap">resources/gap.png</file>
     <file alias="autoplay">resources/autoplay.png</file>
     <file alias="rotate-right">resources/rotate-right.png</file>
@@ -11,7 +21,7 @@
     <file alias="4columns">resources/4columns.png</file>
     <file alias="2columns">resources/2columns.png</file>
     <file alias="3columns">resources/3columns.png</file>
-    <file alias="open_folder">resources/opened-folder.png</file>
+    <file alias="open-folder">resources/opened-folder.png</file>
     <file alias="fit-width-80">resources/fit_width80.png</file>
     <file alias="fit-width">resources/fit_width.png</file>
     <file alias="fit-height">resources/fit_height.png</file>
@@ -31,7 +41,7 @@
     <file alias="exit">resources/exit.png</file>
     <file alias="main_icon">resources/icon.png</file>
     <file alias="language">resources/language.png</file>
-    <file alias="full_screen">resources/full-screen.png</file>
+    <file alias="full-screen">resources/full-screen.png</file>
     <file alias="help">resources/help.png</file>
   </qresource>
   <qresource prefix="sound">
