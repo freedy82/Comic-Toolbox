@@ -36,6 +36,7 @@
 - 無限動漫 `www.comicabc.com`
 - 动漫屋 `www.dm5.com`
 - 动漫之家 `www.dmzj.com`
+- 咚漫漫画 `dongmanmanhua.cn`
 - 酷漫屋 `www.kumw5.com`
 - 漫畫柜 `www.mhgui.com`
 - Read Comic Online （美漫） `readcomicsonline.ru`
