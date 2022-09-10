@@ -48,15 +48,22 @@ class MHGui(Site):
 	def get_book_item_list_from_html(self, html_code, url):
 		results = {}
 		pattern_book = re.compile(r'<h4><span>单行本</span></h4>(.*?)<div class="chapter-list cf mt10" id=\'chapter-list-[0-9]*\'>(.*?)</div>')
+		pattern_fullcolor = re.compile(r'<h4><span>全彩版</span></h4>(.*?)<div class="chapter-list cf mt10" id=\'chapter-list-[0-9]*\'>(.*?)</div>')
 		pattern_chapter = re.compile(r'<h4><span>单话</span></h4>(.*?)<div class="chapter-list cf mt10" id=\'chapter-list-[0-9]*\'>(.*?)</div>')
 		pattern_extra = re.compile(r'<h4><span>番外篇</span></h4>(.*?)<div class="chapter-list cf mt10" id=\'chapter-list-[0-9]*\'>(.*?)</div>')
 		info_book = re.findall(pattern_book, html_code)
+		info_fullcolor = re.findall(pattern_fullcolor, html_code)
 		info_chapter = re.findall(pattern_chapter, html_code)
 		info_extra = re.findall(pattern_extra, html_code)
 
 		if len(info_book) > 0:
 			plists_book = self._parse_list_from_content(info=info_book[0][1],url=url)
 			results["book"] = plists_book
+		if len(info_fullcolor) > 0:
+			plists_fullcolor = self._parse_list_from_content(info=info_fullcolor[0][1],url=url)
+			if "book" not in results:
+				results["book"] = []
+			results["book"] += plists_fullcolor
 		if len(info_chapter) > 0:
 			plists_chapter = self._parse_list_from_content(info=info_chapter[0][1],url=url)
 			results["chapter"] = plists_chapter

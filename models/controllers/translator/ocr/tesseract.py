@@ -16,6 +16,7 @@ class TesseractOCREngine(OCREngine):
 		self.original_image = cv2.imdecode(np.fromfile(file_name, dtype=np.uint8), cv2.IMREAD_UNCHANGED)
 
 	def ocr_image_with_area_frame(self,area_frame:QRect,lang=""):
+		#print(f"area_frame:{area_frame}")
 		img = self.original_image[area_frame.y():area_frame.y()+area_frame.height(), area_frame.x():area_frame.x()+area_frame.width()]
 		img = self._preprocess_for_ocr(img)
 		if lang.endswith("_vert"):

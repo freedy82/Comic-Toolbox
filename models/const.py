@@ -13,7 +13,7 @@ TRS = QtCore.QCoreApplication.translate
 def TRSM(str_name):
     return TRS("MainWindow", str_name)
 
-APP_VERSION = "0.9.0"
+APP_VERSION = "0.9.1"
 APP_LINK = "https://github.com/freedy82/Comic-Toolbox"
 APP_LICENSE = "GNU General Public License v3.0"
 APP_LICENSE_LINK = "https://github.com/freedy82/Comic-Toolbox/blob/main/LICENSE"

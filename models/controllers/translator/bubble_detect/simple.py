@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import itertools
+#import cvxpy
+#from shapely.geometry import Polygon
 
 from models.controllers.translator.BubbleDetect import BubbleDetectEngine
 
@@ -27,7 +29,15 @@ class SimpleBubbleDetectEngine(BubbleDetectEngine):
 		results = []
 		for box_stat in box_stats:
 			approx, (y0, y1, x0, x1) = box_stat
-			results.append([x0,y0,x1-x0,y1-y0])
+			#print("==========",flush=True)
+			#print(approx[:,0])
+			new_x0,new_y0,new_x1,new_y1 = self.get_maximal_rectangle(approx[:,0])
+			#print([x0,y0,x1-x0,y1-y0])
+			#print([new_x0,new_y0,new_x1-new_x0,new_y1-new_y0])
+			#print(rectangle)
+
+			#results.append([x0,y0,x1-x0,y1-y0])
+			results.append([new_x0,new_y0,new_x1-new_x0,new_y1-new_y0])
 
 		return results
 
@@ -100,12 +110,12 @@ class SimpleBubbleDetectEngine(BubbleDetectEngine):
 				circle_area_ratio = int(3.14 * circle_radius ** 2 / (cnt_area + 1e-6))
 				rect_area_ratio = int(w * h / cnt_area)
 				# This is a speech "bubble" heuristic, it should also work for boxes
-				# The basic idea is that a bubbles area should approximate that of an enclosing circle
+				# The basic idea is that a bubble area should approximate that of an enclosing circle
 				if ((circle_area_ratio <= 2) & (cnt_area > 4000)) or (rect_area_ratio == 1):
 					if convexify:
 						approx = cv2.convexHull(approx)
 					box_stats.append((approx, (y, y + h, x, x + w)))
-					cv2.fillPoly(draw_mask, [approx], (255, 255, 255))
+					#cv2.fillPoly(draw_mask, [approx], (255, 255, 255))
 
 		# Remove overlapping boxes
 		coordinates = [pts for _, pts in box_stats]
@@ -150,3 +160,170 @@ class SimpleBubbleDetectEngine(BubbleDetectEngine):
 		bigger_area = max(bb1_area, bb2_area)
 		bigger_ix = int(bigger_area == bb2_area)
 		return iom, bigger_ix
+
+
+
+	# @staticmethod
+	# def get_maximal_rectangle(coordinates):
+	# 	"""
+	# 	Find the largest, inscribed, axis-aligned rectangle.
+	# 	:param coordinates:
+	# 		A list of of [x, y] pairs describing a closed, convex polygon.
+	# 	"""
+	#
+	# 	coordinates = np.array(coordinates)
+	# 	x_range = np.max(coordinates, axis=0)[0] - np.min(coordinates, axis=0)[0]
+	# 	y_range = np.max(coordinates, axis=0)[1] - np.min(coordinates, axis=0)[1]
+	#
+	# 	scale = np.array([x_range, y_range])
+	# 	sc_coordinates = coordinates / scale
+	#
+	# 	poly = Polygon(sc_coordinates)
+	# 	inside_pt = (poly.representative_point().x,
+	# 	             poly.representative_point().y)
+	#
+	# 	A1, A2, B = SimpleBubbleDetectEngine.pts_to_leq(sc_coordinates)
+	#
+	# 	bl = cvxpy.Variable(2)
+	# 	tr = cvxpy.Variable(2)
+	# 	br = cvxpy.Variable(2)
+	# 	tl = cvxpy.Variable(2)
+	# 	obj = cvxpy.Maximize(cvxpy.log(tr[0] - bl[0]) + cvxpy.log(tr[1] - bl[1]))
+	# 	constraints = [bl[0] == tl[0],
+	# 	               br[0] == tr[0],
+	# 	               tl[1] == tr[1],
+	# 	               bl[1] == br[1],
+	# 	               ]
+	#
+	# 	for i in range(len(B)):
+	# 		if inside_pt[0] * A1[i] + inside_pt[1] * A2[i] <= B[i]:
+	# 			constraints.append(bl[0] * A1[i] + bl[1] * A2[i] <= B[i])
+	# 			constraints.append(tr[0] * A1[i] + tr[1] * A2[i] <= B[i])
+	# 			constraints.append(br[0] * A1[i] + br[1] * A2[i] <= B[i])
+	# 			constraints.append(tl[0] * A1[i] + tl[1] * A2[i] <= B[i])
+	#
+	# 		else:
+	# 			constraints.append(bl[0] * A1[i] + bl[1] * A2[i] >= B[i])
+	# 			constraints.append(tr[0] * A1[i] + tr[1] * A2[i] >= B[i])
+	# 			constraints.append(br[0] * A1[i] + br[1] * A2[i] >= B[i])
+	# 			constraints.append(tl[0] * A1[i] + tl[1] * A2[i] >= B[i])
+	#
+	# 	prob = cvxpy.Problem(obj, constraints)
+	# 	prob.solve(solver=cvxpy.CVXOPT, verbose=False, max_iters=1000, reltol=1e-9)
+	#
+	# 	bottom_left = np.array(bl.value).T * scale
+	# 	top_right = np.array(tr.value).T * scale
+	#
+	# 	return list(bottom_left[0]), list(top_right[0])
+	#
+	# @staticmethod
+	# def two_pts_to_line(pt1, pt2):
+	# 	"""
+	# 	Create a line from two points in form of
+	# 	a1(x) + a2(y) = b
+	# 	"""
+	# 	pt1 = [float(p) for p in pt1]
+	# 	pt2 = [float(p) for p in pt2]
+	# 	try:
+	# 		slp = (pt2[1] - pt1[1]) / (pt2[0] - pt1[0])
+	# 	except ZeroDivisionError:
+	# 		slp = 1e5 * (pt2[1] - pt1[1])
+	# 	a1 = -slp
+	# 	a2 = 1.
+	# 	b = -slp * pt1[0] + pt1[1]
+	#
+	# 	return a1, a2, b
+	#
+	# @staticmethod
+	# def pts_to_leq(coords):
+	# 	"""
+	# 	Converts a set of points to form Ax = b, but since
+	# 	x is of length 2 this is like A1(x1) + A2(x2) = B.
+	# 	returns A1, A2, B
+	# 	"""
+	#
+	# 	A1 = []
+	# 	A2 = []
+	# 	B = []
+	# 	for i in range(len(coords) - 1):
+	# 		pt1 = coords[i]
+	# 		pt2 = coords[i + 1]
+	# 		a1, a2, b = SimpleBubbleDetectEngine.two_pts_to_line(pt1, pt2)
+	# 		A1.append(a1)
+	# 		A2.append(a2)
+	# 		B.append(b)
+	# 	return A1, A2, B
+
+	# ref from https://stackoverflow.com/questions/21410449/how-do-i-crop-to-largest-interior-bounding-box-in-opencv/21479072#21479072
+	@staticmethod
+	def get_maximal_rectangle(contour):
+		rect = []
+
+		for i in range(len(contour)):
+			x1, y1 = contour[i]
+			for j in range(len(contour)):
+				x2, y2 = contour[j]
+				area = abs(y2 - y1) * abs(x2 - x1)
+				rect.append(((x1, y1), (x2, y2), area))
+
+		# the first rect of all_rect has the biggest area, so it's the best solution if he fits in the picture
+		all_rect = sorted(rect, key=lambda x: x[2], reverse=True)
+
+		# we take the largest rectangle we've got, based on the value of the rectangle area
+		# only if the border of the rectangle is not in the black part
+
+		# if the list is not empty
+		if all_rect:
+
+			best_rect_found = False
+			index_rect = 0
+			nb_rect = len(all_rect)
+
+			# we check if the rectangle is  a good solution
+			while not best_rect_found and index_rect < nb_rect:
+
+				rect = all_rect[index_rect]
+				(x1, y1) = rect[0]
+				(x2, y2) = rect[1]
+
+				valid_rect = True
+
+				# we search a black area in the perimeter of the rectangle (vertical borders)
+				x = min(x1, x2)
+				while x < max(x1, x2) + 1 and valid_rect:
+					#if mask[y1, x] == 0 or mask[y2, x] == 0:
+					#	# if we find a black pixel, that means a part of the rectangle is black
+					#	# so we don't keep this rectangle
+					#	valid_rect = False
+					x += 1
+
+				y = min(y1, y2)
+				while y < max(y1, y2) + 1 and valid_rect:
+					#if mask[y, x1] == 0 or mask[y, x2] == 0:
+					#	valid_rect = False
+					y += 1
+
+				if valid_rect:
+					best_rect_found = True
+
+				index_rect += 1
+
+			if best_rect_found:
+				return min(x1,x2),min(y1,y2),max(x1,x2),max(y1,y2)
+				#return x1, y1, x2, y2
+
+				# cv2.rectangle(gray, (x1, y1), (x2, y2), (255, 0, 0), 1)
+				# cv2.imshow("Is that rectangle ok?", gray)
+				# cv2.waitKey(0)
+				#
+				# # Finally, we crop the picture and store it
+				# result = input_picture[min(y1, y2):max(y1, y2), min(x1, x2):max(x1, x2)]
+				#
+				# cv2.imwrite("Lena_cropped.png", result)
+			else:
+				print("No rectangle fitting into the area")
+				return 0, 0, 0, 0
+
+		else:
+			print("No rectangle found")
+			return 0, 0, 0, 0

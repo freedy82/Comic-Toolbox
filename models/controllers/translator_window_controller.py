@@ -165,6 +165,7 @@ class TranslatorWindowController(QtWidgets.QMainWindow):
 		engine_name = self.ui.cbx_bubble_detect_engine.currentText()
 		engine = BubbleDetectEngine.init_by_name(engine_name)
 		results = engine.get_bubble_from_file(self.current_image_file)
+		#print(results)
 		for tmp_result in results:
 			self.current_photo_viewer.add_label("",frame=QRectF(tmp_result[0],tmp_result[1],tmp_result[2],tmp_result[3]))
 		#print(results)
@@ -205,11 +206,22 @@ class TranslatorWindowController(QtWidgets.QMainWindow):
 		from_lang = self.LANG_MAP_TO_TRANS[self.LANG_OCR_FROM[self.ui.cbx_language_from.currentIndex()]]
 		to_lang = self.LANG_MAP_TO_TRANS[self.LANG_TO[self.ui.cbx_language_to.currentIndex()]]
 
+		#text_to_translate = []
 		for tmp_label in self.current_photo_viewer.get_all_labels():
 			if tmp_label.org_text != "":
+				#text_to_translate.append(tmp_label.org_text)
 				trans_text = engine.translate_text(tmp_label.org_text,to_lang,from_lang)
 				tmp_label.trans_text = trans_text
 				tmp_label.update_text()
+
+		# if len(text_to_translate) > 0:
+		# 	translated_text = engine.translate_multi_text(text_to_translate,to_lang,from_lang)
+		# 	current_idx = 0
+		# 	for tmp_label in self.current_photo_viewer.get_all_labels():
+		# 		if tmp_label.org_text != "":
+		# 			tmp_label.trans_text = translated_text[current_idx]
+		# 			tmp_label.update_text()
+		# 			current_idx += 1
 
 	def on_file_translate_this_bubble(self):
 		tmp_label = self.current_photo_viewer.get_current_selected_label()
@@ -426,11 +438,6 @@ class TranslatorWindowController(QtWidgets.QMainWindow):
 		self.ui.cbx_alignment.setCurrentIndex(item.align_index)
 		self.ui.cbx_text_style.setCurrentIndex(item.text_style_index)
 
-	def p_image_to_q_pixmap(self,p_image):
-		q_image = self.p_image_to_q_image(p_image)
-		q_pixmap = QPixmap.fromImage(q_image)
-		return q_pixmap
-
 	def get_result_image(self):
 		tmp_writer = Writer()
 		tmp_writer.load_image_from_file(self.current_image_file)
@@ -448,6 +455,12 @@ class TranslatorWindowController(QtWidgets.QMainWindow):
 				alignment=alignment, text_style=style
 			)
 		return tmp_writer.get_result_image()
+
+	@staticmethod
+	def p_image_to_q_pixmap(p_image):
+		q_image = TranslatorWindowController.p_image_to_q_image(p_image)
+		q_pixmap = QPixmap.fromImage(q_image)
+		return q_pixmap
 
 	@staticmethod
 	def p_image_to_q_image(p_image):

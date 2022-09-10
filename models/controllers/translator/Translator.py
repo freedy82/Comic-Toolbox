@@ -9,6 +9,9 @@ class TranslatorEngine(object):
 	def translate_text(self,text,to_lang,from_lang=""):
 		return text
 
+	def translate_multi_text(self,text_list,to_lang,from_lang="auto"):
+		return text_list
+
 	@staticmethod
 	def find_all_sub_class():
 		for file in os.listdir(os.path.join(os.path.dirname(__file__), "translator")):

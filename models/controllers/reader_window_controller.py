@@ -167,7 +167,6 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		self.ui.actionFitHeight.triggered.connect(lambda: self.change_page_fit(PageFit.HEIGHT))
 		self.ui.actionFitWidth.triggered.connect(lambda: self.change_page_fit(PageFit.WIDTH))
 		self.ui.actionFitBoth.triggered.connect(lambda: self.change_page_fit(PageFit.BOTH))
-		#self.ui.actionFitWidth80.triggered.connect(lambda: self.change_page_fit(PageFit.WIDTH80))
 		self.ui.actionPageModeSingle.triggered.connect(lambda: self.change_page_mode(PageMode.SINGLE))
 		self.ui.actionPageModeDouble.triggered.connect(lambda: self.change_page_mode(PageMode.DOUBLE))
 		self.ui.actionPageModeTriple.triggered.connect(lambda: self.change_page_mode(PageMode.TRIPLE))
@@ -425,16 +424,12 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		self.ui.actionFitHeight.setChecked(False)
 		self.ui.actionFitWidth.setChecked(False)
 		self.ui.actionFitBoth.setChecked(False)
-		#self.ui.actionFitWidth80.setChecked(False)
 		if self.page_fit == PageFit.HEIGHT:
 			self.ui.actionFitHeight.setChecked(True)
 		elif self.page_fit == PageFit.WIDTH:
 			self.ui.actionFitWidth.setChecked(True)
 		elif self.page_fit == PageFit.BOTH:
 			self.ui.actionFitBoth.setChecked(True)
-		elif self.page_fit == PageFit.WIDTH_FREE:
-			pass
-			#self.ui.actionFitWidth80.setChecked(True)
 
 	def update_page_mode_button(self):
 		self.ui.actionPageModeSingle.setChecked(False)
@@ -842,14 +837,6 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		menu_page_gap.setIcon(icon_gap)
 		menu_page_gap.addActions(self.btn_page_gap.menu().actions())
 
-		#tmp_page_gap = int(MY_CONFIG.get("reader", "page_gap"))
-		#self.create_submenu_action_of_page_gap(menu_page_gap,tmp_page_gap,icon_gap)
-		#menu_page_gap.addSeparator()
-		#for tmp_gap in self.PAGE_GAPS:
-		#	if tmp_gap == tmp_page_gap:
-		#		continue
-		#	self.create_submenu_action_of_page_gap(menu_page_gap,tmp_gap,icon_gap)
-
 		# background color
 		bg_color = MY_CONFIG.get("reader","background")
 		action_change_background = menu_popup.addAction(TRSM("Background color"))
@@ -883,8 +870,6 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		q_pause_icon = QtGui.QIcon()
 		q_pause_icon.addPixmap(QtGui.QPixmap(":/icon/pause"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
-		#self.ui.actionAutoPlay.setText(TRSM("Start or Pause Auto Play") + " (" + str(self.reader_auto_play_interval/1000) + "s)")
-		#parent_menu.addAction(self.ui.actionAutoPlay)
 		tmp_auto_play_interval = float(MY_CONFIG.get("reader", "auto_play_interval"))
 		if self.auto_play_timer.isActive():
 			action_pause_tmp = menu_parent.addAction(TRSM("Stop autoplay"))
@@ -951,10 +936,6 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		self.cursor_busy()
 		self.current_reader.rotate_file(file,rotate,mode)
 		self.cursor_un_busy()
-		#if file != "":
-		#	self.update_single_image(file)
-		#else:
-		#force re-layout
 		old_current_image_file = self.current_image_file
 		self.start_load_current_path_list()
 		#self.update_images()
@@ -981,6 +962,4 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		return ""
 
 	def process_make_multi_pages_list(self,files):
-		#read_image_process = ReaderImageProcess()
-		#read_image_process.set_reader(self.current_reader)
 		return ReaderImageProcess.process_make_multi_pages_list(files,self.pages_ratio_require,self.current_reader)

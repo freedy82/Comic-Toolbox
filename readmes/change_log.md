@@ -2,6 +2,14 @@
 
 [Chinese version please check this page (中文版請看這)](change_log_zh.md)
 
+### Next version
+
+- Improve dialog detection method
+
+### v0.9.1 ( 2022-09-10 ) - Happy Mid-autumn Festival
+
+- Add new supported site `dongmanmanhua.cn`
+
 ### v0.9.0 ( 2022-05-08 ) - Happy Mothers' Day
 
 - Add page gap setting for reader

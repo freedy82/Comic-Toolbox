@@ -14,5 +14,12 @@ class GoogleTranslatorEngine(TranslatorEngine):
 		translated_text = translations.text
 		return translated_text
 
-	#todo translate multi text in same time
+	def translate_multi_text(self,text_list,to_lang,from_lang="auto"):
+		print(text_list)
+		translator = Translator()
+		translations = translator.translate(text_list, dest=to_lang, src=from_lang)
+		results = []
+		for translation in translations:
+			results.append(translation.text)
+		return results
 
