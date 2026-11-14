@@ -972,6 +972,11 @@
     </message>
     <message><source>Auto-play progress bar color</source><translation>自動播放進度條顏色</translation></message>
     <message><source>Please enter a valid color.</source><translation>請輸入有效的顏色。</translation></message>
+    <message><source>Cannot load image: %s</source><translation>無法載入圖片：%s</translation></message>
+    <message><source>Starting two-page split</source><translation>開始雙頁分割</translation></message>
+    <message><source>Splitting %s</source><translation>正在分割 %s</translation></message>
+    <message><source>Split %s into %s and %s</source><translation>已將 %s 分割為 %s 和 %s</translation></message>
+    <message><source>Could not split %s: %s</source><translation>無法分割 %s：%s</translation></message>
 </context>
 <context>
     <name>MainWindow</name>

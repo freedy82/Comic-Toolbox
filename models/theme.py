@@ -130,6 +130,12 @@ def apply_native_layout(app, ui):
             item.setStyle(control_style)
 
 
+def apply_native_progress_bar(app, progress_bar):
+    style = _windows_control_style(app)
+    if style is not None:
+        progress_bar.setStyle(style)
+
+
 def apply_native_toolbar(app, toolbar):
     style = _windows_control_style(app)
     if style is not None:

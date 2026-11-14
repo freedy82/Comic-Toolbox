@@ -274,8 +274,9 @@ class CropperController(object):
 			self.ui.cbx_cropper_method.model().item(1).setEnabled(True)
 			self.ui.cbx_cropper_method.model().item(2).setEnabled(False)
 		elif current_mode == 1:
-			self.ui.cbx_cropper_method.setCurrentIndex(1)
-			self.ui.cbx_cropper_method.model().item(0).setEnabled(False)
+			if self.ui.cbx_cropper_method.currentIndex() == 2:
+				self.ui.cbx_cropper_method.setCurrentIndex(1)
+			self.ui.cbx_cropper_method.model().item(0).setEnabled(True)
 			self.ui.cbx_cropper_method.model().item(1).setEnabled(True)
 			self.ui.cbx_cropper_method.model().item(2).setEnabled(False)
 		elif current_mode == 2:

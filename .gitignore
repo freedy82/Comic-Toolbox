@@ -32,6 +32,7 @@ MANIFEST
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
+!build_support/ComicToolbox.spec
 
 # Installer logs
 pip-log.txt
@@ -136,7 +137,5 @@ books/
 realcugan-ncnn-vulkan/
 realesrgan-ncnn-vulkan/
 realesrgan-ncnn-vulkan/
-make_zip.bat
-make_exe.bat
 uis/ui2py.bat
 models/test_sites/

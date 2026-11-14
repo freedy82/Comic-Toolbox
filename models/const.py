@@ -9,6 +9,9 @@ from models.webbot import WebBot
 from models.config import MyConfig
 
 ROOT_DIR = os.getcwd()
+# PyInstaller resolves module paths inside _internal; editable user data stays
+# under ROOT_DIR, while packaged assets follow this resource directory.
+RESOURCE_DIR = Path(__file__).resolve().parent.parent
 MY_CONFIG = MyConfig(os.path.join(ROOT_DIR, "setting.ini"))
 MY_BOOKMARK = MyConfig(os.path.join(ROOT_DIR, "bookmarks.ini"),need_init_as_config=False)
 TRS = QtCore.QCoreApplication.translate
@@ -16,7 +19,7 @@ TRS = QtCore.QCoreApplication.translate
 @lru_cache(maxsize=8)
 def _extra_messages(language):
     # Read new Python UI entries alongside the distributed Qt .qm catalogs.
-    catalog = Path(__file__).resolve().parent.parent / "languages" / (Path(language).stem + "_extra.ts")
+    catalog = RESOURCE_DIR / "languages" / (Path(language).stem + "_extra.ts")
     try:
         root = ET.parse(catalog).getroot()
     except (OSError, ET.ParseError):

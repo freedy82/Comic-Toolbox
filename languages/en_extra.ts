@@ -422,6 +422,11 @@
     </message>
     <message><source>Auto-play progress bar color</source><translation>Auto-play progress bar color</translation></message>
     <message><source>Please enter a valid color.</source><translation>Please enter a valid color.</translation></message>
+    <message><source>Cannot load image: %s</source><translation>Cannot load image: %s</translation></message>
+    <message><source>Starting two-page split</source><translation>Starting two-page split</translation></message>
+    <message><source>Splitting %s</source><translation>Splitting %s</translation></message>
+    <message><source>Split %s into %s and %s</source><translation>Split %s into %s and %s</translation></message>
+    <message><source>Could not split %s: %s</source><translation>Could not split %s: %s</translation></message>
 </context>
 <context>
     <name>MainWindow</name>

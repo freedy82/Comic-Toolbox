@@ -69,7 +69,8 @@ class CropFrameController(QtWidgets.QMainWindow):
 		return self.ui.frame.isVisible()
 
 	def remove_frame(self):
-		self.ui.frame.setParent(None)
+		self.ui.frame.hide()
+		self.ui.frame.deleteLater()
 
 	def set_border_color(self,color="#00FF00"):
 		self.ui.frame.setStyleSheet(f"background: rgba(255,255,255,0.8);border: 1px solid {color};")

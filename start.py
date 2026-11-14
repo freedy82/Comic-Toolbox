@@ -16,7 +16,7 @@ if __name__ == '__main__':
     app.setFont(app.font("QMenuBar"))
 
     trans = QtCore.QTranslator()
-    trans.load("./languages/"+MY_CONFIG.get("general", "language"))
+    trans.load(str(RESOURCE_DIR / "languages" / MY_CONFIG.get("general", "language")))
     app.installTranslator(trans)
 
     theme = MY_CONFIG.get("general", "theme")

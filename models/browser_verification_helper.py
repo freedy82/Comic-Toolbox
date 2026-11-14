@@ -11,6 +11,7 @@ from PyQt6.QtWebEngineWidgets import QWebEngineView
 
 from models.webbot import is_browser_challenge
 from models.theme import apply_color_scheme
+from uis import resources_rc
 
 
 class BrowserPage(QWebEnginePage):
@@ -255,6 +256,7 @@ def main():
     QtWidgets.QApplication.setAttribute(QtCore.Qt.ApplicationAttribute.AA_ShareOpenGLContexts, True)
     QtWidgets.QApplication.setHighDpiScaleFactorRoundingPolicy(QtCore.Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
     app = QtWidgets.QApplication(sys.argv)
+    app.setWindowIcon(QtGui.QIcon(":/icon/main_icon"))
     app.setQuitOnLastWindowClosed(False)
     host = BrowserHost(app)
     threading.Thread(target=host.read_commands, daemon=True).start()

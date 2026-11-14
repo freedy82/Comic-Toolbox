@@ -6,6 +6,7 @@ from PIL import Image
 
 from models.const import *
 from models import util
+from models.theme import apply_native_progress_bar
 from uis import crop_window
 from models.controllers.crop_frame_controller import CropFrameController
 
@@ -24,6 +25,7 @@ class CropWindowController(QtWidgets.QMainWindow):
 		self.main_controller = main_controller
 		self.ui = crop_window.Ui_MainWindow()
 		self.ui.setupUi(self)
+		apply_native_progress_bar(app, self.ui.pgb_cover)
 		self.image_list = []
 		self.setup_control()
 		self.method = method
@@ -112,8 +114,17 @@ class CropWindowController(QtWidgets.QMainWindow):
 		image_from = self.image_list[self.current_image_index]["from"]
 		self.ui.txt_file_name.setText(image_from)
 
-		scene = QGraphicsScene()
 		qimage = QImage(image_from)
+		if qimage.isNull():
+			util.msg_box(TRSM("Cannot load image: %s") % image_from,self)
+			self.is_finish_job_flag = True
+			self.close()
+			return
+		self.clear_all_frame_controllers()
+		# QGraphicsView does not own its scene. Parent it to the view so the
+		# preview survives this method, and release the previous image's scene.
+		previous_scene = self.ui.graphics_view.scene()
+		scene = QGraphicsScene(self.ui.graphics_view)
 		self.current_image_width = qimage.width()
 		self.current_image_height = qimage.height()
 		self.ui.txt_width.setText(str(self.current_image_width))
@@ -131,9 +142,9 @@ class CropWindowController(QtWidgets.QMainWindow):
 		pixmap_item = QGraphicsPixmapItem(pixmap)
 		scene.addItem(pixmap_item)
 		self.ui.graphics_view.setScene(scene)
+		if previous_scene is not None:
+			previous_scene.deleteLater()
 		self.ui.graphics_view.fitInView(scene.sceneRect(),Qt.AspectRatioMode.KeepAspectRatio)
-
-		self.clear_all_frame_controllers()
 
 		#crop frame
 		self.crop_frame_controllers = []
@@ -169,7 +180,8 @@ class CropWindowController(QtWidgets.QMainWindow):
 	def clear_all_frame_controllers(self):
 		for cfc in self.crop_frame_controllers:
 			cfc.remove_frame()
-			cfc = None
+			cfc.deleteLater()
+		self.crop_frame_controllers.clear()
 
 	def resize_element(self):
 		self.center_graphics_view_in_frame_image()
@@ -178,7 +190,7 @@ class CropWindowController(QtWidgets.QMainWindow):
 
 	def center_graphics_view_in_frame_image(self):
 		qr = self.ui.frame_image.frameGeometry()
-		if self.ui.graphics_view.scene():
+		if self.ui.graphics_view.scene() and self.current_image_width > 0 and self.current_image_height > 0:
 			rect = util.find_rect_to_fit(qr.width(),qr.height(),self.current_image_width,self.current_image_height)
 			self.current_image_ratio = rect.width() / self.current_image_width
 			#print("current image ratio ",self.current_image_ratio)
@@ -214,7 +226,7 @@ class CropWindowController(QtWidgets.QMainWindow):
 				target_y = real_y1 * self.current_image_ratio + prefix_y
 				target_w = (real_x2-real_x1) * self.current_image_ratio
 				target_h = (real_y2-real_y1) * self.current_image_ratio
-				rect = QtCore.QRect(target_x,target_y,target_w,target_h)
+				rect = QtCore.QRectF(target_x,target_y,target_w,target_h).toRect()
 				#print("update crop frame by pos value to ",rect)
 				crop_frame_controller.set_real_pos_rect({"x1":real_x1,"y1":real_y1,"x2":real_x2,"y2":real_y2})
 				crop_frame_controller.move_frame_to(rect)
@@ -248,6 +260,9 @@ class CropWindowController(QtWidgets.QMainWindow):
 		pass
 
 	def set_pos_to_frame(self,pos,frame="frame1"):
+		# Rules and saved crop ratios can produce fractions; QSpinBox needs
+		# integer image coordinates under Qt6.
+		pos = {key: round(value) for key, value in pos.items()}
 		if frame == "frame1":
 			self.ui.spin_frame1_x1.setValue(pos["x1"])
 			self.ui.spin_frame1_y1.setValue(pos["y1"])
@@ -292,10 +307,12 @@ class CropWindowController(QtWidgets.QMainWindow):
 
 	def find_crop_pos_by_full(self,idx):
 		if len(self.image_list[self.current_image_index]["to"]) > 1:
+			# Both pages share one integer edge, including odd-width images.
+			middle = self.current_image_width // 2
 			if idx == 1:
-				return {"x1": self.current_image_width / 2, "y1": 0, "x2": self.current_image_width,"y2": self.current_image_height}
+				return {"x1": middle, "y1": 0, "x2": self.current_image_width,"y2": self.current_image_height}
 			elif idx == 2:
-				return {"x1": 0, "y1": 0, "x2": self.current_image_width / 2, "y2": self.current_image_height}
+				return {"x1": 0, "y1": 0, "x2": middle, "y2": self.current_image_height}
 		else:
 			return {"x1": 0, "y1": 0, "x2": self.current_image_width, "y2": self.current_image_height}
 

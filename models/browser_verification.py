@@ -103,8 +103,12 @@ class BrowserVerificationBroker(QtCore.QObject):
                      "QML_IMPORT_PATH", "QTWEBENGINEPROCESS_PATH", "QTWEBENGINE_RESOURCES_PATH",
                      "QTWEBENGINE_LOCALES_PATH"):
             environment.remove(name)
+        frozen = getattr(sys, "frozen", False)
+        if frozen:
+            environment.insert("PYINSTALLER_RESET_ENVIRONMENT", "1")
         self._process.setProcessEnvironment(environment)
-        self._process.setWorkingDirectory(str(Path(__file__).resolve().parent.parent))
+        working_directory = Path(sys.executable).resolve().parent if frozen else Path(__file__).resolve().parent.parent
+        self._process.setWorkingDirectory(str(working_directory))
         self._process.setProcessChannelMode(QtCore.QProcess.ProcessChannelMode.SeparateChannels)
         # Use Qt's native null-device path for Windows process redirection.
         self._process.setStandardErrorFile(QtCore.QProcess.nullDevice())
@@ -112,7 +116,10 @@ class BrowserVerificationBroker(QtCore.QObject):
         self._process.readyReadStandardOutput.connect(self._read_output)
         self._process.errorOccurred.connect(self._process_error)
         self._process.finished.connect(self._process_finished)
-        self._process.start(sys.executable, ["-m", "models.browser_verification_helper"])
+        if frozen:
+            self._process.start(str(Path(sys._MEIPASS) / "ComicToolboxBrowser.exe"), [])
+        else:
+            self._process.start(sys.executable, ["-m", "models.browser_verification_helper"])
 
     def _send_command(self):
         if self._command is not None:

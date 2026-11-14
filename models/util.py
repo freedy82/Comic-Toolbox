@@ -16,7 +16,7 @@ from models.const import *
 
 def find_all_languages():
 	languages = []
-	for file in os.listdir(os.path.join(ROOT_DIR, "languages")):
+	for file in os.listdir(os.path.join(RESOURCE_DIR, "languages")):
 		if re.match(r"^[a-zA-Z_].*?\.qm$", file):
 			file_name = get_file_name(file)
 			language_full_name = Language.get(file_name).autonym()
@@ -28,7 +28,7 @@ def find_all_languages():
 
 def find_all_themes():
 	themes = []
-	for file in os.listdir(os.path.join(ROOT_DIR, "themes")):
+	for file in os.listdir(os.path.join(RESOURCE_DIR, "themes")):
 		if re.match(r"^[a-zA-Z_].*?\.qss$", file):
 			file_name = get_file_name(file)
 			if file_name != "default":
@@ -38,9 +38,9 @@ def find_all_themes():
 
 def find_all_fonts():
 	fonts = []
-	for file in os.listdir(os.path.join(ROOT_DIR, "fonts")):
+	for file in os.listdir(os.path.join(RESOURCE_DIR, "fonts")):
 		if re.match(r"^[a-zA-Z_].*?\.tt[f|c]$", file):
-			full_path = Path(os.path.join(ROOT_DIR, "fonts",file)).as_posix()
+			full_path = Path(os.path.join(RESOURCE_DIR, "fonts",file)).as_posix()
 			fonts.append({"name":file,"file":full_path})
 	return fonts
 

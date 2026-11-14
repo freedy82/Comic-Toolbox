@@ -23,6 +23,7 @@ from models.controllers.translator_window_controller import TranslatorWindowCont
 class MainWindowController(QtWidgets.QMainWindow):
 	def __init__(self,app,trans):
 		super().__init__()
+		self._exit_requested = False
 		self.app = app
 		self.trans = trans
 		self.ui = main_window.Ui_MainWindow()
@@ -207,6 +208,9 @@ class MainWindowController(QtWidgets.QMainWindow):
 
 	def on_file_exit(self):
 		if util.confirm_box(TRSM("Confirm to quit?"),self):
+			# QApplication.quit() also closes windows. Accept that close event
+			# instead of applying the title-bar close-to-tray preference.
+			self._exit_requested = True
 			self.app.quit()
 		pass
 
@@ -214,7 +218,7 @@ class MainWindowController(QtWidgets.QMainWindow):
 		# TRSM's extra catalog must use the new language during this refresh,
 		# including LanguageChange events raised while loading the translator.
 		MY_CONFIG.set("general","language",lang["file"])
-		self.trans.load("./languages/"+lang["file"])
+		self.trans.load(str(RESOURCE_DIR / "languages" / lang["file"]))
 		self.app.installTranslator(self.trans)
 		self.ui.retranslateUi(self)
 
@@ -279,6 +283,9 @@ class MainWindowController(QtWidgets.QMainWindow):
 
 	# replace event
 	def closeEvent(self, event):
+		if self._exit_requested:
+			event.accept()
+			return
 		event.ignore()
 		if MY_CONFIG.get("misc", "when_close_window") == "1":
 			self.on_file_exit()

@@ -1,4 +1,5 @@
 import math
+from tempfile import NamedTemporaryFile
 
 from PyQt6.QtCore import QThread, pyqtSignal
 from PIL import Image
@@ -39,7 +40,8 @@ class CropperWorker(QThread):
 		self.folders_need_crop = self.sub_folders
 
 		if not self.is_only_get_list:
-			self.trigger.emit(TRSM("Starting crop cover"),0,len(self.folders_need_crop))
+			message = TRSM("Starting two-page split") if self.crop_mode == 2 else TRSM("Starting crop cover")
+			self.trigger.emit(message,0,len(self.folders_need_crop))
 
 		if len(self.folders_need_crop) > 0:
 			self.total_action_count = len(self.folders_need_crop)
@@ -49,7 +51,10 @@ class CropperWorker(QThread):
 				if self.crop_mode == 1:
 					self._start_crop_in_folder(folder_info)
 				elif self.crop_mode == 2:
-					self._start_scan_2_page_in_folder(folder_info)
+					if self.is_only_get_list:
+						self._start_scan_2_page_in_folder(folder_info)
+					else:
+						self._start_auto_split_in_folder(folder_info)
 				elif self.crop_mode == 3:
 					self._start_scan_un_crop_page_in_folder(folder_info)
 				self.current_action_count += 1
@@ -195,6 +200,68 @@ class CropperWorker(QThread):
 						task = {"from": from_file_full, "to": [to_file_1_full,to_file_2_full]}
 						#print("add task",task)
 						self.process_list.append(task)
+
+	def _start_auto_split_in_folder(self, folder):
+		full_folder, filtered_files = self._get_all_image(folder)
+		for file in filtered_files:
+			if self.stop_flag:
+				return
+			source = Path(full_folder) / file
+			if source.stem.endswith((".1", ".2")):
+				continue
+			right_file = source.with_name(source.stem + ".1" + source.suffix)
+			left_file = source.with_name(source.stem + ".2" + source.suffix)
+			if not self.is_overwrite and (right_file.exists() or left_file.exists()):
+				self.trigger.emit(TRSM("%s already have split sub page!") % file,
+					self.current_action_count,self.total_action_count)
+				continue
+
+			temporary_files = []
+			try:
+				with Image.open(source) as image:
+					width, height = image.size
+					if width <= height:
+						continue
+					self.trigger.emit(TRSM("Splitting %s") % source.as_posix(),
+						self.current_action_count,self.total_action_count)
+					middle = width // 2
+					# Use a shared edge so odd widths lose no pixels. Japanese
+					# reading order puts the right-hand page in .1, left in .2.
+					boxes = ((middle,0,width,height),(0,0,middle,height))
+					save_options = {}
+					if source.suffix.lower() in (".jpg", ".jpeg"):
+						save_options["quality"] = int(MY_CONFIG.get("general", "jpg_quality"))
+					elif source.suffix.lower() == ".webp":
+						save_options["lossless"] = True
+					for box in boxes:
+						if self.stop_flag:
+							return
+						with NamedTemporaryFile(dir=source.parent, prefix=".comic-toolbox-split-",
+								suffix=source.suffix, delete=False) as temporary:
+							temporary_path = Path(temporary.name)
+						temporary_files.append(temporary_path)
+						with image.crop(box) as page:
+							page.save(temporary_path, **save_options)
+				if self.stop_flag:
+					return
+				# Finish writing both pages and close the source before publishing
+				# or honoring Remove source, which is important on Windows.
+				os.replace(temporary_files[0], right_file)
+				os.replace(temporary_files[1], left_file)
+				if self.is_remove_source:
+					source.unlink()
+				self.trigger.emit(TRSM("Split %s into %s and %s") %
+					(source.as_posix(),right_file.name,left_file.name),
+					self.current_action_count,self.total_action_count)
+			except Exception as error:
+				self.trigger.emit(TRSM("Could not split %s: %s") % (source.as_posix(),str(error)),
+					self.current_action_count,self.total_action_count)
+			finally:
+				for temporary_path in temporary_files:
+					try:
+						temporary_path.unlink(missing_ok=True)
+					except OSError:
+						pass
 
 	def _start_crop_in_folder(self, folder):
 		# full_folder = os.path.join(self.from_folder, folder)
