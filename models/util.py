@@ -6,10 +6,10 @@ import imagesize
 import threading
 from pathlib import Path
 
-from PyQt5 import QtWidgets
+from PyQt6 import QtWidgets
 from langcodes import Language
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtCore import QRect
+from PyQt6.QtWidgets import QMessageBox
+from PyQt6.QtCore import QRect
 from PIL import Image,ImageEnhance,ImageOps
 
 from models.const import *
@@ -147,8 +147,8 @@ def confirm_box(message,parent:QtWidgets.QMainWindow = None):
 		title = parent.windowTitle()
 	else:
 		title = TRSM("Comic Toolbox")
-	reply = QMessageBox.question(parent, title, message, QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-	if reply == QMessageBox.Yes:
+	reply = QMessageBox.question(parent, title, message, QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
+	if reply == QMessageBox.StandardButton.Yes:
 		return True
 	else:
 		return False
@@ -180,7 +180,7 @@ def find_rect_to_fit(p_width,p_height,c_width,c_height):
 	c_final_height = c_height * ratio
 	c_x = (p_width - c_final_width) / 2.0
 	c_y = (p_height - c_final_height) / 2.0
-	return QRect(c_x,c_y,c_final_width,c_final_height)
+	return QRect(int(c_x), int(c_y), int(c_final_width), int(c_final_height))
 
 def remove_element_of_tuple(tuple_from,need_remove):
 	tmp_list = list(tuple_from)

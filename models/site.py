@@ -10,7 +10,7 @@ import time
 from queue import Queue
 from abc import ABCMeta, abstractmethod
 from pathlib import Path
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QThread, pyqtSignal
 
 # fix for pyInstaller
 import execjs
@@ -18,6 +18,7 @@ import lzstring
 import jsbeautifier
 
 from models.const import *
+from models.webbot import BrowserVerificationError
 
 
 class Site(QThread):
@@ -107,7 +108,7 @@ class Site(QThread):
 		Path(output_dir).mkdir(parents=True, exist_ok=True)
 
 		self._web_bot.set_accept_language(self._accept_language)
-		html_code = self._web_bot.get_web_content(url=item["url"], ref=item["ref"], code_page=self._code_page, cookie=self._cookies)
+		html_code = self._web_bot.get_web_content(url=item["url"], ref=item["ref"], code_page=self._code_page, cookie=self._cookies, headers=item.get("headers"), cancel_check=lambda: self._stop_flag)
 		results = self.get_image_list_from_html(html_code=html_code,url=item["url"])
 		if "images" in results:
 			self.download_image_lists(results["images"],output_dir)
@@ -155,6 +156,9 @@ class Site(QThread):
 				try:
 					data = future.result()
 				except Exception as exc:
+					if isinstance(exc, BrowserVerificationError):
+						self.stop()
+						self.chapter_trigger.emit(TRSM(str(exc)), self._current_finish_download, self._final_total_download)
 					# print('Download %s failed' % exc)
 					# sys.stdout.flush()
 					pass
@@ -173,8 +177,12 @@ class Site(QThread):
 		# sys.stdout.flush()
 		if not self._stop_flag:
 			# debug
-			data = self._web_bot.get_web_content_raw(url=image_url, ref=page_ref, cookie=self._cookies)
-			if data:
+			try:
+				data = self._web_bot.get_web_content_raw(url=image_url, ref=page_ref, cookie=self._cookies, headers=download_info.get("headers") if download_info else None, cancel_check=lambda: self._stop_flag)
+			except BrowserVerificationError:
+				self.stop()
+				raise
+			if data and not self._stop_flag:
 				target_file = Path(target_file).as_posix()
 				fp = open(target_file, mode="wb")
 				fp.write(data)
@@ -234,10 +242,19 @@ class Site(QThread):
 	def download_single_page_image_from_page(self,queue):
 		while not queue.empty():
 			page = queue.get()
+			if self._stop_flag:
+				queue.task_done()
+				continue
 
 			#print(f"checking {page['url']}")
-			html_code = self._web_bot.get_web_content(url=page["url"], ref=page["ref"], code_page=self._code_page, cookie=self._cookies)
-			img_url = self.get_single_page_image_from_html(html_code,page["url"])
+			try:
+				html_code = self._web_bot.get_web_content(url=page["url"], ref=page["ref"], code_page=self._code_page, cookie=self._cookies, cancel_check=lambda: self._stop_flag)
+				img_url = self.get_single_page_image_from_html(html_code,page["url"])
+			except Exception as exc:
+				self.stop()
+				self.chapter_trigger.emit(TRSM(str(exc)), self._current_finish_download, self._final_total_download)
+				queue.task_done()
+				continue
 			#print(f"image_url {img_url}")
 			if img_url == "":
 				message = TRSM('Download failed: %s (%d/%d)') % (page["file"], self._current_finish_download, self._final_total_download)
@@ -260,6 +277,9 @@ class Site(QThread):
 						try:
 							result = future.result()
 						except Exception as exc:
+							if isinstance(exc, BrowserVerificationError):
+								self.stop()
+								self.chapter_trigger.emit(TRSM(str(exc)), self._current_finish_download, self._final_total_download)
 							#todo add more handle
 							#print('Download %s failed' % result)
 							#sys.stdout.flush()

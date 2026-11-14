@@ -3,7 +3,7 @@
  <class>MainWindow</class>
  <widget class="QDialog" name="MainWindow">
   <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
+   <enum>Qt::WindowModality::ApplicationModal</enum>
   </property>
   <property name="geometry">
    <rect>
@@ -51,10 +51,10 @@
     </rect>
    </property>
    <property name="orientation">
-    <enum>Qt::Horizontal</enum>
+    <enum>Qt::Orientation::Horizontal</enum>
    </property>
    <property name="standardButtons">
-    <set>QDialogButtonBox::Ok</set>
+    <set>QDialogButtonBox::StandardButton::Ok</set>
    </property>
   </widget>
   <widget class="QFrame" name="frame">
@@ -73,10 +73,10 @@
     <string notr="true"/>
    </property>
    <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
+    <enum>QFrame::Shape::StyledPanel</enum>
    </property>
    <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
+    <enum>QFrame::Shadow::Raised</enum>
    </property>
    <widget class="QLabel" name="lbl_icon">
     <property name="geometry">
@@ -108,7 +108,6 @@
     </property>
     <property name="font">
      <font>
-      <family>Arial</family>
       <pointsize>16</pointsize>
       <weight>75</weight>
       <bold>true</bold>
@@ -140,16 +139,11 @@
       <height>71</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
     <property name="text">
      <string>Respect the copyright, please support the genuine version, and the resources downloaded or generated through this tool are prohibited from spreading and sharing! It is prohibited to use this project for commercial activities!</string>
     </property>
     <property name="textFormat">
-     <enum>Qt::PlainText</enum>
+     <enum>Qt::TextFormat::PlainText</enum>
     </property>
     <property name="scaledContents">
      <bool>false</bool>
@@ -171,13 +165,13 @@
      <string>%s</string>
     </property>
     <property name="textFormat">
-     <enum>Qt::RichText</enum>
+     <enum>Qt::TextFormat::RichText</enum>
     </property>
     <property name="openExternalLinks">
      <bool>true</bool>
     </property>
     <property name="textInteractionFlags">
-     <set>Qt::TextBrowserInteraction</set>
+     <set>Qt::TextInteractionFlag::TextBrowserInteraction</set>
     </property>
    </widget>
   </widget>
@@ -191,7 +185,7 @@
     </rect>
    </property>
    <property name="orientation">
-    <enum>Qt::Horizontal</enum>
+    <enum>Qt::Orientation::Horizontal</enum>
    </property>
   </widget>
   <zorder>buttonBox</zorder>

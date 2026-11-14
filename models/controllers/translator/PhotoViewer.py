@@ -1,6 +1,6 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
+from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtGui import *
+from PyQt6.QtCore import *
 
 from .BoxItem import BoxItem
 
@@ -23,9 +23,10 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         self._scene.addItem(self._photo)
         self.setScene(self._scene)
         self.setBackgroundBrush(QtGui.QBrush(QtGui.QColor(0, 0, 0)))
-        self.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
         self._scene.focusItemChanged.connect(self.scene_focus_item_changed)
         self.labels = []
+        self.text_renderer = None
 
     def unselect_all_label(self):
         for item in self._scene.selectedItems():
@@ -34,11 +35,17 @@ class PhotoViewer(QtWidgets.QGraphicsView):
     def add_label(self,label_text="",frame=QRectF(0,0,100,100)):
         tmp_label = BoxItem(proxy_parent=self,position=QPointF(frame.x(),frame.y()),rect=QRectF(0,0,frame.width(),frame.height()), text=label_text)
         self._scene.addItem(tmp_label)
+        tmp_label.update_text()
         self.unselect_all_label()
         tmp_label.setSelected(True)
         self.item_selected.emit(tmp_label)
         #self.labels.append(tmp_label)
         return tmp_label
+
+    def render_label(self, item):
+        if self.text_renderer is not None:
+            return self.text_renderer(item)
+        return QPixmap()
 
     def has_photo(self):
         return not self._empty
@@ -61,11 +68,11 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         self._zoom = 0
         if pixmap and not pixmap.isNull():
             self._empty = False
-            self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
+            self.setDragMode(QtWidgets.QGraphicsView.DragMode.ScrollHandDrag)
             self._photo.setPixmap(pixmap)
         else:
             self._empty = True
-            self.setDragMode(QtWidgets.QGraphicsView.NoDrag)
+            self.setDragMode(QtWidgets.QGraphicsView.DragMode.NoDrag)
             self._photo.setPixmap(QtGui.QPixmap())
         self.try_fit_in_view()
 
@@ -118,15 +125,15 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         y0 = min(start_pos.y(),current_pos.y())
         x1 = max(start_pos.x(),current_pos.x())
         y1 = max(start_pos.y(),current_pos.y())
-        self.current_drag_label.set_frame(QRect(x0,y0,x1-x0,y1-y0))
+        self.current_drag_label.set_frame(QRectF(x0,y0,x1-x0,y1-y0).toAlignedRect())
 
     def toggle_add_mode(self,is_manual_add=False):
         if is_manual_add:
-            self.setDragMode(QtWidgets.QGraphicsView.NoDrag)
-            self._photo.setCursor(QCursor(QtCore.Qt.CrossCursor))
+            self.setDragMode(QtWidgets.QGraphicsView.DragMode.NoDrag)
+            self._photo.setCursor(QCursor(QtCore.Qt.CursorShape.CrossCursor))
         elif not self._photo.pixmap().isNull():
-            self.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
-            self._photo.setCursor(QCursor(QtCore.Qt.OpenHandCursor))
+            self.setDragMode(QtWidgets.QGraphicsView.DragMode.ScrollHandDrag)
+            self._photo.setCursor(QCursor(QtCore.Qt.CursorShape.OpenHandCursor))
 
     def get_zoom(self):
         return self._zoom
@@ -155,7 +162,7 @@ class PhotoViewer(QtWidgets.QGraphicsView):
 
     def keyPressEvent(self, event: QtGui.QKeyEvent):
         super(PhotoViewer, self).keyPressEvent(event)
-        if event.key() == QtCore.Qt.Key_Delete:
+        if event.key() == QtCore.Qt.Key.Key_Delete:
             item = self.get_current_selected_label()
             if item is not None:
                 self._scene.removeItem(item)
@@ -169,25 +176,25 @@ class PhotoViewer(QtWidgets.QGraphicsView):
     def mousePressEvent(self, event):
         super(PhotoViewer, self).mousePressEvent(event)
         if self._photo.isUnderMouse():
-            self.photoClicked.emit(self.mapToScene(event.pos()).toPoint())
-        if self.dragMode() == QtWidgets.QGraphicsView.NoDrag:
+            self.photoClicked.emit(self.mapToScene(event.position().toPoint()).toPoint())
+        if self.dragMode() == QtWidgets.QGraphicsView.DragMode.NoDrag:
             #print("mouse press")
             if len(self._scene.selectedItems()) == 0:
-                self.drag_start_pos = self.mapToScene(event.pos()).toPoint()
+                self.drag_start_pos = self.mapToScene(event.position().toPoint()).toPoint()
             else:
                 self.drag_start_pos = QPoint(-1,-1)
 
     def mouseMoveEvent(self, event: QtGui.QMouseEvent):
         super(PhotoViewer, self).mouseMoveEvent(event)
-        if self.dragMode() == QtWidgets.QGraphicsView.NoDrag:
-            current_pos = self.mapToScene(event.pos()).toPoint()
+        if self.dragMode() == QtWidgets.QGraphicsView.DragMode.NoDrag:
+            current_pos = self.mapToScene(event.position().toPoint()).toPoint()
             if 0 <= self.drag_start_pos.x() < self._photo.pixmap().width() and \
                     0 <= self.drag_start_pos.y() < self._photo.pixmap().height():
                 #print("mouse move event in photo ",current_pos)
                 self.try_drag_create_and_move_current_label(self.drag_start_pos,current_pos)
 
     def mouseReleaseEvent(self, event: QtGui.QMouseEvent):
-        if self.dragMode() == QtWidgets.QGraphicsView.NoDrag:
+        if self.dragMode() == QtWidgets.QGraphicsView.DragMode.NoDrag:
             #print("mouse release")
             self.drag_start_pos = QPoint(-1,-1)
             if self.current_drag_label is not None:

@@ -1,8 +1,8 @@
 import os
 from pathlib import Path
 from PIL import Image
-from PyQt5 import QtGui
-from PyQt5.QtGui import QPixmap
+from PyQt6 import QtGui
+from PyQt6.QtGui import QPixmap
 
 from models import util
 from models.const import *

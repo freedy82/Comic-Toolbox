@@ -1,8 +1,7 @@
-import fitz
+import pymupdf
 import sys
 import time
-from PyQt5.QtGui import QPixmap
-from PIL import Image, ImageQt
+from PyQt6.QtGui import QImage, QPixmap
 
 from models.reader import Reader
 
@@ -16,7 +15,7 @@ class PDFReader(Reader):
 		super().__init__()
 
 	def open_file(self):
-		self.file_handler = fitz.open(self.main_file)
+		self.file_handler = pymupdf.open(self.main_file)
 		pass
 
 	def get_file_list(self):
@@ -50,9 +49,10 @@ class PDFReader(Reader):
 			self.q_pixmap_buffer[file] = q_pixmap
 			return self.get_rotated_image_q_pixmap(file,q_pixmap)
 		pixmap = self.get_data_from_file(file)
-		mode = "RGBA" if pixmap.alpha else "RGB"
-		img = Image.frombytes(mode, [pixmap.width, pixmap.height], pixmap.samples)
-		q_img = ImageQt.ImageQt(img)
+		image_format = QImage.Format.Format_RGBA8888 if pixmap.alpha else QImage.Format.Format_RGB888
+		q_img = QImage(
+			pixmap.samples, pixmap.width, pixmap.height, pixmap.stride, image_format
+		).copy()
 		self.q_img_buffer[file] = q_img
 		q_pixmap = QPixmap.fromImage(q_img)
 		self.q_pixmap_buffer[file] = q_pixmap

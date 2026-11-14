@@ -1,5 +1,5 @@
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import Qt
+from PyQt6 import QtCore, QtWidgets
+from PyQt6.QtCore import Qt
 
 from uis import about_window
 from models.const import *
@@ -14,8 +14,8 @@ class AboutWindowController(QtWidgets.QMainWindow):
 		self.setup_control()
 
 	def setup_control(self):
-		self.setWindowFlag(Qt.WindowMinimizeButtonHint, False)
-		self.setWindowFlag(Qt.WindowMaximizeButtonHint, False)
+		self.setWindowFlag(Qt.WindowType.WindowMinimizeButtonHint, False)
+		self.setWindowFlag(Qt.WindowType.WindowMaximizeButtonHint, False)
 		# GUI
 		self.retranslateUi()
 
@@ -42,8 +42,8 @@ class AboutWindowController(QtWidgets.QMainWindow):
 
 	def center_pos_of_parent(self):
 		qr = self.main_controller.frameGeometry()
-		x = qr.left() + (qr.width() - self.width()) / 2
-		y = qr.top() + (qr.height() - self.height()) / 2
+		x = qr.left() + (qr.width() - self.width()) // 2
+		y = qr.top() + (qr.height() - self.height()) // 2
 		self.move(x, y)
 
 	# internal

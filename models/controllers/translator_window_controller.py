@@ -1,8 +1,8 @@
 from pathlib import Path
-from PyQt5 import QtWidgets, QtGui
-from PyQt5.QtCore import Qt, QRect, QRectF
-from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtWidgets import QFileDialog
+from PyQt6 import QtWidgets, QtGui
+from PyQt6.QtCore import Qt, QRect, QRectF
+from PyQt6.QtGui import QPixmap, QImage
+from PyQt6.QtWidgets import QFileDialog
 
 from models.const import *
 from models import util
@@ -12,7 +12,7 @@ from models.controllers.translator.PhotoViewer import PhotoViewer
 from models.controllers.translator.BoxItem import BoxItem
 from models.controllers.translator.BubbleDetect import BubbleDetectEngine
 from models.controllers.translator.OCR import OCREngine
-from models.controllers.translator.Translator import TranslatorEngine
+from models.controllers.translator.Translator import TranslatorEngine, TranslationError
 from models.controllers.translator.Writer import Writer
 
 class TranslatorWindowController(QtWidgets.QMainWindow):
@@ -47,16 +47,18 @@ class TranslatorWindowController(QtWidgets.QMainWindow):
 		self.setup_control()
 
 	def setup_control(self):
-		self.setWindowFlag(Qt.WindowMinimizeButtonHint, False)
+		self.setWindowFlag(Qt.WindowType.WindowMinimizeButtonHint, False)
 
 		self.ui.layout_main.insertWidget(0,self.current_photo_viewer,4)
 		self.ui.layout_main.insertWidget(0,self.current_preview_viewer,4)
+		self.current_photo_viewer.text_renderer = self._render_bubble_text
 
 		for tmp_class in BubbleDetectEngine.find_all_sub_class():
 			self.ui.cbx_bubble_detect_engine.addItem(tmp_class.__name__)
 		for tmp_class in OCREngine.find_all_sub_class():
 			self.ui.cbx_ocr_engine.addItem(tmp_class.__name__)
-		for tmp_class in TranslatorEngine.find_all_sub_class():
+		self.translation_engines = TranslatorEngine.find_all_sub_class()
+		for tmp_class in self.translation_engines:
 			self.ui.cbx_translator_engine.addItem(tmp_class.__name__)
 
 		for lang_from in self.LANG_OCR_FROM:
@@ -98,6 +100,8 @@ class TranslatorWindowController(QtWidgets.QMainWindow):
 		self.ui.btn_update_frame.clicked.connect(self.btn_update_frame_clicked)
 		self.ui.btn_update_text.clicked.connect(self.btn_update_text_clicked)
 		self.ui.btn_update_style_to_all_bubble.clicked.connect(self.btn_update_style_to_all_bubble_clicked)
+		self.ui.cbx_translator_engine.currentIndexChanged.connect(self._update_translation_engine_tooltip)
+		self.ui.cbx_language_to.currentIndexChanged.connect(self._refresh_bubble_texts)
 
 		self.current_photo_viewer.item_selected.connect(self.on_label_item_selected)
 		self.current_photo_viewer.item_changed.connect(self.on_label_item_changed)
@@ -120,6 +124,12 @@ class TranslatorWindowController(QtWidgets.QMainWindow):
 			self.ui.cbx_alignment.setItemText(idx,TRSM(tmp_alignment.name))
 		for idx,tmp_style in enumerate(Style):
 			self.ui.cbx_text_style.setItemText(idx,TRSM(tmp_style.name))
+		for idx, engine in enumerate(self.translation_engines):
+			self.ui.cbx_translator_engine.setItemData(idx, TRSM(getattr(engine, "DESCRIPTION", "")), Qt.ItemDataRole.ToolTipRole)
+		self._update_translation_engine_tooltip()
+
+	def _update_translation_engine_tooltip(self, index=None):
+		self.ui.cbx_translator_engine.setToolTip(self.ui.cbx_translator_engine.currentData(Qt.ItemDataRole.ToolTipRole) or "")
 
 	def show(self):
 		super().show()
@@ -162,13 +172,21 @@ class TranslatorWindowController(QtWidgets.QMainWindow):
 		self.start_load_image()
 
 	def on_file_bubble_detect(self):
-		engine_name = self.ui.cbx_bubble_detect_engine.currentText()
-		engine = BubbleDetectEngine.init_by_name(engine_name)
-		results = engine.get_bubble_from_file(self.current_image_file)
-		#print(results)
-		for tmp_result in results:
-			self.current_photo_viewer.add_label("",frame=QRectF(tmp_result[0],tmp_result[1],tmp_result[2],tmp_result[3]))
-		#print(results)
+		if not self.current_image_file:
+			util.msg_box(TRSM("Please open an image before detecting speech bubbles."), self)
+			return
+		try:
+			engine_name = self.ui.cbx_bubble_detect_engine.currentText()
+			engine = BubbleDetectEngine.init_by_name(engine_name)
+			if engine is None:
+				raise ValueError("The selected bubble detection engine is unavailable.")
+			results = engine.get_bubble_from_file(self.current_image_file)
+			frames = [QRectF(*map(float, result)) for result in results]
+			for frame in frames:
+				if frame.isValid():
+					self.current_photo_viewer.add_label("", frame=frame)
+		except Exception as exc:
+			util.msg_box(TRSM("Bubble detection failed: %s") % TRSM(str(exc)), self)
 
 	def on_file_manual_add_bubble(self):
 		if self.ui.actionManualAddBubble.isChecked():
@@ -201,40 +219,60 @@ class TranslatorWindowController(QtWidgets.QMainWindow):
 			self.ui.txt_text.setPlainText(ocr_text)
 
 	def on_file_translate_all_bubble(self):
-		engine_name = self.ui.cbx_translator_engine.currentText()
-		engine = TranslatorEngine.init_by_name(engine_name)
-		from_lang = self.LANG_MAP_TO_TRANS[self.LANG_OCR_FROM[self.ui.cbx_language_from.currentIndex()]]
-		to_lang = self.LANG_MAP_TO_TRANS[self.LANG_TO[self.ui.cbx_language_to.currentIndex()]]
-
-		#text_to_translate = []
-		for tmp_label in self.current_photo_viewer.get_all_labels():
-			if tmp_label.org_text != "":
-				#text_to_translate.append(tmp_label.org_text)
-				trans_text = engine.translate_text(tmp_label.org_text,to_lang,from_lang)
-				tmp_label.trans_text = trans_text
-				tmp_label.update_text()
-
-		# if len(text_to_translate) > 0:
-		# 	translated_text = engine.translate_multi_text(text_to_translate,to_lang,from_lang)
-		# 	current_idx = 0
-		# 	for tmp_label in self.current_photo_viewer.get_all_labels():
-		# 		if tmp_label.org_text != "":
-		# 			tmp_label.trans_text = translated_text[current_idx]
-		# 			tmp_label.update_text()
-		# 			current_idx += 1
+		labels = [label for label in self.current_photo_viewer.get_all_labels() if label.org_text.strip()]
+		if not labels:
+			return
+		try:
+			engine = self._selected_translation_engine()
+			from_lang = self.LANG_MAP_TO_TRANS[self.LANG_OCR_FROM[self.ui.cbx_language_from.currentIndex()]]
+			to_lang = self.LANG_MAP_TO_TRANS[self.LANG_TO[self.ui.cbx_language_to.currentIndex()]]
+			translated = engine.translate_multi_text([label.org_text for label in labels], to_lang, from_lang)
+			if len(translated) != len(labels):
+				raise TranslationError("The translation service returned an incomplete response.")
+		except Exception as exc:
+			self._show_translation_error(exc)
+			return
+		# Retain existing translations if the request fails partway through.
+		for label, text in zip(labels, translated):
+			label.trans_text = text
+			label.update_text()
+		selected = self.current_photo_viewer.get_current_selected_label()
+		if selected is not None:
+			self.ui.txt_translated_text.setPlainText(selected.trans_text)
+		self._refresh_visible_preview()
 
 	def on_file_translate_this_bubble(self):
 		tmp_label = self.current_photo_viewer.get_current_selected_label()
-		if tmp_label is not None and self.ui.txt_text.toPlainText() != "":
-			tmp_label.org_text = self.ui.txt_text.toPlainText()
-			engine_name = self.ui.cbx_translator_engine.currentText()
-			engine = TranslatorEngine.init_by_name(engine_name)
-			from_lang = self.LANG_MAP_TO_TRANS[self.LANG_OCR_FROM[self.ui.cbx_language_from.currentIndex()]]
-			to_lang = self.LANG_MAP_TO_TRANS[self.LANG_TO[self.ui.cbx_language_to.currentIndex()]]
-			trans_text = engine.translate_text(tmp_label.org_text,to_lang,from_lang)
+		original_text = self.ui.txt_text.toPlainText()
+		if tmp_label is not None and original_text.strip():
+			try:
+				engine = self._selected_translation_engine()
+				from_lang = self.LANG_MAP_TO_TRANS[self.LANG_OCR_FROM[self.ui.cbx_language_from.currentIndex()]]
+				to_lang = self.LANG_MAP_TO_TRANS[self.LANG_TO[self.ui.cbx_language_to.currentIndex()]]
+				trans_text = engine.translate_text(original_text, to_lang, from_lang)
+			except Exception as exc:
+				self._show_translation_error(exc)
+				return
+			tmp_label.org_text = original_text
 			tmp_label.trans_text = trans_text
 			self.ui.txt_translated_text.setPlainText(trans_text)
 			tmp_label.update_text()
+			self._refresh_visible_preview()
+
+	def _selected_translation_engine(self):
+		engine = TranslatorEngine.init_by_name(self.ui.cbx_translator_engine.currentText())
+		if engine is None:
+			raise TranslationError("The selected translation engine is unavailable.")
+		return engine
+
+	def _show_translation_error(self, error):
+		if isinstance(error, TranslationError):
+			message = TRSM(error.message)
+			if error.values:
+				message %= error.values
+		else:
+			message = str(error)
+		util.msg_box(TRSM("Translation failed: %s") % message, self)
 
 	def on_file_display_preview(self):
 		if self.ui.actionDisplayPreview.isChecked():
@@ -290,6 +328,7 @@ class TranslatorWindowController(QtWidgets.QMainWindow):
 		tmp_label = self.current_photo_viewer.get_current_selected_label()
 		if tmp_label is not None:
 			tmp_label.set_frame(frame)
+			self._refresh_visible_preview()
 
 	def btn_update_text_clicked(self):
 		tmp_label = self.current_photo_viewer.get_current_selected_label()
@@ -301,6 +340,7 @@ class TranslatorWindowController(QtWidgets.QMainWindow):
 			tmp_label.align_index = self.ui.cbx_alignment.currentIndex()
 			tmp_label.text_style_index = self.ui.cbx_text_style.currentIndex()
 			tmp_label.update_text()
+			self._refresh_visible_preview()
 
 	def btn_update_style_to_all_bubble_clicked(self):
 		for tmp_label in self.current_photo_viewer.get_all_labels():
@@ -308,6 +348,8 @@ class TranslatorWindowController(QtWidgets.QMainWindow):
 			tmp_label.font_size = self.ui.spin_font_size.value()
 			tmp_label.align_index = self.ui.cbx_alignment.currentIndex()
 			tmp_label.text_style_index = self.ui.cbx_text_style.currentIndex()
+			tmp_label.update_text()
+		self._refresh_visible_preview()
 
 	# photo viewer call back
 	def on_label_item_selected(self,item):
@@ -441,20 +483,38 @@ class TranslatorWindowController(QtWidgets.QMainWindow):
 	def get_result_image(self):
 		tmp_writer = Writer()
 		tmp_writer.load_image_from_file(self.current_image_file)
-		for tmp_label in self.current_photo_viewer.get_all_labels():
+		# QGraphicsScene lists the topmost item first; paint bottom to top so
+		# overlapping bubble backgrounds match the editor's stacking order.
+		for tmp_label in reversed(self.current_photo_viewer.get_all_labels()):
 			frame = tmp_label.get_frame()
 			text = tmp_label.trans_text
-			flow = self.LANG_MAP_TO_WRITE_FLOW[self.LANG_TO[self.ui.cbx_language_to.currentIndex()]]
-			is_vertical = True if flow == "vert" else False
-			font = self.fonts[tmp_label.font_index]["file"]
-			font_size = tmp_label.font_size
-			alignment = Alignment(tmp_label.align_index + 1)
-			style = Style(tmp_label.text_style_index + 1)
 			tmp_writer.write_text(
-				text=text, is_vertical=is_vertical, frame=frame, font_name=font, font_size=font_size,
-				alignment=alignment, text_style=style
+				text=text, frame=frame, **self._bubble_text_options(tmp_label)
 			)
 		return tmp_writer.get_result_image()
+
+	def _bubble_text_options(self, item):
+		flow = self.LANG_MAP_TO_WRITE_FLOW[self.LANG_TO[self.ui.cbx_language_to.currentIndex()]]
+		font = self.fonts[item.font_index]["file"] if 0 <= item.font_index < len(self.fonts) else ""
+		return {"font_name": font, "font_size": item.font_size, "is_vertical": flow == "vert",
+				"alignment": Alignment(item.align_index + 1), "text_style": Style(item.text_style_index + 1)}
+
+	def _render_bubble_text(self, item):
+		width, height = int(item.rect().width()), int(item.rect().height())
+		if width <= 0 or height <= 0:
+			return QPixmap()
+		text = item.trans_text if item.trans_text != "" else item.org_text
+		layer = Writer.render_text(text, width, height, **self._bubble_text_options(item))
+		return self.p_image_to_q_pixmap(layer)
+
+	def _refresh_bubble_texts(self, index=None):
+		for item in self.current_photo_viewer.get_all_labels():
+			item.update_text()
+		self._refresh_visible_preview()
+
+	def _refresh_visible_preview(self):
+		if self.current_image_file and self.current_preview_viewer.isVisible():
+			self.on_file_refresh_preview()
 
 	@staticmethod
 	def p_image_to_q_pixmap(p_image):
@@ -466,7 +526,7 @@ class TranslatorWindowController(QtWidgets.QMainWindow):
 	def p_image_to_q_image(p_image):
 		pimg_converted = p_image.convert("RGBA")
 		data = pimg_converted.tobytes("raw", "RGBA")
-		return QImage(data, pimg_converted.size[0], pimg_converted.size[1], QImage.Format_RGBA8888)
+		return QImage(data, pimg_converted.size[0], pimg_converted.size[1], QImage.Format.Format_RGBA8888).copy()
 
 	@staticmethod
 	def bind_scroll_bars(scroll_bar1, scroll_bar2):

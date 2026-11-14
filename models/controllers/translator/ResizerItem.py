@@ -1,7 +1,7 @@
-from PyQt5 import QtCore
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import QGraphicsItem, QGraphicsObject
+from PyQt6 import QtCore
+from PyQt6.QtGui import *
+from PyQt6.QtCore import *
+from PyQt6.QtWidgets import QGraphicsItem, QGraphicsObject
 
 #from .BoxItem import BoxItem
 
@@ -10,22 +10,22 @@ class ResizerItem(QGraphicsObject):
     resizeSignal = pyqtSignal(QPointF, str)
     start_pos = QPointF(0,0)
     resize_type_to_cursor = {
-        "L": QtCore.Qt.SizeHorCursor,
-        "R": QtCore.Qt.SizeHorCursor,
-        "T": QtCore.Qt.SizeVerCursor,
-        "B": QtCore.Qt.SizeVerCursor,
-        "TL": QtCore.Qt.SizeFDiagCursor,
-        "TR": QtCore.Qt.SizeBDiagCursor,
-        "BL": QtCore.Qt.SizeBDiagCursor,
-        "BR": QtCore.Qt.SizeFDiagCursor,
+        "L": QtCore.Qt.CursorShape.SizeHorCursor,
+        "R": QtCore.Qt.CursorShape.SizeHorCursor,
+        "T": QtCore.Qt.CursorShape.SizeVerCursor,
+        "B": QtCore.Qt.CursorShape.SizeVerCursor,
+        "TL": QtCore.Qt.CursorShape.SizeFDiagCursor,
+        "TR": QtCore.Qt.CursorShape.SizeBDiagCursor,
+        "BL": QtCore.Qt.CursorShape.SizeBDiagCursor,
+        "BR": QtCore.Qt.CursorShape.SizeFDiagCursor,
     }
     parent = None
 
     def __init__(self, rect=QRectF(0, 0, 10, 10), parent=None, resize_type="TL"):
         super().__init__(parent)
-        self.setFlag(QGraphicsItem.ItemIsMovable, True)
-        self.setFlag(QGraphicsItem.ItemIsSelectable, True)
-        self.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable, True)
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, True)
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True)
         self.resize_type = resize_type
         self.rect = rect
         self.parent = parent
@@ -51,7 +51,7 @@ class ResizerItem(QGraphicsObject):
             self.parent.setSelected(True)
 
     def itemChange(self, change, value):
-        if change == QGraphicsItem.ItemPositionChange:
+        if change == QGraphicsItem.GraphicsItemChange.ItemPositionChange:
             if self.isSelected():
                 #print(f"value:{value.x()}-{value.y()}")
                 value -= self.start_pos

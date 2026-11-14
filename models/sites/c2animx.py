@@ -13,7 +13,7 @@ class C2Animx(Site):
 	def __init__(self,web_bot):
 		super().__init__(web_bot)
 		self._home_url = "https://www.2animx.com/"
-		self._site_name = "二次元动漫"
+		self._site_name = "二次元动漫(不存在)"
 		self._sample_url = ["https://www.2animx.com/index-comic-name-山海逆戰-id-22822"]
 
 	def get_book_id_from_url(self,url):

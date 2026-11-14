@@ -1,7 +1,7 @@
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import QGraphicsView, QGraphicsItem, QGraphicsRectItem, QGraphicsTextItem
+from PyQt6 import QtCore, QtWidgets
+from PyQt6.QtGui import *
+from PyQt6.QtCore import *
+from PyQt6.QtWidgets import QGraphicsView, QGraphicsItem, QGraphicsRectItem
 from typing import cast
 
 from .ResizerItem import ResizerItem
@@ -21,18 +21,18 @@ class BoxItem(QGraphicsRectItem):
     def __init__(self, position=QPointF(0,0), rect=QRectF(0, 0, 100, 50), parent=None, proxy_parent=None, resizer_gap=15, text=""):
         super().__init__(rect, parent)
 
-        self.setFlag(QGraphicsItem.ItemIsSelectable, True)
-        self.setFlag(QGraphicsItem.ItemIsMovable, True)
-        self.setFlag(QGraphicsItem.ItemIsFocusable, True)
-        self.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, True)
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable, True)
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsFocusable, True)
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True)
         self.setAcceptHoverEvents(True)
-        self.setCursor(QCursor(QtCore.Qt.SizeAllCursor))
+        self.setCursor(QCursor(QtCore.Qt.CursorShape.SizeAllCursor))
 
         self.resizer_gap = resizer_gap
         self.proxy_parent = proxy_parent
 
-        self.text = QGraphicsTextItem(text, self)
-        self.text.setFlag(QGraphicsItem.ItemIgnoresTransformations)
+        self.org_text = text
+        self.text_pixmap = QPixmap()
 
         self.setPos(position)
 
@@ -65,10 +65,9 @@ class BoxItem(QGraphicsRectItem):
         self.update_all_resizer()
 
     def update_text(self):
-        if self.trans_text != "":
-            self.text.setPlainText(self.trans_text)
-        else:
-            self.text.setPlainText(self.org_text)
+        if self.proxy_parent is not None:
+            self.text_pixmap = self.proxy_parent.render_label(self)
+            self.update()
 
     #def set_text(self,text):
     #    self.text.setPlainText(text)
@@ -88,18 +87,21 @@ class BoxItem(QGraphicsRectItem):
         if frame.y() + frame.height() > self.get_proxy_parent_height():
             frame.setHeight(self.get_proxy_parent_height() - frame.y())
 
-        self.setFlag(QGraphicsItem.ItemSendsGeometryChanges, False)
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, False)
         self.setPos(frame.x(),frame.y())
         self.setRect(0,0,frame.width(),frame.height())
         self.update_all_resizer()
+        self.update_text()
         self.prepareGeometryChange()
         self.update()
-        self.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True)
         if is_update_parent:
             self.proxy_parent.item_frame_changed(self,self.get_frame())
 
     def get_frame(self):
-        return QRect(self.pos().x(),self.pos().y(),self.rect().width(),self.rect().height())
+        # Graphics items use floating-point geometry; OCR and spin boxes need
+        # integer pixel bounds. Enclose fractional edges instead of truncating.
+        return QRectF(self.pos(), self.rect().size()).toAlignedRect()
 
     def get_proxy_parent_width(self):
         if self.proxy_parent is not None:
@@ -121,7 +123,7 @@ class BoxItem(QGraphicsRectItem):
 
     def try_bring_to_front(self):
         max_z = 0
-        for tmp_item in self.collidingItems(Qt.IntersectsItemBoundingRect):
+        for tmp_item in self.collidingItems(Qt.ItemSelectionMode.IntersectsItemBoundingRect):
             max_z = max(max_z,tmp_item.zValue())
         self.setZValue(max_z+1)
 
@@ -146,12 +148,17 @@ class BoxItem(QGraphicsRectItem):
         self.try_bring_to_front()
 
     def paint(self, painter, option, widget=None):
-        painter.fillRect(self.rect(),QColor(255,255,255,200))
+        # Blank text layers still have a valid pixmap. Always draw the editor
+        # highlight so newly detected and manually added bubbles remain visible.
+        painter.fillRect(self.rect(), QColor(255, 255, 255, 200))
+        if not self.text_pixmap.isNull():
+            painter.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform, True)
+            painter.drawPixmap(self.rect().topLeft(), self.text_pixmap)
         pen = QPen()
         if self.isSelected():
-            pen.setColor(Qt.red)
+            pen.setColor(Qt.GlobalColor.red)
         else:
-            pen.setColor(Qt.green)
+            pen.setColor(Qt.GlobalColor.green)
         painter.setPen(pen)
         painter.drawRect(self.rect())
 
@@ -234,69 +241,70 @@ class BoxItem(QGraphicsRectItem):
 
         self.update_all_resizer()
         self.prepareGeometryChange()
+        self.update_text()
         self.update()
         self.proxy_parent.item_frame_changed(self,self.get_frame())
 
     def update_all_resizer(self):
         self.resizer_l.blockSignals(True)
-        self.resizer_l.setFlag(QGraphicsItem.ItemSendsGeometryChanges, False)
+        self.resizer_l.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, False)
         self.resizer_l.rect = QRectF(0,0,self.resizer_gap,self.rect().height()-self.resizer_gap*2)
         self.resizer_l.setPos(self.rect().topLeft() - QPointF(0, -self.resizer_gap))
-        self.resizer_l.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
+        self.resizer_l.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True)
         self.resizer_l.blockSignals(False)
 
         self.resizer_r.blockSignals(True)
-        self.resizer_r.setFlag(QGraphicsItem.ItemSendsGeometryChanges, False)
+        self.resizer_r.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, False)
         self.resizer_r.rect = QRectF(0,0,self.resizer_gap,self.rect().height()-self.resizer_gap*2)
         self.resizer_r.setPos(self.rect().topRight() - QPointF(self.resizer_gap, -self.resizer_gap))
-        self.resizer_r.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
+        self.resizer_r.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True)
         self.resizer_r.blockSignals(False)
 
         self.resizer_t.blockSignals(True)
-        self.resizer_t.setFlag(QGraphicsItem.ItemSendsGeometryChanges, False)
+        self.resizer_t.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, False)
         self.resizer_t.rect = QRectF(0,0,self.rect().width()-self.resizer_gap*2,self.resizer_gap)
         self.resizer_t.setPos(self.rect().topLeft() - QPointF(-self.resizer_gap, 0))
-        self.resizer_t.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
+        self.resizer_t.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True)
         self.resizer_t.blockSignals(False)
 
         self.resizer_b.blockSignals(True)
-        self.resizer_b.setFlag(QGraphicsItem.ItemSendsGeometryChanges, False)
+        self.resizer_b.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, False)
         self.resizer_b.rect = QRectF(0,0,self.rect().width()-self.resizer_gap*2,self.resizer_gap)
         self.resizer_b.setPos(self.rect().bottomLeft() - QPointF(-self.resizer_gap, self.resizer_gap))
-        self.resizer_b.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
+        self.resizer_b.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True)
         self.resizer_b.blockSignals(False)
 
         self.resizer_tl.blockSignals(True)
-        self.resizer_tl.setFlag(QGraphicsItem.ItemSendsGeometryChanges, False)
+        self.resizer_tl.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, False)
         self.resizer_tl.rect = QRectF(0,0,self.resizer_gap,self.resizer_gap)
         self.resizer_tl.setPos(self.rect().topLeft())
-        self.resizer_tl.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
+        self.resizer_tl.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True)
         self.resizer_tl.blockSignals(False)
 
         self.resizer_tr.blockSignals(True)
-        self.resizer_tr.setFlag(QGraphicsItem.ItemSendsGeometryChanges, False)
+        self.resizer_tr.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, False)
         self.resizer_tr.rect = QRectF(0,0,self.resizer_gap,self.resizer_gap)
         self.resizer_tr.setPos(self.rect().topRight() - QPointF(self.resizer_gap, 0))
-        self.resizer_tr.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
+        self.resizer_tr.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True)
         self.resizer_tr.blockSignals(False)
 
         self.resizer_bl.blockSignals(True)
-        self.resizer_bl.setFlag(QGraphicsItem.ItemSendsGeometryChanges, False)
+        self.resizer_bl.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, False)
         self.resizer_bl.rect = QRectF(0,0,self.resizer_gap,self.resizer_gap)
         self.resizer_bl.setPos(self.rect().bottomLeft() - QPointF(0, self.resizer_gap))
-        self.resizer_bl.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
+        self.resizer_bl.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True)
         self.resizer_bl.blockSignals(False)
 
         self.resizer_br.blockSignals(True)
-        self.resizer_br.setFlag(QGraphicsItem.ItemSendsGeometryChanges, False)
+        self.resizer_br.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, False)
         self.resizer_br.rect = QRectF(0,0,self.resizer_gap,self.resizer_gap)
         self.resizer_br.setPos(self.rect().bottomRight() - QPointF(self.resizer_gap, self.resizer_gap))
-        self.resizer_br.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
+        self.resizer_br.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True)
         self.resizer_br.blockSignals(False)
 
     def itemChange(self, change, value):
         #print("change",change)
-        if change == QGraphicsItem.ItemPositionChange:
+        if change == QGraphicsItem.GraphicsItemChange.ItemPositionChange:
             if value.x() < 0:
                 value.setX(0)
             if value.y() < 0:

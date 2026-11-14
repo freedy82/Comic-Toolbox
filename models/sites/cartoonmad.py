@@ -11,7 +11,7 @@ class CartoonMad(Site):
 	def __init__(self,web_bot):
 		super().__init__(web_bot)
 		self._home_url = "https://www.cartoonmad.com"
-		self._site_name = "動漫狂"
+		self._site_name = "動漫狂(不存在)"
 		self._code_page = "big5"
 		self._sample_url = ["https://www.cartoonmad.com/comic/5033.html"]
 		self._image_url_prefix = 'https://www.cartoonmad.com/comic/comicpic.asp'

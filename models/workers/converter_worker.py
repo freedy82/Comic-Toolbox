@@ -3,18 +3,20 @@ import shutil
 #import os
 from PIL import Image
 from pathlib import Path
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QThread, pyqtSignal
 import subprocess
+from tempfile import TemporaryDirectory
 
 from models import util
 from models.const import *
+from models.realesrgan import RealESRGANError, RealESRGANCanceled
 
 class ConverterWorker(QThread):
 	trigger = pyqtSignal(str,int,int)
 	finished = pyqtSignal()
 	canceled = pyqtSignal()
 
-	def __init__(self,from_folder,to_folder,from_exts,to_ext,is_overwrite,remove_source,sub_folders,is_use_filter=False,enable_real_cugan=False):
+	def __init__(self,from_folder,to_folder,from_exts,to_ext,is_overwrite,remove_source,sub_folders,is_use_filter=False,enable_real_cugan=False,enable_real_esrgan=False,esrgan_options=None):
 		super().__init__()
 		self.from_folder = from_folder
 		self.to_folder = to_folder
@@ -29,6 +31,9 @@ class ConverterWorker(QThread):
 		self.sub_folders = sub_folders
 		self.is_use_filter = is_use_filter
 		self.enable_real_cugan = enable_real_cugan
+		self.enable_real_esrgan = enable_real_esrgan
+		self.esrgan_options = esrgan_options
+		self.failed_count = 0
 
 	def run(self):
 		self.stop_flag = False
@@ -91,7 +96,10 @@ class ConverterWorker(QThread):
 		to_file_with_path = os.path.relpath(tmp_file, self.from_folder)
 		full_target_file = os.path.join(self.to_folder, to_file_with_path)
 		ext = util.get_ext(full_target_file)
-		full_target_file = full_target_file.replace("." + ext, "." + self.to_ext)
+		full_target_file = str(Path(full_target_file).with_suffix("." + self.to_ext))
+		if self.enable_real_esrgan:
+			self._esrgan_image_file_action(Path(tmp_file), Path(full_target_file))
+			return
 		target_path = Path(full_target_file).parent.absolute()
 		if target_path not in self.paths_created:
 			Path(target_path).mkdir(parents=True, exist_ok=True)
@@ -150,5 +158,67 @@ class ConverterWorker(QThread):
 		else:
 			message = TRSM("Skipped of %s") % full_target_file
 
+		self.current_action_count += 1
+		self.trigger.emit(message, self.current_action_count, self.total_action_count)
+
+	def _esrgan_image_file_action(self, source, target):
+		try:
+			if target.exists() and not self.is_overwrite:
+				message = TRSM("Skipped of %s") % target.as_posix()
+			else:
+				target.parent.mkdir(parents=True, exist_ok=True)
+				self.trigger.emit(TRSM("Real-ESRGAN enhancing %s with %s") % (source.as_posix(), self.esrgan_options.model),
+				                  self.current_action_count, self.total_action_count)
+				# Stage the complete result beside the destination before replacing any file.
+				with TemporaryDirectory(prefix="comic-esrgan-", dir=str(target.parent)) as work_folder:
+					work_folder = Path(work_folder).resolve()
+					input_file = work_folder / "input.png"
+					enhanced_file = work_folder / "enhanced.png"
+					with Image.open(source) as original:
+						original_size = original.size
+						mode = "RGBA" if "A" in original.getbands() or "transparency" in original.info else "RGB"
+						with original.convert(mode) as normalized:
+							normalized.save(input_file)
+					self.esrgan_options.enhance(input_file, enhanced_file, lambda: self.stop_flag)
+					with Image.open(enhanced_file) as enhanced:
+						image = enhanced.copy()
+					try:
+						if self.esrgan_options.restore_size:
+							image = image.resize(original_size, Image.Resampling.LANCZOS)
+						if self.is_use_filter:
+							image = util.filter_pimage(image,
+								float(MY_CONFIG.get("filter", "contrast")),
+								float(MY_CONFIG.get("filter", "sharpness")),
+								float(MY_CONFIG.get("filter", "brightness")),
+								float(MY_CONFIG.get("filter", "color")))
+							image = util.rotate_pimage(image, int(MY_CONFIG.get("filter", "rotate")) * 90,
+								MY_CONFIG.get("filter", "horizontal_flip") == "True",
+								MY_CONFIG.get("filter", "vertical_flip") == "True")
+						result_file = work_folder / ("result." + self.to_ext)
+						if self.to_ext == "jpg":
+							if "A" in image.getbands():
+								background = Image.new("RGB", image.size, "white")
+								background.paste(image, mask=image.getchannel("A"))
+								image.close()
+								image = background
+							else:
+								image = image.convert("RGB")
+							image.save(result_file, quality=int(MY_CONFIG.get("general", "jpg_quality")))
+						else:
+							image.save(result_file)
+					finally:
+						image.close()
+					if self.stop_flag:
+						raise RealESRGANCanceled()
+					os.replace(result_file, target)
+				if self.remove_source and source.resolve() != target.resolve():
+					source.unlink()
+				message = TRSM("Converted to %s") % target.as_posix()
+		except RealESRGANCanceled:
+			return
+		except Exception as error:
+			self.failed_count += 1
+			details = error.translated(TRSM) if isinstance(error, RealESRGANError) else str(error)
+			message = TRSM("Real-ESRGAN could not convert %s: %s") % (source.as_posix(), details)
 		self.current_action_count += 1
 		self.trigger.emit(message, self.current_action_count, self.total_action_count)

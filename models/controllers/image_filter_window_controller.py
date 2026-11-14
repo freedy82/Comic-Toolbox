@@ -1,7 +1,7 @@
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtWidgets import QGraphicsScene, QGraphicsPixmapItem
-from PyQt5.QtCore import Qt
+from PyQt6 import QtCore, QtWidgets
+from PyQt6.QtGui import QPixmap, QImage
+from PyQt6.QtWidgets import QGraphicsScene, QGraphicsPixmapItem
+from PyQt6.QtCore import Qt
 from PIL import Image, ImageOps
 
 from models.const import *
@@ -24,7 +24,7 @@ class ImageFilterWindowController(QtWidgets.QMainWindow):
 		self.setup_control()
 
 	def setup_control(self):
-		self.setWindowFlag(Qt.WindowMinimizeButtonHint, False)
+		self.setWindowFlag(Qt.WindowType.WindowMinimizeButtonHint, False)
 
 		self.ui.cbx_rotate.addItems([TRSM("0 °"),TRSM("90 °"),TRSM("180 °"),TRSM("270 °")])
 
@@ -33,10 +33,10 @@ class ImageFilterWindowController(QtWidgets.QMainWindow):
 
 		#load filter
 		#print("%0.2f" % float(MY_CONFIG.get("filter", "contrast")))
-		self.ui.slider_contrast.setValue(float(MY_CONFIG.get("filter", "contrast"))*100)
-		self.ui.slider_sharpness.setValue(float(MY_CONFIG.get("filter", "sharpness"))*100)
-		self.ui.slider_brightness.setValue(float(MY_CONFIG.get("filter", "brightness"))*100)
-		self.ui.slider_color.setValue(float(MY_CONFIG.get("filter", "color"))*100)
+		self.ui.slider_contrast.setValue(round(float(MY_CONFIG.get("filter", "contrast"))*100))
+		self.ui.slider_sharpness.setValue(round(float(MY_CONFIG.get("filter", "sharpness"))*100))
+		self.ui.slider_brightness.setValue(round(float(MY_CONFIG.get("filter", "brightness"))*100))
+		self.ui.slider_color.setValue(round(float(MY_CONFIG.get("filter", "color"))*100))
 
 		self.ui.lbl_contrast_value.setText("%0.2f" % float(MY_CONFIG.get("filter", "contrast")))
 		self.ui.lbl_sharpness_value.setText("%0.2f" % float(MY_CONFIG.get("filter", "sharpness")))
@@ -169,22 +169,22 @@ class ImageFilterWindowController(QtWidgets.QMainWindow):
 		pixmap_item = QGraphicsPixmapItem(pixmap)
 		scene.addItem(pixmap_item)
 		gv.setScene(scene)
-		gv.fitInView(scene.sceneRect(),Qt.KeepAspectRatio)
+		gv.fitInView(scene.sceneRect(),Qt.AspectRatioMode.KeepAspectRatio)
 
 	# def set_cimage_to_gv(self,cimage,gv):
 	# 	cimage = cv2.cvtColor(cimage, cv2.COLOR_BGR2RGB)
 	# 	height, width = cimage.shape[:2]
 	#
 	# 	#widthStep = width * 3
-	# 	#qimage = QImage(cimage.data, width, height, widthStep, QImage.Format_RGB888)
+	# 	#qimage = QImage(cimage.data, width, height, widthStep, QImage.Format.Format_RGB888)
 	#
 	# 	scene = QGraphicsScene()
-	# 	qimage = QImage(cimage.data, width, height, QImage.Format_RGB888)
+	# 	qimage = QImage(cimage.data, width, height, QImage.Format.Format_RGB888)
 	# 	pixmap = QPixmap.fromImage(qimage)
 	# 	pixmap_item = QGraphicsPixmapItem(pixmap)
 	# 	scene.addItem(pixmap_item)
 	# 	gv.setScene(scene)
-	# 	gv.fitInView(scene.sceneRect(),Qt.KeepAspectRatio)
+	# 	gv.fitInView(scene.sceneRect(),Qt.AspectRatioMode.KeepAspectRatio)
 
 	def update_image_by_filter(self):
 		color_factor = float(self.ui.lbl_color_value.text())
@@ -211,20 +211,20 @@ class ImageFilterWindowController(QtWidgets.QMainWindow):
 	def pimage_to_qimage(self,pimg):
 		pimg_converted = pimg.convert("RGBA")
 		data = pimg_converted.tobytes("raw", "RGBA")
-		return QImage(data, pimg_converted.size[0], pimg_converted.size[1], QImage.Format_RGBA8888)
+		return QImage(data, pimg_converted.size[0], pimg_converted.size[1], QImage.Format.Format_RGBA8888).copy()
 
 	def center_pos_of_parent(self):
-		if self.windowState() != QtCore.Qt.WindowMaximized:
+		if self.windowState() != QtCore.Qt.WindowState.WindowMaximized:
 			qr = self.main_controller.frameGeometry()
-			x = qr.left() + (qr.width() - self.width()) / 2
-			y = qr.top() + (qr.height() - self.height()) / 2
+			x = qr.left() + (qr.width() - self.width()) // 2
+			y = qr.top() + (qr.height() - self.height()) // 2
 			self.move(x, y)
 
 	def resize_element(self):
 		if self.ui.gv_from.scene():
-			self.ui.gv_from.fitInView(self.ui.gv_from.scene().sceneRect(),Qt.KeepAspectRatio)
+			self.ui.gv_from.fitInView(self.ui.gv_from.scene().sceneRect(),Qt.AspectRatioMode.KeepAspectRatio)
 		if self.ui.gv_to.scene():
-			self.ui.gv_to.fitInView(self.ui.gv_to.scene().sceneRect(),Qt.KeepAspectRatio)
+			self.ui.gv_to.fitInView(self.ui.gv_to.scene().sceneRect(),Qt.AspectRatioMode.KeepAspectRatio)
 
 	#override
 	def show(self):
@@ -237,7 +237,7 @@ class ImageFilterWindowController(QtWidgets.QMainWindow):
 		self.resize_element()
 
 	def keyPressEvent(self, e):
-		if e.key() == Qt.Key_F11:
+		if e.key() == Qt.Key.Key_F11:
 			self.btn_full_screen_clicked()
 
 	@staticmethod

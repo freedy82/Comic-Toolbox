@@ -1,16 +1,18 @@
 from pathlib import Path
-from PyQt5 import QtWidgets, QtGui
-from PyQt5.QtGui import QCursor, QIcon, QPixmap, QColor
-from PyQt5.QtWidgets import QFileDialog, QWidget, QSizePolicy, QToolTip, QMenu, QColorDialog
-from PyQt5.QtCore import Qt, QEvent, QPoint, QTimer
+from PyQt6 import QtWidgets, QtGui
+from PyQt6.QtGui import QCursor, QIcon, QPixmap, QColor
+from PyQt6.QtWidgets import QFileDialog, QWidget, QSizePolicy, QToolTip, QMenu, QColorDialog
+from PyQt6.QtCore import Qt, QEvent, QPoint, QTimer
 
 from models.const import *
 from models import util
+from models.theme import apply_native_toolbar
 from models.reader import Reader
 from uis import reader_window
 from models.controllers.reader.helper import *
 from models.controllers.reader.image_process import ReaderImageProcess
 from models.controllers.reader.scroll_bar_helper import ReaderScrollBarHelper
+from models.controllers.reader.fullscreen_toolbar import FullscreenToolbar
 from models.controllers.bookmark_window_controller import BookmarkWindowController
 from models.controllers.reader_rotate_dialog_controller import ReaderRotateDialogController
 
@@ -62,15 +64,21 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		self.auto_play_timer = QTimer(self)
 		self.auto_play_timer.timeout.connect(self.auto_play_timer_timeout)
 		self.auto_play_timer.setInterval(self.reader_auto_play_step)
+		self.image_resize_timer = QTimer(self)
+		self.image_resize_timer.setSingleShot(True)
+		self.image_resize_timer.timeout.connect(self.update_images_size)
+		self.image_area_size = QtCore.QSize()
 
 		self.setup_control()
+		apply_native_toolbar(self.app, self.ui.tb_main)
+		self.fullscreen_toolbar = FullscreenToolbar(self, self.ui.tb_main)
 
 	def setup_control(self):
-		self.setWindowFlag(Qt.WindowMinimizeButtonHint, False)
+		self.setWindowFlag(Qt.WindowType.WindowMinimizeButtonHint, False)
 		self.ui.menubar.setVisible(False)
 		self.ui.lbl_tmp.setVisible(False)
 		self.ui.lbl_tmp.setText("")
-		self.ui.scrollAreaWidgetContents.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
+		self.ui.scrollAreaWidgetContents.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.OpenHandCursor))
 
 		self.update_scroll_flow_button()
 		self.update_page_fit_button()
@@ -80,18 +88,18 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 
 		# add the folder list combobox
 		self.ui.tb_main.addSeparator()
-		self.cbx_folders.setSizeAdjustPolicy(QtWidgets.QComboBox.AdjustToContents)
+		self.cbx_folders.setSizeAdjustPolicy(QtWidgets.QComboBox.SizeAdjustPolicy.AdjustToContents)
 		self.cbx_folders.setFixedSize(95,22)
 		self.ui.tb_main.addWidget(self.cbx_folders)
 		# add spacer
 		spacer = QtWidgets.QWidget()
-		spacer.setSizePolicy(QSizePolicy.Fixed,QSizePolicy.Fixed)
+		spacer.setSizePolicy(QSizePolicy.Policy.Fixed,QSizePolicy.Policy.Fixed)
 		spacer.setFixedSize(5,1)
 		self.ui.tb_main.addWidget(spacer)
 		# add the slider
-		self.slider_pages.setOrientation(QtCore.Qt.Horizontal)
-		self.slider_pages.setTickPosition(QtWidgets.QSlider.TicksBelow)
-		self.slider_pages.setSizePolicy(QSizePolicy.Fixed,QSizePolicy.Fixed)
+		self.slider_pages.setOrientation(QtCore.Qt.Orientation.Horizontal)
+		self.slider_pages.setTickPosition(QtWidgets.QSlider.TickPosition.TicksBelow)
+		self.slider_pages.setSizePolicy(QSizePolicy.Policy.Fixed,QSizePolicy.Policy.Fixed)
 		self.slider_pages.setFixedSize(80,22)
 		self.slider_pages.setSingleStep(1)
 		self.slider_pages.setPageStep(5)
@@ -105,21 +113,21 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 
 		# insert autoplay icon
 		q_play_icon = QtGui.QIcon()
-		q_play_icon.addPixmap(QtGui.QPixmap(":/icon/play"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		q_play_icon.addPixmap(QtGui.QPixmap(":/icon/play"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 		self.btn_auto_play.setIcon(q_play_icon)
 		self.btn_auto_play.setToolTip(TRSM("Start or Pause Auto Play (k)"))
 		self.btn_auto_play.clicked.connect(self.btn_auto_play_clicked)
-		self.btn_auto_play.setPopupMode(QtWidgets.QToolButton.MenuButtonPopup)
+		self.btn_auto_play.setPopupMode(QtWidgets.QToolButton.ToolButtonPopupMode.MenuButtonPopup)
 		self.ui.tb_main.insertWidget(self.ui.actionScrollFlowLeftRight, self.btn_auto_play)
 		self.ui.tb_main.insertSeparator(self.ui.actionScrollFlowLeftRight)
 		self.force_update_auto_play_menu()
 
 		# insert free width icon
 		q_free_width_icon = QtGui.QIcon()
-		q_free_width_icon.addPixmap(QtGui.QPixmap(":/icon/fit-width-num"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		q_free_width_icon.addPixmap(QtGui.QPixmap(":/icon/fit-width-num"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 		self.btn_free_width.setIcon(q_free_width_icon)
 		self.btn_free_width.setToolTip(TRSM("Fit Width")+"...")
-		self.btn_free_width.setPopupMode(QtWidgets.QToolButton.InstantPopup)
+		self.btn_free_width.setPopupMode(QtWidgets.QToolButton.ToolButtonPopupMode.InstantPopup)
 		self.ui.tb_main.insertWidget(self.ui.actionPageModeSingle, self.btn_free_width)
 		self.ui.tb_main.insertSeparator(self.ui.actionPageModeSingle)
 		menu_fit_width = QtWidgets.QMenu()
@@ -130,10 +138,10 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 
 		# insert num column page
 		q_num_column_icon = QtGui.QIcon()
-		q_num_column_icon.addPixmap(QtGui.QPixmap(":/icon/num-column"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		q_num_column_icon.addPixmap(QtGui.QPixmap(":/icon/num-column"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 		self.btn_num_column.setIcon(q_num_column_icon)
 		self.btn_num_column.setToolTip(TRSM("Multi page")+"...")
-		self.btn_num_column.setPopupMode(QtWidgets.QToolButton.InstantPopup)
+		self.btn_num_column.setPopupMode(QtWidgets.QToolButton.ToolButtonPopupMode.InstantPopup)
 		self.ui.tb_main.insertWidget(self.ui.actionPageFlowRightToLeft, self.btn_num_column)
 		self.ui.tb_main.insertSeparator(self.ui.actionPageFlowRightToLeft)
 		menu_num_column = QtWidgets.QMenu()
@@ -143,10 +151,10 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 
 		# insert page gap
 		q_page_gap_icon = QtGui.QIcon()
-		q_page_gap_icon.addPixmap(QtGui.QPixmap(":/icon/gap"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		q_page_gap_icon.addPixmap(QtGui.QPixmap(":/icon/gap"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 		self.btn_page_gap.setIcon(q_page_gap_icon)
 		self.btn_page_gap.setToolTip(TRSM("Page gap")+"...")
-		self.btn_page_gap.setPopupMode(QtWidgets.QToolButton.InstantPopup)
+		self.btn_page_gap.setPopupMode(QtWidgets.QToolButton.ToolButtonPopupMode.InstantPopup)
 		self.ui.tb_main.insertWidget(self.ui.actionRotateAllImage, self.btn_page_gap)
 		self.ui.tb_main.insertSeparator(self.ui.actionRotateAllImage)
 		menu_page_gap = QtWidgets.QMenu()
@@ -188,12 +196,13 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 
 		# event filter
 		self.ui.scrollArea.installEventFilter(self)
+		self.ui.scrollArea.viewport().installEventFilter(self)
 		self.slider_pages.installEventFilter(self)
 		pass
 
 	def setup_timer(self):
 		q_icon = QtGui.QIcon()
-		q_icon.addPixmap(QtGui.QPixmap(":/icon/play"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		q_icon.addPixmap(QtGui.QPixmap(":/icon/play"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 		self.ui.actionAutoPlay.setIcon(q_icon)
 		self.reader_auto_play_interval = float(MY_CONFIG.get("reader", "auto_play_interval"))*1000
 
@@ -249,14 +258,16 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		#self.get_image_list_from_file_or_folder("F:/comics/烙印战士_good/book-01")
 
 	def resizeEvent(self, event):
-		self.update_images_size()
+		super().resizeEvent(event)
+		# Let the main-window and scroll-area layouts settle before fitting.
+		self.image_resize_timer.start(0)
 
 	def keyPressEvent(self, e):
-		if e.key() == Qt.Key_F11 or e.key() == Qt.Key_F:
+		if e.key() == Qt.Key.Key_F11 or e.key() == Qt.Key.Key_F:
 			self.btn_full_screen_clicked()
-		if e.key() == Qt.Key_K:
+		if e.key() == Qt.Key.Key_K:
 			self.btn_auto_play_clicked()
-		if e.key() == Qt.Key_Escape:
+		if e.key() == Qt.Key.Key_Escape:
 			if self.isFullScreen():
 				self.btn_full_screen_clicked()
 
@@ -269,25 +280,24 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 
 	#action
 	def cursor_busy(self):
-		self.app.setOverrideCursor(QCursor(QtCore.Qt.WaitCursor))
+		self.app.setOverrideCursor(QCursor(QtCore.Qt.CursorShape.WaitCursor))
 
 	def cursor_un_busy(self):
 		self.app.restoreOverrideCursor()
 
 	def btn_full_screen_clicked(self):
 		if not self.isFullScreen():
-			self.ui.tb_main.setVisible(False)
 			if self.isMaximized():
 				self.before_full_screen_is_max = True
 			else:
 				self.before_full_screen_is_max = False
 			self.showFullScreen()
 		else:
-			self.ui.tb_main.setVisible(True)
 			if self.before_full_screen_is_max:
 				self.showMaximized()
 			else:
 				self.showNormal()
+		self.image_resize_timer.start(0)
 
 	def btn_add_bookmark_clicked(self):
 		if self.current_open_file_or_folder != "" and self.current_image_file != "":
@@ -362,13 +372,13 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 			self.reader_auto_play_time = 0
 			self.ui.pgb_auto_play.setValue(0)
 			self.force_hidden_auto_play_pgb()
-			q_icon.addPixmap(QtGui.QPixmap(":/icon/play"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+			q_icon.addPixmap(QtGui.QPixmap(":/icon/play"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 		else:
 			self.reader_auto_play_time = 0
 			self.ui.pgb_auto_play.setValue(0)
 			self.auto_play_timer.start()
 			self.update_auto_play_pgb()
-			q_icon.addPixmap(QtGui.QPixmap(":/icon/pause"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+			q_icon.addPixmap(QtGui.QPixmap(":/icon/pause"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 		self.ui.actionAutoPlay.setIcon(q_icon)
 		self.btn_auto_play.setIcon(q_icon)
 		self.force_update_auto_play_menu()
@@ -651,7 +661,10 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 
 	def update_images_size(self):
 		#print("update images size")
-		area_size = self.ui.scrollArea.size()
+		# The fitting helper reserves scrollbar space when needed. Use the
+		# current viewport capacity without subtracting those bars twice.
+		area_size = self.ui.scrollArea.maximumViewportSize()
+		self.image_area_size = area_size
 		total_width, total_height = ReaderImageProcess.update_image_size_inner(
 			area_size,self.page_mode,self.page_fit,self.scroll_flow,self.pages_ratio_require,
 			self.ui.layout_main,self.ui.scrollArea,self.current_page_gap,self.current_free_width)
@@ -773,11 +786,20 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 
 	def update_layout(self):
 		self.update_background()
+		self.update_auto_play_progress_color()
 		self.set_reader_page_gap(int(MY_CONFIG.get("reader", "page_gap")))
 
 	def update_background(self):
 		reader_background = MY_CONFIG.get("reader", "background")
 		self.ui.scrollAreaWidgetContents.setStyleSheet("background-color:"+reader_background+";")
+
+	def update_auto_play_progress_color(self):
+		color = QColor(MY_CONFIG.get("reader", "auto_play_pgb_color"))
+		if not color.isValid():
+			color = QColor("#888888")
+		self.ui.pgb_auto_play.setStyleSheet(
+			"QProgressBar { border: 0px; background-color: #000000; }"
+			f"QProgressBar::chunk {{ background-color: {color.name()}; }}")
 
 	def set_reader_page_gap(self,gap):
 		self.current_page_gap = gap
@@ -789,15 +811,20 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 
 	# event filter
 	def eventFilter(self, source, event:QEvent):
+		if source is self.ui.scrollArea.viewport() and event.type() == QEvent.Type.Resize:
+			# Full-screen entry removes the docked toolbar and then resizes the
+			# viewport. Refit after that final resize, including the first entry.
+			if self.ui.scrollArea.maximumViewportSize() != self.image_area_size:
+				self.image_resize_timer.start(0)
 		if source == self.ui.scrollArea:
 			#self.handle_scroll_area_event(event)
-			if event.type() == QEvent.MouseButtonPress and event.button() == QtCore.Qt.RightButton:
+			if event.type() == QEvent.Type.MouseButtonPress and event.button() == QtCore.Qt.MouseButton.RightButton:
 				self.handle_right_click_from_image(source,event)
 			else:
 				self.last_time_move = ReaderScrollBarHelper.handle_scroll_area_event(
 					self.last_time_move, event, self.page_flow, self.ui.scrollArea, self.go_prev_page,
 					self.go_next_page)
-		if type(source) is QtWidgets.QLabel and event.type() == QEvent.MouseButtonPress and event.button() == QtCore.Qt.RightButton:
+		if type(source) is QtWidgets.QLabel and event.type() == QEvent.Type.MouseButtonPress and event.button() == QtCore.Qt.MouseButton.RightButton:
 			self.handle_right_click_from_image(source,event)
 			# prevent to fire the scroll area event
 			return True
@@ -813,7 +840,7 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		# rotate
 		if file != "":
 			icon_rotate_right = QIcon()
-			icon_rotate_right.addPixmap(QPixmap(":/icon/rotate-right"), QIcon.Normal, QIcon.Off)
+			icon_rotate_right.addPixmap(QPixmap(":/icon/rotate-right"), QIcon.Mode.Normal, QIcon.State.Off)
 			menu_rotate = menu_popup.addMenu(TRSM("Rotate"))
 			menu_rotate.setIcon(icon_rotate_right)
 			action_rotate_this = menu_rotate.addAction(TRSM("Rotate this image"))
@@ -825,14 +852,14 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 
 		# autoplay
 		icon_autoplay = QIcon()
-		icon_autoplay.addPixmap(QPixmap(":/icon/autoplay"), QIcon.Normal, QIcon.Off)
+		icon_autoplay.addPixmap(QPixmap(":/icon/autoplay"), QIcon.Mode.Normal, QIcon.State.Off)
 		menu_autoplay = menu_popup.addMenu(TRSM("Autoplay"))
 		menu_autoplay.setIcon(icon_autoplay)
 		# sub item of autoplay
 		self.recreate_auto_play_menu(menu_autoplay)
 
 		icon_gap = QIcon()
-		icon_gap.addPixmap(QPixmap(":/icon/gap"), QIcon.Normal, QIcon.Off)
+		icon_gap.addPixmap(QPixmap(":/icon/gap"), QIcon.Mode.Normal, QIcon.State.Off)
 		menu_page_gap = menu_popup.addMenu(TRSM("Page gap"))
 		menu_page_gap.setIcon(icon_gap)
 		menu_page_gap.addActions(self.btn_page_gap.menu().actions())
@@ -866,9 +893,9 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 
 	def recreate_auto_play_menu(self,menu_parent):
 		q_play_icon = QtGui.QIcon()
-		q_play_icon.addPixmap(QtGui.QPixmap(":/icon/play"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		q_play_icon.addPixmap(QtGui.QPixmap(":/icon/play"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 		q_pause_icon = QtGui.QIcon()
-		q_pause_icon.addPixmap(QtGui.QPixmap(":/icon/pause"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+		q_pause_icon.addPixmap(QtGui.QPixmap(":/icon/pause"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
 
 		tmp_auto_play_interval = float(MY_CONFIG.get("reader", "auto_play_interval"))
 		if self.auto_play_timer.isActive():
@@ -881,10 +908,10 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 		icon_autoplay_pgb = QIcon()
 		if MY_CONFIG.get("reader", "auto_play_pgb") == "1":
 			action_toggle_auto_play_pgb = menu_parent.addAction(TRSM("Hidden autoplay progress bar"))
-			icon_autoplay_pgb.addPixmap(QPixmap(":/icon/hide"), QIcon.Normal, QIcon.Off)
+			icon_autoplay_pgb.addPixmap(QPixmap(":/icon/hide"), QIcon.Mode.Normal, QIcon.State.Off)
 		else:
 			action_toggle_auto_play_pgb = menu_parent.addAction(TRSM("Show autoplay progress bar"))
-			icon_autoplay_pgb.addPixmap(QPixmap(":/icon/show"), QIcon.Normal, QIcon.Off)
+			icon_autoplay_pgb.addPixmap(QPixmap(":/icon/show"), QIcon.Mode.Normal, QIcon.State.Off)
 		action_toggle_auto_play_pgb.setIcon(icon_autoplay_pgb)
 		action_toggle_auto_play_pgb.triggered.connect(self.on_toggle_auto_play_pgb)
 		menu_parent.addSeparator()

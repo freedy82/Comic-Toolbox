@@ -22,6 +22,12 @@ https://github.com/nihui/realcugan-ncnn-vulkan
 
 下載之後，在漫畫工具箱的設定中設置一下 Real-CUGAN ncnn Vulkan 的位置就可以了
 
+### 安裝 Real-ESRGAN ncnn Vulkan （如用圖片AI強化功能）
+
+https://github.com/xinntao/Real-ESRGAN
+
+下載之後，在漫畫工具箱的設定中設置一下 Real-ESRGAN ncnn Vulkan 的位置就可以了
+
 ### 安裝 Tesseract （如用翻譯工具必須）
 
 https://tesseract-ocr.github.io/tessdoc/Home.html#binaries

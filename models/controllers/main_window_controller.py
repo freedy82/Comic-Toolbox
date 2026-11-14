@@ -1,12 +1,14 @@
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import QTimer, Qt
-from PyQt5.QtGui import QIcon, QPixmap, QCursor
-from PyQt5.QtWidgets import QSystemTrayIcon, QMenu
-from PyQt5.QtMultimedia import QSound
+from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtCore import QTimer, Qt
+from PyQt6.QtGui import QIcon, QPixmap, QCursor
+from PyQt6.QtWidgets import QSystemTrayIcon, QMenu
+from PyQt6.QtMultimedia import QSoundEffect
 from functools import partial
 
 from models.const import *
 from models import util
+from models.theme import apply_theme, apply_native_layout, empty_menu_icon
+from models.browser_verification import BrowserVerificationBroker
 from uis import main_window
 from models.controllers.downloader_controller import DownloaderController
 from models.controllers.converter_controller import ConverterController
@@ -25,6 +27,11 @@ class MainWindowController(QtWidgets.QMainWindow):
 		self.trans = trans
 		self.ui = main_window.Ui_MainWindow()
 		self.ui.setupUi(self)
+		apply_native_layout(app, self.ui)
+		self.notification_sound = QSoundEffect(self)
+		self.notification_sound.setSource(QtCore.QUrl("qrc:/sound/ring"))
+		self.browser_verification = BrowserVerificationBroker(self)
+		WEB_BOT.set_verification_handler(self.browser_verification.verify, translate=TRSM)
 		#self.about = main_window.Ui_MainWindow()
 		#self.about.setupUi(self)
 		self.tray_icon = None
@@ -78,30 +85,35 @@ class MainWindowController(QtWidgets.QMainWindow):
 	def setup_languages(self):
 		languages = util.find_all_languages()
 		self.ui.menuHelpLanguage.removeAction(self.ui.action_help_language_tmp_language)
+		placeholder_icon = empty_menu_icon(self.app)
 		for lang in languages:
-			tmp_lang_action = QtWidgets.QAction(self)
+			tmp_lang_action = QtGui.QAction(self)
 			tmp_lang_action.setText(lang["name"])
+			tmp_lang_action.setIcon(placeholder_icon)
 			tmp_lang_action.triggered.connect(partial(self.on_select_language, lang=lang))
 			self.ui.menuHelpLanguage.addAction(tmp_lang_action)
 
 	def setup_themes(self):
 		self.ui.menuHelpTheme.clear()
+		placeholder_icon = empty_menu_icon(self.app)
 
-		tmp_theme_action = QtWidgets.QAction(self)
+		tmp_theme_action = QtGui.QAction(self)
 		tmp_theme_action.setText(TRSM("Default"))
+		tmp_theme_action.setIcon(placeholder_icon)
 		tmp_theme_action.triggered.connect(partial(self.on_help_theme_select, theme={"name":"default"}))
 		self.ui.menuHelpTheme.addAction(tmp_theme_action)
 
 		themes = util.find_all_themes()
 		for theme in themes:
-			tmp_theme_action = QtWidgets.QAction(self)
+			tmp_theme_action = QtGui.QAction(self)
 			tmp_theme_action.setText(TRSM(theme["name"]))
+			tmp_theme_action.setIcon(placeholder_icon)
 			tmp_theme_action.triggered.connect(partial(self.on_help_theme_select, theme=theme))
 			self.ui.menuHelpTheme.addAction(tmp_theme_action)
 
 	def setup_tray_icon(self):
 		icon = QIcon()
-		icon.addPixmap(QPixmap(":/icon/main_icon"), QIcon.Normal, QIcon.Off)
+		icon.addPixmap(QPixmap(":/icon/main_icon"), QIcon.Mode.Normal, QIcon.State.Off)
 		self.tray_icon = QSystemTrayIcon(icon, self.app)
 		self.tray_icon.setToolTip(TRSM("Comic Toolbox"))
 
@@ -109,13 +121,13 @@ class MainWindowController(QtWidgets.QMainWindow):
 		self.st_showAction = tray_menu.addAction(TRSM("Show Main Window"))
 		self.st_showAction.triggered.connect(self.on_show_main_window)
 		icon_show = QIcon()
-		icon_show.addPixmap(QPixmap(":/icon/show"), QIcon.Normal, QIcon.Off)
+		icon_show.addPixmap(QPixmap(":/icon/show"), QIcon.Mode.Normal, QIcon.State.Off)
 		self.st_showAction.setIcon(icon_show)
 
 		self.st_hideAction = tray_menu.addAction(TRSM("Hide Main Window"))
 		self.st_hideAction.triggered.connect(self.on_hide_main_window)
 		icon_hide = QIcon()
-		icon_hide.addPixmap(QPixmap(":/icon/hide"), QIcon.Normal, QIcon.Off)
+		icon_hide.addPixmap(QPixmap(":/icon/hide"), QIcon.Mode.Normal, QIcon.State.Off)
 		self.st_hideAction.setIcon(icon_hide)
 
 		#debug
@@ -126,7 +138,7 @@ class MainWindowController(QtWidgets.QMainWindow):
 		self.st_exitAction = tray_menu.addAction(TRSM("Exit"))
 		self.st_exitAction.triggered.connect(self.on_file_exit)
 		icon_exit = QIcon()
-		icon_exit.addPixmap(QPixmap(":/icon/exit"), QIcon.Normal, QIcon.Off)
+		icon_exit.addPixmap(QPixmap(":/icon/exit"), QIcon.Mode.Normal, QIcon.State.Off)
 		self.st_exitAction.setIcon(icon_exit)
 
 		self.tray_icon.setContextMenu(tray_menu)
@@ -147,14 +159,14 @@ class MainWindowController(QtWidgets.QMainWindow):
 
 	def try_play_notification_sound(self):
 		if MY_CONFIG.get("misc", "play_sound") != "False":
-			QSound.play(":/sound/ring")
+			self.notification_sound.play()
 			pass
 
 	def show_help(self):
 		self.help_window_controller.show()
 
 	def cursor_busy(self):
-		self.app.setOverrideCursor(QCursor(QtCore.Qt.WaitCursor))
+		self.app.setOverrideCursor(QCursor(QtCore.Qt.CursorShape.WaitCursor))
 
 	def cursor_un_busy(self):
 		self.app.restoreOverrideCursor()
@@ -164,9 +176,9 @@ class MainWindowController(QtWidgets.QMainWindow):
 
 	#action
 	def on_tray_icon_activated(self, reason):
-		if reason == QSystemTrayIcon.Trigger:
+		if reason == QSystemTrayIcon.ActivationReason.Trigger:
 			self.disambiguateTimer.start(self.app.doubleClickInterval())
-		elif reason == QSystemTrayIcon.DoubleClick:
+		elif reason == QSystemTrayIcon.ActivationReason.DoubleClick:
 			self.disambiguateTimer.stop()
 			self.on_show_main_window()
 
@@ -199,6 +211,9 @@ class MainWindowController(QtWidgets.QMainWindow):
 		pass
 
 	def on_select_language(self,lang):
+		# TRSM's extra catalog must use the new language during this refresh,
+		# including LanguageChange events raised while loading the translator.
+		MY_CONFIG.set("general","language",lang["file"])
 		self.trans.load("./languages/"+lang["file"])
 		self.app.installTranslator(self.trans)
 		self.ui.retranslateUi(self)
@@ -212,16 +227,11 @@ class MainWindowController(QtWidgets.QMainWindow):
 
 		self.retranslateUi()
 
-		MY_CONFIG.set("general","language",lang["file"])
 		MY_CONFIG.save()
 		pass
 
 	def on_help_theme_select(self,theme):
-		if theme["name"] != "":
-			qss_info = open("./themes/" + theme["name"] + ".qss","r").read()
-			self.app.setStyleSheet(qss_info)
-		else:
-			self.app.setStyleSheet("")
+		apply_theme(self.app, theme["name"])
 
 		MY_CONFIG.set("general","theme",theme["name"])
 		MY_CONFIG.save()
@@ -246,7 +256,7 @@ class MainWindowController(QtWidgets.QMainWindow):
 
 		dlg = QtWidgets.QMessageBox(self)
 		icon_pixmap = QPixmap(":/icon/main_icon")
-		icon_pixmap = icon_pixmap.scaled(60,60,transformMode=Qt.SmoothTransformation)
+		icon_pixmap = icon_pixmap.scaled(60,60,transformMode=Qt.TransformationMode.SmoothTransformation)
 		dlg.setIconPixmap(icon_pixmap)
 		dlg.setWindowTitle(TRSM("About Comic Toolbox"))
 		dlg.setText(message)

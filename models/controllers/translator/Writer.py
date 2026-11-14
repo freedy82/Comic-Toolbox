@@ -1,208 +1,157 @@
-from PIL import Image,ImageFont, ImageDraw
-from PyQt5.QtCore import QRect
+from PIL import Image, ImageDraw, ImageFont
+from PyQt6.QtCore import QRect
 
-from .helper import *
+from .helper import Alignment, Style
 
-class Writer(object):
-	image = None
-	draw = None
-	test_word = "國"
+
+class Writer:
 	max_try_font_size = 200
 
 	def __init__(self):
-		super(Writer, self).__init__()
+		self.image = None
+		self.draw = None
 
-	def load_image_from_file(self,file):
-		self.image = Image.open(file)
+	def load_image_from_file(self, file):
+		with Image.open(file) as image:
+			self.image = image.convert("RGBA")
 		self.draw = ImageDraw.Draw(self.image)
 
 	def get_result_image(self):
 		return self.image
 
-	def fill_background(self,area,color):
+	def fill_background(self, area, color):
 		self.draw.rectangle(area, fill=color)
 
-	def write_text(self,text,is_vertical=True,frame=QRect(0,0,0,0),font_name="",font_size=0,alignment=Alignment.LINE_START,text_style=Style.WHITE_BG_BLACK_TEXT,gap=0.1):
-		x0 = frame.x()
-		y0 = frame.y()
-		frame_width = frame.width()
-		frame_height = frame.height()
-		x1 = x0 + frame_width
-		y1 = y0 + frame_height
-		if text != "":
-			if text_style == Style.BLACK_BG_WHITE_TEXT:
-				text_color = (255,255,255)
-				self.fill_background((x0, y0, x1, y1), (0,0,0))
-			elif text_style == Style.NO_BG_BLACK_TEXT:
-				text_color = (0,0,0)
-			elif text_style == Style.NO_BG_WHITE_TEXT:
-				text_color = (255,255,255)
-			else:
-				text_color = (0, 0, 0)
-				self.fill_background((x0, y0, x1, y1), (255, 255, 255))
+	def write_text(self, text, is_vertical=True, frame=QRect(0, 0, 0, 0), font_name="", font_size=0,
+				   alignment=Alignment.LINE_START, text_style=Style.WHITE_BG_BLACK_TEXT, gap=0.1):
+		if not text.strip() or frame.width() <= 0 or frame.height() <= 0:
+			return
+		layer = self.render_text(text, frame.width(), frame.height(), font_name, font_size,
+							 is_vertical, alignment, text_style, gap)
+		self.image.alpha_composite(layer, (frame.x(), frame.y()))
 
-			final_font_size = Writer._get_final_font_size(
-				text, frame_width, frame_height, gap, font_name, font_size,is_vertical
-			)
-			#print(f"final_font_size {final_font_size}")
-			write_area_width,write_area_height,write_area_line_space,write_area_gap = Writer._get_multi_line_size(text,font_name,final_font_size,is_vertical,gap)
-			#print(f"write_area_width {write_area_width},write_area_width {write_area_height}")
-			font = ImageFont.truetype(font_name, final_font_size)
-			write_area_x0, write_area_y0,write_area_x1,write_area_y1 = Writer._get_write_area_pos(x0,y0,x1,y1,write_area_width,write_area_height)
-			#print(f"write_area: {write_area_x0}, {write_area_y0}, {write_area_x1}, {write_area_y1}")
-			self.start_write_text(
-				text,font,font_name,final_font_size,text_color,write_area_x0,write_area_y0,write_area_x1,write_area_y1,
-				write_area_line_space,write_area_gap,is_vertical,alignment
-			)
-			#print(f"finish draw text:{text}",flush=True)
+	@classmethod
+	def render_text(cls, text, width, height, font_name="", font_size=0, is_vertical=True,
+					alignment=Alignment.LINE_START, text_style=Style.WHITE_BG_BLACK_TEXT, gap=0.1):
+		"""Render in image pixels; the same bounded layer serves editor and export."""
+		width, height = int(width), int(height)
+		layer = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+		if not text.strip() or width <= 0 or height <= 0:
+			return layer
+		text = text.replace("\r\n", "\n").replace("\r", "\n").expandtabs(4)
+		if text_style == Style.BLACK_BG_WHITE_TEXT:
+			background, color = (0, 0, 0, 255), (255, 255, 255, 255)
+		elif text_style == Style.NO_BG_WHITE_TEXT:
+			background, color = (0, 0, 0, 0), (255, 255, 255, 255)
+		elif text_style == Style.NO_BG_BLACK_TEXT:
+			background, color = (0, 0, 0, 0), (0, 0, 0, 255)
+		else:
+			background, color = (255, 255, 255, 255), (0, 0, 0, 255)
+		layer.paste(background, (0, 0, width, height))
 
-	def start_write_text(self,text,font,font_name,font_size,text_color,write_area_x0,write_area_y0,write_area_x1,write_area_y1,write_area_line_space,write_area_gap,is_vertical,alignment):
-		text_data = self._convert_line_text_to_array(text)
-		for i in range(text_data["row"]):
+		padding_x = min(2, (width - 1) // 2)
+		padding_y = min(2, (height - 1) // 2)
+		available_width = width - padding_x * 2
+		available_height = height - padding_y * 2
+		font, layout = cls._fit_text(text, available_width, available_height, font_name, font_size, is_vertical, gap)
+		# Assemble complete glyph bitmaps on their own full-size surface first.
+		# Never rely on the bubble's edges to clip incorrectly measured text.
+		ink = Image.new("L", (max(1, layout["width"]), max(1, layout["height"])), 0)
+		for index, line in enumerate(layout["lines"]):
 			if is_vertical:
-				line_x1 = write_area_x1 - (write_area_line_space + write_area_gap) * i
-				line_x0 = line_x1 - write_area_line_space
-				line_y0 = write_area_y0
-				line_y1 = write_area_y1
-				#print(f"line {line_x0}, {line_y0}, {line_x1}, {line_y1}")
-				self.start_write_vertical_line_text(text_data["word_data"][i],font,font_name,font_size,text_color,line_x0,line_y0,line_x1,line_y1,alignment)
+				x = layout["width"] - layout["cell_width"] - index * (layout["cell_width"] + layout["spacing"])
+				y = cls._alignment_offset(layout["height"] - len(line) * layout["cell_height"], alignment)
+				for row, mask in enumerate(layout["masks"][index]):
+					if mask is not None:
+						ink.paste(mask, (round(x + (layout["cell_width"] - mask.width) / 2),
+									 round(y + row * layout["cell_height"] + (layout["cell_height"] - mask.height) / 2)))
 			else:
-				line_x0 = write_area_x0
-				line_x1 = write_area_x1
-				line_y0 = write_area_y0 + (write_area_line_space + write_area_gap) * i
-				line_y1 = line_y0 + write_area_line_space
-				self.start_write_horizontal_line_text(text_data["line_data"][i],font,font_name,font_size,text_color,line_x0,line_y0,line_x1,line_y1,alignment)
+				mask = layout["masks"][index]
+				if mask is not None:
+					x = cls._alignment_offset(layout["width"] - mask.width, alignment)
+					y = index * (layout["cell_height"] + layout["spacing"]) + (layout["cell_height"] - mask.height) / 2
+					ink.paste(mask, (round(x), round(y)))
 
-	def start_write_vertical_line_text(self,text_list,font,font_name,font_size,text_color,x0,y0,x1,y1,alignment):
-		real_line_width, real_line_height = Writer._get_single_line_size(text_list,font_name,font_size,is_vertical=True)
-		word_width, word_height = Writer._get_word_size(font_name,font_size)
-		if alignment == Alignment.LINE_MIDDLE:
-			y0 = int(y0 + ((y1-y0) - real_line_height) / 2)
-		if alignment == Alignment.LINE_END:
-			y0 = y1 - real_line_height
-		#todo handle well of text weight
-		for word_idx, word in enumerate(text_list):
-			self.draw.text(
-				(x0 + (x1-x0)/2, y0 + word_idx * word_height + word_height / 2),
-				word, fill=text_color, font=font, anchor="mm", stroke_width=0, stroke_fill=(150,150,150)
-			)
-
-	def start_write_horizontal_line_text(self, text, font, font_name, font_size, text_color, x0, y0, x1, y1, alignment):
-		real_line_width, real_line_height = Writer._get_single_line_size(text, font_name, font_size,is_vertical=False)
-		if alignment == Alignment.LINE_MIDDLE:
-			x0 = int(x0 + ((x1 - x0) - real_line_width) / 2)
-		if alignment == Alignment.LINE_END:
-			x0 = x1 - real_line_width
-		#todo handle well of text weight
-		self.draw.text((x0, y0), text, fill=text_color, font=font, anchor="lm", stroke_width=0, stroke_fill=(150,150,150))
+		# Extremely small boxes may not fit even the smallest font. Scale the
+		# complete text block in that case, rather than cropping off characters.
+		scale = min(1.0, available_width / ink.width, available_height / ink.height)
+		if scale < 1:
+			ink = ink.resize((max(1, min(available_width, int(ink.width * scale))),
+							 max(1, min(available_height, int(ink.height * scale)))), Image.Resampling.LANCZOS)
+		x = padding_x + (available_width - ink.width) // 2
+		y = padding_y + (available_height - ink.height) // 2
+		layer.paste(color, (x, y), ink)
+		return layer
 
 	@staticmethod
-	def _convert_line_text_to_array(text):
+	def _ink_mask(font, text):
+		if not text:
+			return None
+		bitmap = font.getmask(text, mode="L")
+		if not bitmap.size[0] or not bitmap.size[1]:
+			return None
+		mask = Image.frombytes("L", bitmap.size, bytes(bitmap))
+		bounds = mask.getbbox()
+		return mask.crop(bounds) if bounds else None
+
+	@staticmethod
+	def _alignment_offset(space, alignment):
+		if alignment == Alignment.LINE_MIDDLE:
+			return space / 2
+		if alignment == Alignment.LINE_END:
+			return space
+		return 0
+
+	@staticmethod
+	def _font(font_name, size):
+		font = ImageFont.truetype(font_name, size) if font_name else ImageFont.load_default(size=size)
+		# The bundled Noto CJK variable font defaults to Thin. There is no
+		# weight selector in the UI, so use its normal readable named style.
+		try:
+			if b"Regular" in font.get_variation_names():
+				font.set_variation_by_name(b"Regular")
+		except OSError:
+			pass  # Static fonts have no variation names.
+		return font
+
+	@classmethod
+	def _layout(cls, text, font, is_vertical, gap):
 		lines = text.split("\n")
-		word_data = []
-		line_data = []
-		col = 0
-		for line in lines:
-			#line_word = spliteKeyWord(line)
-			line_word = list(line)
-			col = max(col,len(line_word))
-			word_data.append(line_word)
-			line_data.append(line)
-		return {"line_data":line_data,"word_data":word_data,"row":len(word_data),"col":col}
-
-	@staticmethod
-	def _check_best_fit_with_line(line,font_name,cell_width,cell_height):
-		fit_font_size = 0
-		for i in range(1,Writer.max_try_font_size):
-			font = ImageFont.truetype(font_name, i)
-			tmp_width, tmp_height = font.getsize(line)
-			if tmp_width > cell_width or tmp_height > cell_height:
-				return fit_font_size
-			else:
-				fit_font_size = i
-		return Writer.max_try_font_size
-
-	@staticmethod
-	def _check_best_fit_font_size(width,height,font_name):
-		fit_width = fit_height = fit_font_size = 0
-		#print(f"check fit in {width},{height}")
-		for i in range(1,Writer.max_try_font_size):
-			font = ImageFont.truetype(font_name, i)
-			tmp_width, tmp_height = font.getsize(Writer.test_word)
-			if tmp_width > width or tmp_height > height:
-				return fit_font_size, fit_width, fit_height
-			else:
-				fit_width = tmp_width
-				fit_height = tmp_height
-				fit_font_size = i
-		return Writer.max_try_font_size, fit_width, fit_height
-
-	@staticmethod
-	def _get_word_size(font_name,font_size):
-		font = ImageFont.truetype(font_name, font_size)
-		return font.getsize(Writer.test_word)
-
-	@staticmethod
-	def _get_single_line_size(text_str,font_name,font_size,is_vertical=True):
 		if is_vertical:
-			width, height = Writer._get_word_size(font_name,font_size)
-			if type(text_str) == str:
-				text_array = Writer._convert_line_text_to_array(text_str)
-				text_data = text_array["word_data"][0]
-				num_words = len(text_data)
+			glyphs = {character: cls._ink_mask(font, character) for character in set(text + "國") if character != "\n"}
+			masks = [[glyphs[character] for character in line] for line in lines]
+			visible = [mask for mask in glyphs.values() if mask is not None]
+			cell_width = max([1] + [mask.width for mask in visible])
+			cell_height = max([1] + [mask.height for mask in visible])
+			spacing = max(0, round(cell_width * gap))
+			width = cell_width * len(lines) + spacing * (len(lines) - 1)
+			height = max(map(len, lines)) * cell_height
+		else:
+			masks = [cls._ink_mask(font, line) for line in lines]
+			visible = [mask for mask in masks if mask is not None]
+			cell_width = max([0] + [mask.width for mask in visible])
+			cell_height = max([1] + [mask.height for mask in visible])
+			spacing = max(0, round(cell_height * gap))
+			width = cell_width
+			height = cell_height * len(lines) + spacing * (len(lines) - 1)
+		return {"lines": lines, "masks": masks, "width": width, "height": height,
+				"cell_width": cell_width, "cell_height": cell_height, "spacing": spacing}
+
+	@classmethod
+	def _fit_text(cls, text, width, height, font_name, font_size, is_vertical, gap):
+		# A nonzero value remains an upper bound, matching the existing behavior.
+		# Keep 0 on the bubble as the auto-fit setting; only the rendered size changes.
+		low = 1
+		high = max(1, int(font_size)) if font_size > 0 else cls.max_try_font_size
+		best_font = cls._font(font_name, 1)
+		best_layout = cls._layout(text, best_font, is_vertical, gap)
+		while low <= high:
+			size = (low + high) // 2
+			font = cls._font(font_name, size)
+			layout = cls._layout(text, font, is_vertical, gap)
+			if layout["width"] <= width and layout["height"] <= height:
+				best_font, best_layout = font, layout
+				low = size + 1
 			else:
-				num_words = len(text_str)
-			return width, height * num_words
-		else:
-			font = ImageFont.truetype(font_name, font_size)
-			return font.getsize(text_str)
-
-	@staticmethod
-	def _get_max_line_size(text_str,font_name,font_size,is_vertical=True):
-		text_data = Writer._convert_line_text_to_array(text_str)
-		max_line_width = max_line_height = 0
-		for line_str in text_data["line_data"]:
-			line_width, line_height = Writer._get_single_line_size(line_str,font_name,font_size,is_vertical)
-			max_line_width = max(max_line_width,line_width)
-			max_line_height = max(max_line_height,line_height)
-		return max_line_width,max_line_height
-
-	@staticmethod
-	def _get_multi_line_size(text_str,font_name,font_size,is_vertical=True,gap=0.1):
-		text_data = Writer._convert_line_text_to_array(text_str)
-		max_line_width, max_line_height = Writer._get_max_line_size(text_str,font_name,font_size,is_vertical)
-
-		total_line = len(text_data["line_data"])
-		if is_vertical:
-			return max_line_width*total_line + (max_line_width*gap)*(total_line-1), max_line_height, max_line_width, max_line_width*gap
-		else:
-			return max_line_width, max_line_height*total_line + (max_line_height*gap)+(total_line-1), max_line_height, max_line_height*gap
-
-	@staticmethod
-	def _get_final_font_size(text,frame_width,frame_height,gap,font_name,font_size,is_vertical=True):
-		text_data = Writer._convert_line_text_to_array(text)
-		if is_vertical:
-			cell_width = int(frame_width / text_data["row"] * (1-gap))
-			cell_height = int(frame_height / text_data["col"])
-			fit_font_size, word_width, word_height = Writer._check_best_fit_font_size(
-				cell_width, cell_height,font_name
-			)
-		else:
-			fit_font_size = Writer.max_try_font_size
-			cell_width = frame_width
-			cell_height = int(frame_height / text_data["row"])
-			for line in text_data["line_data"]:
-				tmp_font_size = Writer._check_best_fit_with_line(line,font_name,cell_width,cell_height)
-				fit_font_size = min(fit_font_size,tmp_font_size)
-
-		if font_size == 0 or fit_font_size < font_size:
-			return fit_font_size
-		else:
-			return font_size
-
-	@staticmethod
-	def _get_write_area_pos(x0,y0,x1,y1,write_area_width,write_area_height):
-		x_offset = int((x1 - x0 - write_area_width) / 2)
-		y_offset = int((y1 - y0 - write_area_height) / 2)
-		return x0+x_offset,y0+y_offset,x1-x_offset,y1-y_offset
-
+				high = size - 1
+		return best_font, best_layout

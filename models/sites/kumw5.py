@@ -12,7 +12,7 @@ class Kumw5(Site):
 	def __init__(self,web_bot):
 		super().__init__(web_bot)
 		self._home_url = "http://www.kumw5.com"
-		self._site_name = "酷漫屋"
+		self._site_name = "酷漫屋(不存在)"
 		self._sample_url = ["http://www.kumw5.com/16041/","http://www.kumw5.com/mulu/16041/1-1.html"]
 
 	def get_book_id_from_url(self,url):

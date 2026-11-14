@@ -618,5 +618,381 @@
         <translation></translation>
     </message>
 
+    <message>
+        <source>Website verification</source>
+        <translation>網站驗證</translation>
+    </message>
+    <message>
+        <source>Wait for the website to finish its security check. If a verification control appears, complete it. When the comic page appears, click Continue. Cookies stay in memory until Comic Toolbox closes.</source>
+        <translation>請等候網站完成安全檢查。如出現驗證控制項，請手動完成驗證。看到漫畫頁面後，請按「繼續」。Cookie 只會保留在記憶體中，直至關閉漫畫工具箱。</translation>
+    </message>
+    <message>
+        <source>Loading website…</source>
+        <translation>正在載入網站…</translation>
+    </message>
+    <message>
+        <source>Complete any verification shown by the website, then click Continue when the comic page appears.</source>
+        <translation>請完成網站顯示的驗證，看到漫畫頁面後再按「繼續」。</translation>
+    </message>
+    <message>
+        <source>The page could not load. You can reload or cancel.</source>
+        <translation>無法載入頁面。請重新載入或取消。</translation>
+    </message>
+    <message>
+        <source>Return to the requested website before clicking Continue.</source>
+        <translation>請先返回要求開啟的網站，再按「繼續」。</translation>
+    </message>
+    <message>
+        <source>The verification page is still showing. Complete the check before continuing.</source>
+        <translation>目前仍顯示驗證頁面。請先完成驗證再繼續。</translation>
+    </message>
+    <message>
+        <source>The site is still checking this browser. If no verification control appears, try Reload. The site may not support embedded browsers.</source>
+        <translation>網站仍在檢查此瀏覽器。如沒有出現驗證控制項，請嘗試重新載入。此網站可能不支援內嵌瀏覽器。</translation>
+    </message>
+    <message>
+        <source>The browser stopped displaying this page. Try Reload or cancel.</source>
+        <translation>瀏覽器已停止顯示此頁面。請嘗試重新載入或取消。</translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation>繼續</translation>
+    </message>
+    <message>
+        <source>Reload</source>
+        <translation>重新載入</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <source>Website verification was cancelled.</source>
+        <translation>已取消網站驗證。</translation>
+    </message>
+    <message>
+        <source>The verification browser could not start. Install the updated requirements.txt and restart Comic Toolbox.</source>
+        <translation>無法啟動驗證瀏覽器。請安裝更新後的 requirements.txt 所列套件，然後重新啟動漫畫工具箱。</translation>
+    </message>
+    <message>
+        <source>The verification browser closed unexpectedly. Please try again.</source>
+        <translation>驗證瀏覽器意外關閉，請再試一次。</translation>
+    </message>
+    <message>
+        <source>This website requires human verification in the application's browser.</source>
+        <translation>此網站需要在應用程式的瀏覽器中進行人機驗證。</translation>
+    </message>
+    <message>
+        <source>The website still rejects the download after browser verification. Its clearance may be restricted to the embedded browser.</source>
+        <translation>完成瀏覽器驗證後，網站仍拒絕下載。驗證通行權限可能只適用於內嵌瀏覽器。</translation>
+    </message>
+    <message>
+        <source>The website returned a web page instead of the requested download.</source>
+        <translation>網站傳回了網頁，未傳回要求下載的內容。</translation>
+    </message>
+    <message>
+        <source>Browser verification needs the same network route as the downloader. Turn off the app's proxy rotation and use a stable system connection or VPN.</source>
+        <translation>瀏覽器驗證需要與下載器使用相同的網絡路徑。請關閉應用程式的代理輪換功能，並使用穩定的系統連線或 VPN。</translation>
+    </message>
+    <message>
+        <source>Download cancelled.</source>
+        <translation>已取消下載。</translation>
+    </message>
+    <message>
+        <source>Google is limiting translation requests (HTTP 429). Try again in at least %d seconds.</source>
+        <translation>Google 正在限制翻譯請求（HTTP 429）。請至少等候 %d 秒後再試。</translation>
+    </message>
+    <message>
+        <source>Google returned no translated text.</source>
+        <translation>Google 沒有傳回翻譯文字。</translation>
+    </message>
+    <message>
+        <source>Google Translate returned HTTP %d.</source>
+        <translation>Google 翻譯傳回 HTTP %d。</translation>
+    </message>
+    <message>
+        <source>Google Translate timed out. Please try again later.</source>
+        <translation>Google 翻譯連線逾時，請稍後再試。</translation>
+    </message>
+    <message>
+        <source>Could not connect to Google Translate. Check your network connection.</source>
+        <translation>無法連線至 Google 翻譯，請檢查網絡連線。</translation>
+    </message>
+    <message>
+        <source>The translation service returned an incomplete response.</source>
+        <translation>翻譯服務傳回的結果不完整。</translation>
+    </message>
+    <message>
+        <source>The selected translation engine is unavailable.</source>
+        <translation>所選的翻譯引擎無法使用。</translation>
+    </message>
+    <message>
+        <source>Translation failed: %s</source>
+        <translation>翻譯失敗：%s</translation>
+    </message>
+    <message>
+        <source>MyMemory requires explicit source and target languages.</source>
+        <translation>使用 MyMemory 時，請指定來源語言和目標語言。</translation>
+    </message>
+    <message>
+        <source>MyMemory timed out. Please try again later.</source>
+        <translation>MyMemory 連線逾時，請稍後再試。</translation>
+    </message>
+    <message>
+        <source>MyMemory is limiting translation requests. Please try again later.</source>
+        <translation>MyMemory 正在限制翻譯請求，請稍後再試。</translation>
+    </message>
+    <message>
+        <source>MyMemory returned HTTP %d.</source>
+        <translation>MyMemory 傳回 HTTP %d。</translation>
+    </message>
+    <message>
+        <source>Could not connect to MyMemory. Check your network connection.</source>
+        <translation>無法連線至 MyMemory，請檢查網絡連線。</translation>
+    </message>
+    <message>
+        <source>MyMemory returned an invalid translation response.</source>
+        <translation>MyMemory 傳回的翻譯結果格式無效。</translation>
+    </message>
+    <message>
+        <source>MyMemory's free translation quota has been reached. Please try again later.</source>
+        <translation>已達到 MyMemory 的免費翻譯配額，請稍後再試。</translation>
+    </message>
+    <message>
+        <source>MyMemory rejected the translation request: %s</source>
+        <translation>MyMemory 拒絕翻譯請求：%s</translation>
+    </message>
+    <message>
+        <source>Google Translate: unofficial web client; requests may be rate limited.</source>
+        <translation>Google 翻譯：使用非官方網頁用戶端，請求可能受到限制。</translation>
+    </message>
+    <message>
+        <source>MyMemory: no API key; free anonymous usage is limited to 5,000 characters per day. Text is sent to MyMemory for translation.</source>
+        <translation>MyMemory：無需 API 金鑰，匿名免費用量每日上限為 5,000 字元。文字會傳送至 MyMemory 進行翻譯。</translation>
+    </message>
+    <message>
+        <source>General images (default)</source>
+        <translation>通用圖像（預設）</translation>
+    </message>
+    <message>
+        <source>General images, more conservative restoration</source>
+        <translation>通用圖像，較保守的修復</translation>
+    </message>
+    <message>
+        <source>Anime and comic images (smaller model)</source>
+        <translation>動畫及漫畫圖像（較小的模型）</translation>
+    </message>
+    <message>
+        <source>Animation frames (2x, 3x or 4x)</source>
+        <translation>動畫影格（2、3 或 4 倍）</translation>
+    </message>
+    <message>
+        <source>Please choose the Real-ESRGAN executable in Settings.</source>
+        <translation>請在設定中選擇 Real-ESRGAN 執行檔。</translation>
+    </message>
+    <message>
+        <source>Unknown Real-ESRGAN model: %s</source>
+        <translation>未知的 Real-ESRGAN 模型：%s</translation>
+    </message>
+    <message>
+        <source>Invalid Real-ESRGAN scale or tile size. Please save Settings again.</source>
+        <translation>Real-ESRGAN 放大倍率或區塊大小無效，請重新儲存設定。</translation>
+    </message>
+    <message>
+        <source>Real-ESRGAN executable not found: %s</source>
+        <translation>找不到 Real-ESRGAN 執行檔：%s</translation>
+    </message>
+    <message>
+        <source>The selected Real-ESRGAN model does not support this scale.</source>
+        <translation>所選的 Real-ESRGAN 模型不支援此放大倍率。</translation>
+    </message>
+    <message>
+        <source>Real-ESRGAN tile size must be 0 (automatic) or at least 32.</source>
+        <translation>Real-ESRGAN 區塊大小必須為 0（自動）或至少 32。</translation>
+    </message>
+    <message>
+        <source>Real-ESRGAN model file not found: %s</source>
+        <translation>找不到 Real-ESRGAN 模型檔案：%s</translation>
+    </message>
+    <message>
+        <source>Could not start Real-ESRGAN: %s</source>
+        <translation>無法啟動 Real-ESRGAN：%s</translation>
+    </message>
+    <message>
+        <source>Real-ESRGAN failed (exit code %s): %s</source>
+        <translation>Real-ESRGAN 執行失敗（結束代碼 %s）：%s</translation>
+    </message>
+    <message>
+        <source>Real-ESRGAN did not create an output image: %s</source>
+        <translation>Real-ESRGAN 未產生輸出圖像：%s</translation>
+    </message>
+    <message>
+        <source>Extract the portable Real-ESRGAN NCNN/Vulkan package and select its executable. Keep the models folder from the package. A Vulkan-capable GPU is required.</source>
+        <translation>解壓縮可攜式 Real-ESRGAN NCNN/Vulkan 套件，並選擇其中的執行檔。請保留套件中的 models 資料夾。需要支援 Vulkan 的顯示卡。</translation>
+    </message>
+    <message>
+        <source>Save these settings, then choose a Real-ESRGAN AI enhance mode in Converter. Its model list can override this selection.</source>
+        <translation>儲存設定後，在轉換工具中選擇 Real-ESRGAN AI 增強模式。轉換工具的模型清單可另外指定要使用的模型。</translation>
+    </message>
+    <message>
+        <source>Project page</source>
+        <translation>專案網頁</translation>
+    </message>
+    <message>
+        <source>Download Real-ESRGAN</source>
+        <translation>下載 Real-ESRGAN</translation>
+    </message>
+    <message>
+        <source>Real-ESRGAN executable</source>
+        <translation>Real-ESRGAN 執行檔</translation>
+    </message>
+    <message>
+        <source>Models folder</source>
+        <translation>模型資料夾</translation>
+    </message>
+    <message>
+        <source>Leave empty to use the models folder beside the executable</source>
+        <translation>留空以使用執行檔旁的 models 資料夾</translation>
+    </message>
+    <message>
+        <source>Browse</source>
+        <translation>瀏覽</translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation>模型</translation>
+    </message>
+    <message>
+        <source>Scale</source>
+        <translation>放大倍率</translation>
+    </message>
+    <message>
+        <source>The x4 models use 4x. realesr-animevideov3 supports 2x, 3x and 4x.</source>
+        <translation>x4 模型使用 4 倍放大；realesr-animevideov3 支援 2、3 及 4 倍。</translation>
+    </message>
+    <message>
+        <source>Tile size</source>
+        <translation>區塊大小</translation>
+    </message>
+    <message>
+        <source>Automatic</source>
+        <translation>自動</translation>
+    </message>
+    <message>
+        <source>0 selects automatically. Use 32 or more; a smaller tile uses less GPU memory.</source>
+        <translation>0 表示自動選擇。手動設定須至少為 32；較小的區塊可減少顯示記憶體用量。</translation>
+    </message>
+    <message>
+        <source>Resize enhanced image back to its original dimensions</source>
+        <translation>將增強後的圖像縮回原始尺寸</translation>
+    </message>
+    <message>
+        <source>Use settings</source>
+        <translation>使用設定值</translation>
+    </message>
+    <message>
+        <source>Real-ESRGAN model</source>
+        <translation>Real-ESRGAN 模型</translation>
+    </message>
+    <message>
+        <source>Real-ESRGAN AI enhance mode</source>
+        <translation>Real-ESRGAN AI 增強模式</translation>
+    </message>
+    <message>
+        <source>Conversion completed with %d failed files.</source>
+        <translation>轉換完成，%d 個檔案失敗。</translation>
+    </message>
+    <message>
+        <source>Real-ESRGAN enhancing %s with %s</source>
+        <translation>Real-ESRGAN 正在增強 %s，使用模型 %s</translation>
+    </message>
+    <message>
+        <source>Real-ESRGAN could not convert %s: %s</source>
+        <translation>Real-ESRGAN 無法轉換 %s：%s</translation>
+    </message>
+    <message>
+        <source>Real-ESRGAN failed (exit code %s).</source>
+        <translation>Real-ESRGAN 執行失敗（結束代碼 %s）。</translation>
+    </message>
+    <message>
+        <source>Real-ESRGAN did not create an output image.</source>
+        <translation>Real-ESRGAN 未產生輸出圖像。</translation>
+    </message>
+    <message>
+        <source>Use English (ASCII) characters for folder and file names. Paths must not contain Chinese, Japanese or Korean (CJK) characters.</source>
+        <translation>資料夾及檔案名稱請使用英文（ASCII）字元。路徑中不能包含中文、日文或韓文（CJK）字元。</translation>
+    </message>
+    <message>
+        <source>WNACG: The album could not be loaded. Open an album URL and complete website verification if requested.</source>
+        <translation>WNACG：無法載入相簿。請使用相簿網址，並在提示時完成網站驗證。</translation>
+    </message>
+    <message>
+        <source>WNACG: The album page could not be loaded.</source>
+        <translation>WNACG：無法載入相簿頁面。</translation>
+    </message>
+    <message>
+        <source>WNACG: The image list is incomplete. Reload the album and try again.</source>
+        <translation>WNACG：圖片清單不完整。請重新載入相簿後再試。</translation>
+    </message>
+    <message>
+        <source>WNACG: No complete image list was found. Complete website verification and try again.</source>
+        <translation>WNACG：找不到完整的圖片清單。請完成網站驗證後再試。</translation>
+    </message>
+    <message>
+        <source>WNACG: The original page image could not be found.</source>
+        <translation>WNACG：找不到此頁的原始圖片。</translation>
+    </message>
+    <message>
+        <source>18comic: No album or chapter list was found. Use an album URL and complete website verification if requested.</source>
+        <translation>18comic：找不到相簿或章節清單。請使用相簿網址，並在提示時完成網站驗證。</translation>
+    </message>
+    <message>
+        <source>18comic: The chapter page could not be loaded.</source>
+        <translation>18comic：無法載入章節頁面。</translation>
+    </message>
+    <message>
+        <source>18comic: Image-restoration information is missing. Complete website verification and reload the chapter.</source>
+        <translation>18comic：缺少圖片還原資料。請完成網站驗證後重新載入章節。</translation>
+    </message>
+    <message>
+        <source>18comic: No original page images were found in this chapter.</source>
+        <translation>18comic：在此章節中找不到原始頁面圖片。</translation>
+    </message>
+    <message>
+        <source>18comic: The chapter image list is incomplete. Reload the chapter and try again.</source>
+        <translation>18comic：章節圖片清單不完整。請重新載入章節後再試。</translation>
+    </message>
+    <message>
+        <source>The image request returned no data.</source>
+        <translation>圖片請求未傳回資料。</translation>
+    </message>
+    <message>
+        <source>18comic: Could not download or restore %s: %s</source>
+        <translation>18comic：無法下載或還原 %s：%s</translation>
+    </message>
+    <message><source>Auto-play progress bar color</source><translation>自動播放進度條顏色</translation></message>
+    <message><source>Please enter a valid color.</source><translation>請輸入有效的顏色。</translation></message>
+</context>
+<context>
+    <name>MainWindow</name>
+    <message><source>Details: %s</source><translation>詳細資訊：%s</translation></message>
+    <message><source>Please open an image before detecting speech bubbles.</source><translation>請先開啟圖片，再偵測對話氣泡。</translation></message>
+    <message><source>The selected bubble detection engine is unavailable.</source><translation>所選的對話氣泡偵測引擎無法使用。</translation></message>
+    <message><source>The image could not be decoded.</source><translation>無法解碼此圖片。</translation></message>
+    <message><source>Bubble detection failed: %s</source><translation>對話氣泡偵測失敗：%s</translation></message>
+    <message>
+        <source>Read Comics Online: No chapter links were found. Complete website verification and make sure the comic page is visible before continuing.</source>
+        <translation>Read Comics Online：找不到章節連結。請完成網站驗證，並確定已顯示漫畫頁面後再繼續。</translation>
+    </message>
+    <message>
+        <source>Read Comics Online: The chapter page could not be loaded.</source>
+        <translation>Read Comics Online：無法載入章節頁面。</translation>
+    </message>
+    <message>
+        <source>Read Comics Online: No comic images were found on the chapter page.</source>
+        <translation>Read Comics Online：在章節頁面中找不到漫畫圖片。</translation>
+    </message>
+    <message><source>The verification browser could not start.</source><translation>無法啟動驗證瀏覽器。</translation></message>
+    <message><source>Browser exit code: %s</source><translation>瀏覽器結束代碼：%s</translation></message>
 </context>
 </TS>

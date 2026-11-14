@@ -1,5 +1,5 @@
-from PyQt5 import QtWidgets, QtGui
-from PyQt5.QtCore import Qt
+from PyQt6 import QtWidgets, QtGui
+from PyQt6.QtCore import Qt
 
 from models.const import *
 from models.site import Site
@@ -16,8 +16,8 @@ class HelpWindowController(QtWidgets.QMainWindow):
 		self.setup_control()
 
 	def setup_control(self):
-		self.setWindowFlag(Qt.WindowMinimizeButtonHint, False)
-		self.setWindowFlag(Qt.WindowMaximizeButtonHint, False)
+		self.setWindowFlag(Qt.WindowType.WindowMinimizeButtonHint, False)
+		self.setWindowFlag(Qt.WindowType.WindowMaximizeButtonHint, False)
 		# GUI
 		self.retranslateUi()
 
@@ -41,8 +41,8 @@ class HelpWindowController(QtWidgets.QMainWindow):
 
 	def center_pos_of_parent(self):
 		qr = self.main_controller.frameGeometry()
-		x = qr.left() + (qr.width() - self.width()) / 2
-		y = qr.top() + (qr.height() - self.height()) / 2
+		x = qr.left() + (qr.width() - self.width()) // 2
+		y = qr.top() + (qr.height() - self.height()) // 2
 		self.move(x, y)
 
 	# internal
@@ -60,7 +60,7 @@ class HelpWindowController(QtWidgets.QMainWindow):
 			for sample_url in sample_urls:
 				self.ui.txt_supported_site.append(sample_url)
 			self.ui.txt_supported_site.append("")
-		self.ui.txt_supported_site.moveCursor(QtGui.QTextCursor.Start)
+		self.ui.txt_supported_site.moveCursor(QtGui.QTextCursor.MoveOperation.Start)
 
 	def _update_other(self):
 		self.ui.txt_other.clear()
@@ -73,7 +73,7 @@ class HelpWindowController(QtWidgets.QMainWindow):
 		self.ui.txt_other.append("")
 		self.ui.txt_other.append(TRSM("Converter destination folder suggest use different with source folder, even it should be work, but for safe reason😅"))
 
-		self.ui.txt_other.moveCursor(QtGui.QTextCursor.Start)
+		self.ui.txt_other.moveCursor(QtGui.QTextCursor.MoveOperation.Start)
 
 	def show(self):
 		super().show()

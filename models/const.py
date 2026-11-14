@@ -1,6 +1,9 @@
 import os
 import concurrent.futures
-from PyQt5 import QtCore
+from functools import lru_cache
+from pathlib import Path
+import xml.etree.ElementTree as ET
+from PyQt6 import QtCore
 
 from models.webbot import WebBot
 from models.config import MyConfig
@@ -10,10 +13,33 @@ MY_CONFIG = MyConfig(os.path.join(ROOT_DIR, "setting.ini"))
 MY_BOOKMARK = MyConfig(os.path.join(ROOT_DIR, "bookmarks.ini"),need_init_as_config=False)
 TRS = QtCore.QCoreApplication.translate
 
-def TRSM(str_name):
-    return TRS("MainWindow", str_name)
+@lru_cache(maxsize=8)
+def _extra_messages(language):
+    # Read new Python UI entries alongside the distributed Qt .qm catalogs.
+    catalog = Path(__file__).resolve().parent.parent / "languages" / (Path(language).stem + "_extra.ts")
+    try:
+        root = ET.parse(catalog).getroot()
+    except (OSError, ET.ParseError):
+        return {}
+    messages = {}
+    for context in root.findall("context"):
+        if context.findtext("name") != "MainWindow":
+            continue
+        for message in context.findall("message"):
+            translation = message.find("translation")
+            if translation is not None and translation.get("type") not in ("unfinished", "obsolete", "vanished"):
+                text = translation.text or ""
+                if text:
+                    messages[message.findtext("source")] = text
+    return messages
 
-APP_VERSION = "0.9.1"
+def TRSM(str_name):
+    translated = TRS("MainWindow", str_name)
+    if translated == str_name:
+        return _extra_messages(MY_CONFIG.get("general", "language")).get(str_name, translated)
+    return translated
+
+APP_VERSION = "0.9.2"
 APP_LINK = "https://github.com/freedy82/Comic-Toolbox"
 APP_LICENSE = "GNU General Public License v3.0"
 APP_LICENSE_LINK = "https://github.com/freedy82/Comic-Toolbox/blob/main/LICENSE"

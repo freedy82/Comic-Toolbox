@@ -1,23 +1,22 @@
-PyExecJS
+# Python 3.11+ (including Python 3.14).
+PyExecJS==1.5.1
 lzstring~=1.0.4
-pillow~=9.1.0
-bs4~=0.0.1
-configparser~=5.2.0
-PyQt5~=5.15.6
-langcodes~=3.3.0
-language_data
-beautifulsoup4~=4.11.1
-imagesize~=1.3.0
+Pillow>=12.0,<13
+# The application and its separate verification browser both use Qt6.
+PyQt6>=6.10,<7
+PyQt6-WebEngine>=6.10,<7
+langcodes>=3.5,<4
+language_data>=1.3,<2
+beautifulsoup4>=4.13,<5
+imagesize>=1.4,<2
 
-ebooklib~=0.17.1
-python-docx
-jsbeautifier~=1.14.3
-pymupdf
-fitz~=0.0.1.dev2
-googletrans==4.0.0rc1
+EbookLib>=0.20,<1
+python-docx>=1.2,<2
+jsbeautifier>=1.15,<2
+PyMuPDF>=1.26.4,<2
+googletrans>=4.0.2,<5
 
-pytesseract~=0.3.9
-opencv-python~=4.5.5.62
-numpy~=1.22.3
-requests~=2.27.1
-docx~=0.2.4
+pytesseract>=0.3.13,<0.4
+opencv-python>=4.13,<5
+numpy>=2.3,<3
+requests>=2.32,<3

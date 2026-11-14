@@ -134,6 +134,8 @@ bookmarks.ini
 tools/
 books/
 realcugan-ncnn-vulkan/
+realesrgan-ncnn-vulkan/
+realesrgan-ncnn-vulkan/
 make_zip.bat
 make_exe.bat
 uis/ui2py.bat

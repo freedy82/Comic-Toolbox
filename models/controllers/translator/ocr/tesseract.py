@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import pytesseract
-from PyQt5.QtCore import QRect
+from PyQt6.QtCore import QRect
 from pytesseract import Output
 
 from models.controllers.translator.OCR import OCREngine

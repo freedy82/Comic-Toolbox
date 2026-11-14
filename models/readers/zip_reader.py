@@ -1,7 +1,7 @@
 import io
 from PIL import Image
 from zipfile import ZipFile
-from PyQt5.QtGui import QPixmap
+from PyQt6.QtGui import QPixmap
 
 from models.const import *
 from models import util

@@ -25,6 +25,12 @@ https://github.com/nihui/realcugan-ncnn-vulkan
 
 After downloading, set the location of Real-CUGAN ncnn Vulkan in the settings of the comic toolbox.
 
+### Install Real-ESRGAN ncnn Vulkan (required for image AI enhancement)
+
+https://github.com/xinntao/Real-ESRGAN
+
+After downloading, set the location of Real-ESRGAN ncnn Vulkan in the settings of the comic toolbox.
+
 ### Install Tesseract (required for translation tools)
 
 https://tesseract-ocr.github.io/tessdoc/Home.html#binaries

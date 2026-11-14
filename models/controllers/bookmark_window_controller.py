@@ -1,7 +1,7 @@
 import json
-from PyQt5 import QtWidgets
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QTableWidgetItem,QAbstractItemView
+from PyQt6 import QtWidgets
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QTableWidgetItem,QAbstractItemView
 
 from models import util
 from models.const import *
@@ -20,12 +20,12 @@ class BookmarkWindowController(QtWidgets.QMainWindow):
 		self.setup_control()
 
 	def setup_control(self):
-		self.setWindowFlag(Qt.WindowMinimizeButtonHint, False)
+		self.setWindowFlag(Qt.WindowType.WindowMinimizeButtonHint, False)
 		if self.is_reader:
-			self.ui.table_bookmark.setEditTriggers(QAbstractItemView.NoEditTriggers)
+			self.ui.table_bookmark.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
 		#header = self.ui.table_bookmark.horizontalHeader()
-		#header.setSectionResizeMode(0, QtWidgets.QHeaderView.Interactive)
-		#header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+		#header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeMode.Interactive)
+		#header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeMode.Stretch)
 
 		# GUI
 		self.retranslateUi()
@@ -131,7 +131,7 @@ class BookmarkWindowController(QtWidgets.QMainWindow):
 		for idx,bookmark in enumerate(self.bookmarks):
 			self.ui.table_bookmark.setItem(idx, 0, QTableWidgetItem(bookmark["title"]))
 			tmp_url_item = QTableWidgetItem(bookmark["url"])
-			tmp_url_item.setFlags(tmp_url_item.flags() & ~ Qt.ItemIsEditable)
+			tmp_url_item.setFlags(tmp_url_item.flags() & ~ Qt.ItemFlag.ItemIsEditable)
 			self.ui.table_bookmark.setItem(idx, 1, tmp_url_item)
 		self.ui.table_bookmark.resizeColumnsToContents()
 		self.ui.table_bookmark.blockSignals(False)

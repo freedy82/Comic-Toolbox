@@ -1,10 +1,11 @@
-from PyQt5.QtWidgets import QFileDialog, QListWidgetItem
+from PyQt6.QtWidgets import QFileDialog, QListWidgetItem, QLabel, QComboBox
 
 from models import util
 from models.const import *
 from uis.main_window import Ui_MainWindow
 from models.workers.converter_worker import ConverterWorker
 from models.controllers.image_filter_window_controller import ImageFilterWindowController
+from models.realesrgan import MODELS as ESRGAN_MODELS, RealESRGANOptions, RealESRGANError
 
 
 class ConverterController(object):
@@ -14,7 +15,9 @@ class ConverterController(object):
 		{"from_exts": IMAGE_EXTS, "to_ext": "jpg", "enable_real_cugan": False},
 		{"from_exts": IMAGE_EXTS, "to_ext": "png", "enable_real_cugan": False},
 		{"from_exts": util.remove_element_of_tuple(IMAGE_EXTS,"gif"), "to_ext": "jpg", "enable_real_cugan": True},
-		{"from_exts": util.remove_element_of_tuple(IMAGE_EXTS,"gif"), "to_ext": "png", "enable_real_cugan": True}
+		{"from_exts": util.remove_element_of_tuple(IMAGE_EXTS,"gif"), "to_ext": "png", "enable_real_cugan": True},
+		{"from_exts": util.remove_element_of_tuple(IMAGE_EXTS,"gif"), "to_ext": "jpg", "enable_real_cugan": False, "enable_real_esrgan": True},
+		{"from_exts": util.remove_element_of_tuple(IMAGE_EXTS,"gif"), "to_ext": "png", "enable_real_cugan": False, "enable_real_esrgan": True}
 	]
 
 	def __init__(self, app=None, ui: Ui_MainWindow = None, main_controller=None):
@@ -49,6 +52,14 @@ class ConverterController(object):
 		self.ui.cbx_converter_exist.addItems([TRSM("Skip"),TRSM("Overwrite")])
 		self.ui.cbx_converter_remove_source.addItems([TRSM("No"),TRSM("Yes")])
 		self.ui.cbx_converter_filter.addItems([TRSM("No"),TRSM("Yes")])
+		self.ui.lbl_converter_esrgan_model = QLabel(self.ui.tab_converter)
+		self.ui.cbx_converter_esrgan_model = QComboBox(self.ui.tab_converter)
+		self.ui.cbx_converter_esrgan_model.addItem(TRSM("Use settings"), None)
+		for name in ESRGAN_MODELS:
+			self.ui.cbx_converter_esrgan_model.addItem(name, name)
+		self.ui.layout_converter_main.insertRow(3, self.ui.lbl_converter_esrgan_model, self.ui.cbx_converter_esrgan_model)
+		self.ui.cbx_converter_mode.currentIndexChanged.connect(self._mode_changed)
+		self._mode_changed()
 
 		self.retranslateUi()
 
@@ -72,6 +83,8 @@ class ConverterController(object):
 			label = ", ".join(mode["from_exts"]) + " -> " + mode["to_ext"]
 			if "enable_real_cugan" in mode and mode["enable_real_cugan"]:
 				label += " ( "+TRSM("Real-CUGAN AI enhance mode")+" )"
+			elif mode.get("enable_real_esrgan", False):
+				label += " ( "+TRSM("Real-ESRGAN AI enhance mode")+" )"
 			elif mode["to_ext"] in mode["from_exts"]:
 				label += " ( "+TRSM("Force convert mode")+" )"
 			self.ui.cbx_converter_mode.setItemText(idx,label)
@@ -84,11 +97,21 @@ class ConverterController(object):
 
 		self.ui.cbx_converter_filter.setItemText(0,TRSM("No"))
 		self.ui.cbx_converter_filter.setItemText(1,TRSM("Yes"))
+		self.ui.lbl_converter_esrgan_model.setText(TRSM("Real-ESRGAN model"))
+		self.ui.cbx_converter_esrgan_model.setItemText(0, TRSM("Use settings"))
+		for index, description in enumerate(ESRGAN_MODELS.values(), start=1):
+			self.ui.cbx_converter_esrgan_model.setItemData(index, TRSM(description), QtCore.Qt.ItemDataRole.ToolTipRole)
 
 		if self.image_filter_window_controller:
 			self.image_filter_window_controller.retranslateUi()
 
 	#action
+	def _mode_changed(self):
+		index = self.ui.cbx_converter_mode.currentIndex()
+		enabled = index >= 0 and self.MODES[index].get("enable_real_esrgan", False)
+		self.ui.lbl_converter_esrgan_model.setVisible(enabled)
+		self.ui.cbx_converter_esrgan_model.setVisible(enabled)
+
 	def btn_converter_from_browser_clicked(self):
 		old_folder_path = self.ui.txt_converter_from_folder.text()
 		if old_folder_path == "":
@@ -128,22 +151,22 @@ class ConverterController(object):
 	def btn_converter_select_clicked(self):
 		items = self.ui.list_converter_folder.selectedItems()
 		for item in items:
-			item.setCheckState(QtCore.Qt.Checked)
+			item.setCheckState(QtCore.Qt.CheckState.Checked)
 		pass
 
 	def btn_converter_unselect_clicked(self):
 		items = self.ui.list_converter_folder.selectedItems()
 		for item in items:
-			item.setCheckState(QtCore.Qt.Unchecked)
+			item.setCheckState(QtCore.Qt.CheckState.Unchecked)
 		pass
 
 	def btn_converter_select_all_clicked(self):
 		for i in range(self.ui.list_converter_folder.count()):
-			self.ui.list_converter_folder.item(i).setCheckState(QtCore.Qt.Checked)
+			self.ui.list_converter_folder.item(i).setCheckState(QtCore.Qt.CheckState.Checked)
 
 	def btn_converter_unselect_all_clicked(self):
 		for i in range(self.ui.list_converter_folder.count()):
-			self.ui.list_converter_folder.item(i).setCheckState(QtCore.Qt.Unchecked)
+			self.ui.list_converter_folder.item(i).setCheckState(QtCore.Qt.CheckState.Unchecked)
 
 	def btn_converter_to_browser_clicked(self):
 		old_folder_path = self.ui.txt_converter_to_folder.text()
@@ -172,10 +195,17 @@ class ConverterController(object):
 		if self.MODES[mode_index]["enable_real_cugan"] and MY_CONFIG.get("real-cugan", "exe_location") == "":
 			util.msg_box(TRSM("Please choose the real-cugan exe location in settings"),self.main_controller)
 			return
+		esrgan_options = None
+		if self.MODES[mode_index].get("enable_real_esrgan", False):
+			try:
+				esrgan_options = RealESRGANOptions.from_config(MY_CONFIG, self.ui.cbx_converter_esrgan_model.currentData())
+			except RealESRGANError as error:
+				util.msg_box(error.translated(TRSM), self.main_controller)
+				return
 
 		total_need_convert_list = []
 		for i in range(self.ui.list_converter_folder.count()):
-			if self.ui.list_converter_folder.item(i).checkState() == QtCore.Qt.Checked:
+			if self.ui.list_converter_folder.item(i).checkState() == QtCore.Qt.CheckState.Checked:
 				total_need_convert_list.append(self.folder_list[i])
 		#print(total_need_convert_list)
 
@@ -195,7 +225,9 @@ class ConverterController(object):
 				remove_source=bool(self.ui.cbx_converter_remove_source.currentIndex()),
 				sub_folders=total_need_convert_list,
 				is_use_filter=bool(self.ui.cbx_converter_filter.currentIndex()),
-				enable_real_cugan=self.MODES[mode_index]["enable_real_cugan"]
+				enable_real_cugan=self.MODES[mode_index]["enable_real_cugan"],
+				enable_real_esrgan=self.MODES[mode_index].get("enable_real_esrgan", False),
+				esrgan_options=esrgan_options
 			)
 			self.converter_worker.trigger.connect(self.convert_trigger)
 			self.converter_worker.canceled.connect(self.convert_canceled)
@@ -218,7 +250,11 @@ class ConverterController(object):
 		pass
 
 	def convert_finished(self):
-		self.ui.log_converter.append(TRSM("Convert finished!"))
+		failed_count = self.converter_worker.failed_count if self.converter_worker else 0
+		if failed_count:
+			self.ui.log_converter.append(TRSM("Conversion completed with %d failed files.") % failed_count)
+		else:
+			self.ui.log_converter.append(TRSM("Convert finished!"))
 		self.ui.btn_converter_start.setEnabled(True)
 		self.ui.btn_converter_cancel.setEnabled(False)
 		if self.ui.pgb_converter.maximum() > 0:
@@ -242,8 +278,8 @@ class ConverterController(object):
 		for idx, tmp_folder in enumerate(self.folder_list):
 			item = QListWidgetItem()
 			item.setText(tmp_folder)
-			item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
-			item.setCheckState(QtCore.Qt.Checked)
+			item.setFlags(item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+			item.setCheckState(QtCore.Qt.CheckState.Checked)
 			self.ui.list_converter_folder.addItem(item)
 
 		if self.ui.list_converter_folder.count() > 0:

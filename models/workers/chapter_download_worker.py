@@ -1,5 +1,5 @@
 import time
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QThread, pyqtSignal
 
 from models.const import *
 
@@ -37,7 +37,15 @@ class ChapterDownloadWorker(QThread):
 		for idx, temp_item in enumerate(self.items):
 			if self.stop_flag:
 				break
-			self.site.download_item(item=temp_item, title=self.title, item_type=self.current_type)
+			try:
+				self.site.download_item(item=temp_item, title=self.title, item_type=self.current_type)
+			except Exception as exc:
+				self.trigger.emit(TRSM(str(exc)), self.finish_page, self.total_page, self.finish_chapter, self.total_chapter)
+				self.stop()
+			if self.site._stop_flag:
+				self.stop_flag = True
+			if self.stop_flag:
+				break
 			#util.process_book_item(site=self.site,item=temp_item,book_title=self.title,author=self.author,item_type=self.current_type)
 			self.finish_chapter = idx + 1
 			if not self.stop_flag:

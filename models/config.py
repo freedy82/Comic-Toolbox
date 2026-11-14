@@ -64,6 +64,15 @@ class MyConfig(RawConfigParser):
 		if self.get("real-cugan","resize") == "":
 			self.set("real-cugan","resize","0")
 
+		if self.get("real-esrgan", "exe_location") == "":
+			for candidate in ("./realesrgan-ncnn-vulkan/realesrgan-ncnn-vulkan.exe", "./realesrgan-ncnn-vulkan.exe"):
+				if os.path.isfile(candidate):
+					self.set("real-esrgan", "exe_location", candidate)
+					break
+		for key, value in {"model": "realesrgan-x4plus", "scale": "4", "tile_size": "0", "resize": "0"}.items():
+			if self.get("real-esrgan", key) == "":
+				self.set("real-esrgan", key, value)
+
 		if self.get("misc","display_message") == "":
 			self.set("misc","display_message","True")
 		if self.get("misc","play_sound") == "":
@@ -98,6 +107,8 @@ class MyConfig(RawConfigParser):
 			self.set("reader","page_flow","RIGHT_TO_LEFT")
 		if self.get("reader","background") == "":
 			self.set("reader","background","#000000")
+		if self.get("reader","auto_play_pgb_color") == "":
+			self.set("reader","auto_play_pgb_color","#888888")
 		if self.get("reader","auto_play_interval") == "":
 			self.set("reader","auto_play_interval","5")
 		if self.get("reader","auto_play_pgb") == "":

@@ -1,0 +1,24 @@
+"""Source strings shared by the application and its verification browser."""
+
+VERIFICATION_MESSAGES = (
+    "Website verification",
+    "Details: %s",
+    "Wait for the website to finish its security check. If a verification control appears, complete it. When the comic page appears, click Continue. Cookies stay in memory until Comic Toolbox closes.",
+    "Loading website…",
+    "Complete any verification shown by the website, then click Continue when the comic page appears.",
+    "The page could not load. You can reload or cancel.",
+    "Return to the requested website before clicking Continue.",
+    "The verification page is still showing. Complete the check before continuing.",
+    "The site is still checking this browser. If no verification control appears, try Reload. The site may not support embedded browsers.",
+    "The browser stopped displaying this page. Try Reload or cancel.",
+    "Continue", "Reload", "Cancel",
+    "Website verification was cancelled.",
+    "The verification browser could not start.",
+    "Browser exit code: %s",
+    "The verification browser closed unexpectedly. Please try again.",
+    "This website requires human verification in the application's browser.",
+    "The website still rejects the download after browser verification. Its clearance may be restricted to the embedded browser.",
+    "The website returned a web page instead of the requested download.",
+    "Browser verification needs the same network route as the downloader. Turn off the app's proxy rotation and use a stable system connection or VPN.",
+    "Download cancelled.",
+)

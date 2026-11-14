@@ -1,6 +1,6 @@
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import QEvent, QPoint, Qt
-from PyQt5.QtWidgets import QGridLayout, QScrollArea
+from PyQt6 import QtCore, QtWidgets
+from PyQt6.QtCore import QEvent, QPoint, Qt
+from PyQt6.QtWidgets import QGridLayout, QScrollArea
 
 from models.controllers.reader.helper import *
 
@@ -68,36 +68,36 @@ class ReaderScrollBarHelper:
 
 	@staticmethod
 	def handle_scroll_area_event(last_time_move:QPoint, event:QEvent, page_flow:PageFlow, scroll_area:QScrollArea,go_prev_page,go_next_page):
-		if event.type() == QEvent.MouseMove:
+		if event.type() == QEvent.Type.MouseMove:
 			if last_time_move == QPoint(0,0):
-				last_time_move = event.pos()
-			distance_x = last_time_move.x() - event.pos().x()
-			distance_y = last_time_move.y() - event.pos().y()
+				last_time_move = event.position().toPoint()
+			distance_x = last_time_move.x() - event.position().toPoint().x()
+			distance_y = last_time_move.y() - event.position().toPoint().y()
 			scroll_area.horizontalScrollBar().setValue(scroll_area.horizontalScrollBar().value() + distance_x)
 			scroll_area.verticalScrollBar().setValue(scroll_area.verticalScrollBar().value() + distance_y)
-			last_time_move = event.pos()
-		elif event.type() == QEvent.MouseButtonRelease:
+			last_time_move = event.position().toPoint()
+		elif event.type() == QEvent.Type.MouseButtonRelease:
 			last_time_move = QPoint(0, 0)
-		elif event.type() == QEvent.Wheel:
+		elif event.type() == QEvent.Type.Wheel:
 			delta_y = event.angleDelta().y()
 			if delta_y > 0:
 				go_prev_page()
 			elif delta_y < 0:
 				go_next_page()
-		elif event.type() == QEvent.KeyRelease:
-			if event.key() == Qt.Key_Down:
+		elif event.type() == QEvent.Type.KeyRelease:
+			if event.key() == Qt.Key.Key_Down:
 				if scroll_area.verticalScrollBar().value() == scroll_area.verticalScrollBar().maximum():
 					go_next_page()
-			if event.key() == Qt.Key_Up:
+			if event.key() == Qt.Key.Key_Up:
 				if scroll_area.verticalScrollBar().value() == 0:
 					go_prev_page()
-			if event.key() == Qt.Key_Left:
+			if event.key() == Qt.Key.Key_Left:
 				if scroll_area.horizontalScrollBar().value() == 0:
 					if page_flow == PageFlow.LEFT_TO_RIGHT:
 						go_prev_page()
 					elif page_flow == PageFlow.RIGHT_TO_LEFT:
 						go_next_page()
-			if event.key() == Qt.Key_Right:
+			if event.key() == Qt.Key.Key_Right:
 				if scroll_area.horizontalScrollBar().value() == scroll_area.horizontalScrollBar().maximum():
 					if page_flow == PageFlow.LEFT_TO_RIGHT:
 						go_next_page()

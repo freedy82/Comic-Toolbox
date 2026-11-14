@@ -1,12 +1,13 @@
 import json
 import re
 
-from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QFileDialog, QListWidgetItem, QColorDialog
+from PyQt6.QtGui import QColor
+from PyQt6.QtWidgets import QFileDialog, QListWidgetItem, QColorDialog
 
 from models.const import *
 from models import util
 from uis.main_window import Ui_MainWindow
+from models.controllers.realesrgan_settings import RealESRGANSettings
 
 class SettingsController(object):
 
@@ -14,6 +15,7 @@ class SettingsController(object):
 		self.app = app
 		self.ui = ui
 		self.main_controller = main_controller
+		self.esrgan_settings = RealESRGANSettings(app, self.ui.tab_settings_inner)
 		self.setup_control()
 		pass
 
@@ -38,8 +40,12 @@ class SettingsController(object):
 		self.ui.btn_settings_cugan_browser.clicked.connect(self.btn_settings_cugan_browser_clicked)
 		self.ui.btn_settings_reader_background.clicked.connect(self.btn_settings_reader_background_clicked)
 		self.ui.txt_settings_reader_background.textChanged.connect(self.txt_settings_reader_background_text_changed)
+		self.ui.btn_settings_reader_auto_play_pgb_color.clicked.connect(self.btn_settings_reader_auto_play_pgb_color_clicked)
+		self.ui.txt_settings_reader_auto_play_pgb_color.textChanged.connect(self.txt_settings_reader_auto_play_pgb_color_text_changed)
 
 	def retranslateUi(self):
+		self.ui.lbl_settings_reader_auto_play_pgb_color.setText(TRSM("Auto-play progress bar color"))
+		self.ui.btn_settings_reader_auto_play_pgb_color.setText(TRSM("Pick a color"))
 		self.ui.cbx_settings_reader_auto_play_pgb.setItemText(0,TRSM("No"))
 		self.ui.cbx_settings_reader_auto_play_pgb.setItemText(1,TRSM("Yes"))
 
@@ -58,6 +64,7 @@ class SettingsController(object):
 
 		self.ui.cbx_settings_when_close_window.setItemText(0,TRSM("Minimize to system tray"))
 		self.ui.cbx_settings_when_close_window.setItemText(1,TRSM("Close window"))
+		self.esrgan_settings.retranslateUi()
 
 		pass
 
@@ -78,6 +85,12 @@ class SettingsController(object):
 			color_name = color.name()
 			self.ui.txt_settings_reader_background.setText(color_name)
 			self.ui.lbl_settings_reader_background_preview.setStyleSheet("background-color: "+color_name+";")
+
+	def btn_settings_reader_auto_play_pgb_color_clicked(self):
+		old_color = QColor(self.ui.txt_settings_reader_auto_play_pgb_color.text())
+		color = QColorDialog.getColor(old_color,self.main_controller,TRSM("Pick a color"))
+		if color.isValid():
+			self.ui.txt_settings_reader_auto_play_pgb_color.setText(color.name())
 
 	def btn_settings_cugan_browser_clicked(self):
 		old_file_path = self.ui.txt_settings_cugan_location.text()
@@ -123,6 +136,7 @@ class SettingsController(object):
 		self.ui.spin_settings_jpg_quality.setValue(90)
 		self.ui.spin_settings_check_is_2_page.setValue(1.0)
 		self.ui.txt_settings_reader_background.setText("#000000")
+		self.ui.txt_settings_reader_auto_play_pgb_color.setText("#888888")
 		self.ui.spin_settings_reader_auto_play_interval.setValue(5.0)
 		self.ui.cbx_settings_reader_auto_play_pgb.setCurrentIndex(1)
 		self.ui.spin_settings_reader_page_gap.setValue(0)
@@ -135,6 +149,7 @@ class SettingsController(object):
 		self.ui.spin_settings_cugan_scale.setValue(2)
 		self.ui.cbx_settings_cugan_denoise.setCurrentIndex(4)
 		self.ui.cbx_settings_cugan_resize.setCurrentIndex(0)
+		self.esrgan_settings.reset_defaults()
 
 		self.ui.cbx_settings_when_close_window.setCurrentIndex(0)
 
@@ -145,6 +160,11 @@ class SettingsController(object):
 		q_color = QColor(color_str)
 		if q_color.isValid():
 			self.ui.lbl_settings_reader_background_preview.setStyleSheet("background-color: " + color_str)
+
+	def txt_settings_reader_auto_play_pgb_color_text_changed(self):
+		color = QColor(self.ui.txt_settings_reader_auto_play_pgb_color.text())
+		if color.isValid():
+			self.ui.lbl_settings_reader_auto_play_pgb_color_preview.setStyleSheet("background-color: " + color.name() + ";")
 
 	# internal
 	def load_config(self):
@@ -181,6 +201,8 @@ class SettingsController(object):
 		reader_background = MY_CONFIG.get("reader", "background")
 		self.ui.txt_settings_reader_background.setText(reader_background)
 		self.ui.lbl_settings_reader_background_preview.setStyleSheet("background-color:"+reader_background+";")
+		self.ui.txt_settings_reader_auto_play_pgb_color.setText(MY_CONFIG.get("reader", "auto_play_pgb_color"))
+		self.txt_settings_reader_auto_play_pgb_color_text_changed()
 		reader_auto_play_interval = MY_CONFIG.get("reader", "auto_play_interval")
 		self.ui.spin_settings_reader_auto_play_interval.setValue(float(reader_auto_play_interval))
 		reader_auto_play_pgb = MY_CONFIG.get("reader", "auto_play_pgb")
@@ -203,11 +225,11 @@ class SettingsController(object):
 			for proxy in proxy_list:
 				item = QListWidgetItem()
 				item.setText(proxy["url"])
-				item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
+				item.setFlags(item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
 				if proxy["enable"]:
-					item.setCheckState(QtCore.Qt.Checked)
+					item.setCheckState(QtCore.Qt.CheckState.Checked)
 				else:
-					item.setCheckState(QtCore.Qt.Unchecked)
+					item.setCheckState(QtCore.Qt.CheckState.Unchecked)
 				self.ui.list_settings_proxy.addItem(item)
 
 		#real-cugan
@@ -222,6 +244,7 @@ class SettingsController(object):
 
 		resize = int(MY_CONFIG.get("real-cugan", "resize"))
 		self.ui.cbx_settings_cugan_resize.setCurrentIndex(resize)
+		self.esrgan_settings.load_config()
 
 		#misc
 		display_message = MY_CONFIG.get("misc", "display_message")
@@ -241,6 +264,11 @@ class SettingsController(object):
 
 	def save_config(self):
 		global WEB_BOT, EXECUTOR
+		progress_color = QColor(self.ui.txt_settings_reader_auto_play_pgb_color.text())
+		if not progress_color.isValid():
+			util.msg_box(TRSM("Please enter a valid color."),self.main_controller)
+			self.ui.txt_settings_reader_auto_play_pgb_color.setFocus()
+			return
 		#print("try save")
 		#general
 		MY_CONFIG.set("general","download_folder",self.ui.txt_settings_general_folder.text())
@@ -253,6 +281,7 @@ class SettingsController(object):
 		MY_CONFIG.set("general","jpg_quality",str(self.ui.spin_settings_jpg_quality.value()))
 		MY_CONFIG.set("general","check_is_2_page",str(self.ui.spin_settings_check_is_2_page.value()))
 		MY_CONFIG.set("reader","background",self.ui.txt_settings_reader_background.text())
+		MY_CONFIG.set("reader","auto_play_pgb_color",progress_color.name())
 		MY_CONFIG.set("reader","auto_play_interval",str(self.ui.spin_settings_reader_auto_play_interval.value()))
 		MY_CONFIG.set("reader","auto_play_pgb",str(self.ui.cbx_settings_reader_auto_play_pgb.currentIndex()))
 		MY_CONFIG.set("reader","page_gap",str(self.ui.spin_settings_reader_page_gap.value()))
@@ -269,6 +298,7 @@ class SettingsController(object):
 		MY_CONFIG.set("real-cugan","scale",str(self.ui.spin_settings_cugan_scale.value()))
 		MY_CONFIG.set("real-cugan","denoise_level",str(self.ui.cbx_settings_cugan_denoise.currentIndex()-1))
 		MY_CONFIG.set("real-cugan","resize",str(self.ui.cbx_settings_cugan_resize.currentIndex()))
+		self.esrgan_settings.save_config()
 
 		#misc
 		MY_CONFIG.set("misc","display_message",str(self.ui.radio_settings_message_yes.isChecked()))
@@ -276,6 +306,7 @@ class SettingsController(object):
 		MY_CONFIG.set("misc","when_close_window",str(self.ui.cbx_settings_when_close_window.currentIndex()))
 
 		MY_CONFIG.save()
+		self.main_controller.reader_controller.update_auto_play_progress_color()
 
 		WEB_BOT.set_agent(MY_CONFIG.get("general", "agent"))
 		WEB_BOT.set_time_out(float(MY_CONFIG.get("general", "timeout")))
@@ -290,8 +321,8 @@ class SettingsController(object):
 			return False
 		item = QListWidgetItem()
 		item.setText(proxy)
-		item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
-		item.setCheckState(QtCore.Qt.Checked)
+		item.setFlags(item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+		item.setCheckState(QtCore.Qt.CheckState.Checked)
 		self.ui.list_settings_proxy.addItem(item)
 		return True
 
@@ -314,7 +345,7 @@ class SettingsController(object):
 		for i in range(self.ui.list_settings_proxy.count()):
 			item = self.ui.list_settings_proxy.item(i)
 			result.append({
-				"enable": item.checkState() == QtCore.Qt.Checked,
+				"enable": item.checkState() == QtCore.Qt.CheckState.Checked,
 				"url": item.text(),
 			})
 		return result

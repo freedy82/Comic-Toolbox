@@ -17,6 +17,7 @@ class Dongmanmanhua(Site):
 		self._sample_url = [
 			"https://www.dongmanmanhua.cn/ANCIENTCHINESE/chongshengzhijinxiudatang/list?title_no=2209",
 			"https://www.dongmanmanhua.cn/BOY/jietoushegncunshouce/list?title_no=1720",
+			"https://www.dongmanmanhua.cn/BOY/wopeiyangdesjimen/list?title_no=1990"
 		]
 		# change is need
 		self._accept_language = "zh-TW,zh;q=0.8,en-US;q=0.5,en;q=0.3"

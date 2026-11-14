@@ -3,7 +3,7 @@ from ebooklib import epub
 from docx import Document
 #from docx.shared import Inches
 from PIL import Image
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QThread, pyqtSignal
 from pathlib import Path
 
 from models import util

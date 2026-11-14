@@ -1,5 +1,5 @@
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import pyqtSignal
+from PyQt6 import QtCore, QtWidgets
+from PyQt6.QtCore import pyqtSignal
 
 from models.const import *
 from uis import crop_frame
@@ -108,14 +108,14 @@ class CropFrameController(QtWidgets.QMainWindow):
 			self.ui.lbl_lt, self.ui.lbl_rt, self.ui.lbl_lb, self.ui.lbl_rb,self.ui.lbl_center,
 			self.ui.lbl_l,self.ui.lbl_r,self.ui.lbl_t,self.ui.lbl_b
 		]
-		if obj in obj_set and event.type() == QtCore.QEvent.MouseButtonPress:
+		if obj in obj_set and event.type() == QtCore.QEvent.Type.MouseButtonPress:
 			#print("mouse down")
 			self.current_drag_obj = obj
 			self.org_frame_rect = self.ui.frame.frameGeometry()
-			self.start_pos = self.current_drag_obj.mapToGlobal(event.pos())
+			self.start_pos = self.current_drag_obj.mapToGlobal(event.position().toPoint())
 			self.start_frame = self.get_frame_rect()
 			self.ui.frame.raise_()
-		elif obj in obj_set and event.type() == QtCore.QEvent.MouseButtonRelease:
+		elif obj in obj_set and event.type() == QtCore.QEvent.Type.MouseButtonRelease:
 			#print("mouse up")
 			self.current_drag_obj = None
 			self.start_pos = None
@@ -124,10 +124,10 @@ class CropFrameController(QtWidgets.QMainWindow):
 				self.update_real_pos_by_frame_changed()
 				self.frame_changed.emit(self)
 			self.org_frame_rect = None
-		elif obj in obj_set and event.type() == QtCore.QEvent.MouseMove:
+		elif obj in obj_set and event.type() == QtCore.QEvent.Type.MouseMove:
 			if self.current_drag_obj and not self.is_moving_frame:
 				#print("mouse move")
-				global_pos = self.current_drag_obj.mapToGlobal(event.pos())
+				global_pos = self.current_drag_obj.mapToGlobal(event.position().toPoint())
 				self.lbl_mouse_move(self.current_drag_obj, global_pos - self.start_pos)
 
 		return super().eventFilter(obj,event)

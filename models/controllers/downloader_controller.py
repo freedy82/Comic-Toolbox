@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from PyQt5 import QtGui
-from PyQt5.QtWidgets import QListWidgetItem
+from PyQt6 import QtGui
+from PyQt6.QtWidgets import QListWidgetItem
 
 from models.const import *
 from models import util
@@ -148,28 +148,28 @@ class DownloaderController(object):
 	def btn_downloader_select_clicked(self):
 		items = self.ui.list_downloader_chapter.selectedItems()
 		for item in items:
-			item.setCheckState(QtCore.Qt.Checked)
+			item.setCheckState(QtCore.Qt.CheckState.Checked)
 		pass
 
 	def btn_downloader_unselect_clicked(self):
 		items = self.ui.list_downloader_chapter.selectedItems()
 		for item in items:
-			item.setCheckState(QtCore.Qt.Unchecked)
+			item.setCheckState(QtCore.Qt.CheckState.Unchecked)
 		pass
 
 	def btn_downloader_select_all_clicked(self):
 		for i in range(self.ui.list_downloader_chapter.count()):
-			self.ui.list_downloader_chapter.item(i).setCheckState(QtCore.Qt.Checked)
+			self.ui.list_downloader_chapter.item(i).setCheckState(QtCore.Qt.CheckState.Checked)
 
 	def btn_downloader_unselect_all_clicked(self):
 		for i in range(self.ui.list_downloader_chapter.count()):
-			self.ui.list_downloader_chapter.item(i).setCheckState(QtCore.Qt.Unchecked)
+			self.ui.list_downloader_chapter.item(i).setCheckState(QtCore.Qt.CheckState.Unchecked)
 
 	def btn_downloader_start_clicked(self):
 		need_download_item_list = []
 		need_download_index_list = []
 		for i in range(self.ui.list_downloader_chapter.count()):
-			if self.ui.list_downloader_chapter.item(i).checkState() == QtCore.Qt.Checked:
+			if self.ui.list_downloader_chapter.item(i).checkState() == QtCore.Qt.CheckState.Checked:
 				need_download_index_list.append(i)
 				#need_download_item_list.append(self.item_list[self.current_type][i])
 		tmp_current_index = -1
@@ -274,7 +274,8 @@ class DownloaderController(object):
 				self.update_chapter_list()
 				pass
 		else:
-			util.msg_box(TRSM("Can not found list"),self.main_controller)
+			message = self.item_list.get("message") if self.item_list else None
+			util.msg_box(message or TRSM("Can not found list"),self.main_controller)
 
 	def chapter_download_trigger(self, message, current_page, total_page, current_chapter, total_chapter):
 		if message != "":
@@ -362,18 +363,18 @@ class DownloaderController(object):
 			is_downloaded = self.check_is_downloaded(tmp_title)
 			tmp_title += " - " + tmp_chapter["title"]
 			item.setText(tmp_title)
-			item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
+			item.setFlags(item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
 
 			q_icon = QtGui.QIcon()
 			if is_downloaded:
-				q_icon.addPixmap(QtGui.QPixmap(":/icon/tick"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-				item.setCheckState(QtCore.Qt.Unchecked)
+				q_icon.addPixmap(QtGui.QPixmap(":/icon/tick"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+				item.setCheckState(QtCore.Qt.CheckState.Unchecked)
 			else:
-				q_icon.addPixmap(QtGui.QPixmap(":/icon/circle"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-				item.setCheckState(QtCore.Qt.Checked)
+				q_icon.addPixmap(QtGui.QPixmap(":/icon/circle"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+				item.setCheckState(QtCore.Qt.CheckState.Checked)
 			item.setIcon(q_icon)
 
-			#item.setCheckState(QtCore.Qt.Unchecked)
+			#item.setCheckState(QtCore.Qt.CheckState.Unchecked)
 			self.ui.list_downloader_chapter.addItem(item)
 
 		if self.ui.list_downloader_chapter.count() > 0:

@@ -1,5 +1,5 @@
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt6 import QtCore, QtWidgets
+from PyQt6.QtCore import Qt, pyqtSignal
 
 from models.const import *
 from models.controllers.reader.helper import *
@@ -20,9 +20,9 @@ class ReaderRotateDialogController(QtWidgets.QDialog):
 		self.setup_control()
 
 	def setup_control(self):
-		self.setWindowFlag(Qt.WindowMinimizeButtonHint, False)
-		self.setWindowFlag(Qt.WindowMaximizeButtonHint, False)
-		self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+		self.setWindowFlag(Qt.WindowType.WindowMinimizeButtonHint, False)
+		self.setWindowFlag(Qt.WindowType.WindowMaximizeButtonHint, False)
+		self.setWindowFlag(Qt.WindowType.WindowContextHelpButtonHint, False)
 
 		if self.file != "":
 			self.ui.cbx_target_image.addItems([self.file])

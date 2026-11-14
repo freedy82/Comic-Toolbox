@@ -1,7 +1,7 @@
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtWidgets import QGraphicsScene, QGraphicsPixmapItem
-from PyQt5.QtCore import Qt
+from PyQt6 import QtCore, QtWidgets
+from PyQt6.QtGui import QPixmap, QImage
+from PyQt6.QtWidgets import QGraphicsScene, QGraphicsPixmapItem
+from PyQt6.QtCore import Qt
 from PIL import Image
 
 from models.const import *
@@ -39,7 +39,7 @@ class CropWindowController(QtWidgets.QMainWindow):
 		self.before_full_screen_is_max = False
 
 	def setup_control(self):
-		self.setWindowFlag(Qt.WindowMinimizeButtonHint, False)
+		self.setWindowFlag(Qt.WindowType.WindowMinimizeButtonHint, False)
 
 		# GUI
 		self.retranslateUi()
@@ -131,7 +131,7 @@ class CropWindowController(QtWidgets.QMainWindow):
 		pixmap_item = QGraphicsPixmapItem(pixmap)
 		scene.addItem(pixmap_item)
 		self.ui.graphics_view.setScene(scene)
-		self.ui.graphics_view.fitInView(scene.sceneRect(),Qt.KeepAspectRatio)
+		self.ui.graphics_view.fitInView(scene.sceneRect(),Qt.AspectRatioMode.KeepAspectRatio)
 
 		self.clear_all_frame_controllers()
 
@@ -183,7 +183,7 @@ class CropWindowController(QtWidgets.QMainWindow):
 			self.current_image_ratio = rect.width() / self.current_image_width
 			#print("current image ratio ",self.current_image_ratio)
 			self.ui.graphics_view.setGeometry(rect)
-			self.ui.graphics_view.fitInView(self.ui.graphics_view.scene().sceneRect(), Qt.KeepAspectRatio)
+			self.ui.graphics_view.fitInView(self.ui.graphics_view.scene().sceneRect(), Qt.AspectRatioMode.KeepAspectRatio)
 		else:
 			#print("not scene")
 			self.ui.graphics_view.setFrameRect(QtCore.QRect(0,0,qr.width(),qr.height()))
@@ -361,10 +361,10 @@ class CropWindowController(QtWidgets.QMainWindow):
 			self.update_crop_frame_by_pos_value()
 
 	def center_pos_of_parent(self):
-		if self.windowState() != QtCore.Qt.WindowMaximized:
+		if self.windowState() != QtCore.Qt.WindowState.WindowMaximized:
 			qr = self.main_controller.frameGeometry()
-			x = qr.left() + (qr.width() - self.width()) / 2
-			y = qr.top() + (qr.height() - self.height()) / 2
+			x = qr.left() + (qr.width() - self.width()) // 2
+			y = qr.top() + (qr.height() - self.height()) // 2
 			self.move(x, y)
 
 	def btn_ignore_clicked(self):
@@ -477,23 +477,23 @@ class CropWindowController(QtWidgets.QMainWindow):
 			event.accept()
 
 	def keyPressEvent(self, e):
-		if e.key() == Qt.Key_F1:
+		if e.key() == Qt.Key.Key_F1:
 			self.btn_process_clicked()
-		if e.key() == Qt.Key_F2:
+		if e.key() == Qt.Key.Key_F2:
 			self.btn_ignore_clicked()
-		if e.key() == Qt.Key_F3:
+		if e.key() == Qt.Key.Key_F3:
 			self.btn_use_rule_clicked()
-		if e.key() == Qt.Key_F4:
+		if e.key() == Qt.Key.Key_F4:
 			self.btn_full_of_image_clicked()
-		if e.key() == Qt.Key_F8:
+		if e.key() == Qt.Key.Key_F8:
 			self.btn_exchange_clicked()
-		if e.key() == Qt.Key_F11:
+		if e.key() == Qt.Key.Key_F11:
 			self.btn_full_screen_clicked()
-		if e.key() == Qt.Key_F12:
+		if e.key() == Qt.Key.Key_F12:
 			self.btn_quit_clicked()
 
 	def eventFilter(self, obj, event):
-		if obj == self.ui.cbx_size_policy and event.type() == event.KeyPress:
+		if obj == self.ui.cbx_size_policy and event.type() == QtCore.QEvent.Type.KeyPress:
 			self.keyPressEvent(event)
 			return True
 		return super(CropWindowController, self).eventFilter(obj,event)

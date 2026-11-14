@@ -11,13 +11,17 @@ class SimpleBubbleDetectEngine(BubbleDetectEngine):
 		super(SimpleBubbleDetectEngine, self).__init__()
 
 	def get_bubble_from_file(self,file_name):
-		#print(f"filename:{file_name}")
-		#original_image = cv2.imread(file_name)
-		original_image = cv2.imdecode(np.fromfile(file_name, dtype=np.uint8), cv2.IMREAD_UNCHANGED)
-		#print(f"org_image {original_image}")
-		height, width, channels = original_image.shape
+		# Keep Unicode filename support and normalize grayscale/RGBA/16-bit
+		# input to the 8-bit BGR image expected by the detection pipeline.
+		encoded_image = np.fromfile(file_name, dtype=np.uint8)
+		if encoded_image.size == 0:
+			raise ValueError("The image could not be decoded.")
+		original_image = cv2.imdecode(encoded_image, cv2.IMREAD_COLOR | cv2.IMREAD_IGNORE_ORIENTATION)
+		if original_image is None:
+			raise ValueError("The image could not be decoded.")
+		height, width = original_image.shape[:2]
 		# draw a 2 line border!
-		original_image = cv2.rectangle(original_image, (0, 0), (original_image.shape[1], original_image.shape[0]), (0, 0, 0,), 2)
+		original_image = cv2.rectangle(original_image, (0, 0), (width - 1, height - 1), (0, 0, 0), 2)
 
 		image = self._preprocess_image(original_image)
 		# show_cv_image(image)
@@ -37,7 +41,8 @@ class SimpleBubbleDetectEngine(BubbleDetectEngine):
 			#print(rectangle)
 
 			#results.append([x0,y0,x1-x0,y1-y0])
-			results.append([new_x0,new_y0,new_x1-new_x0,new_y1-new_y0])
+			if new_x1 > new_x0 and new_y1 > new_y0:
+				results.append([new_x0,new_y0,new_x1-new_x0,new_y1-new_y0])
 
 		return results
 
@@ -51,7 +56,9 @@ class SimpleBubbleDetectEngine(BubbleDetectEngine):
 	@staticmethod
 	def _connected_components(image, offset=10):
 		# CV_16U   CV_32S
-		num_labels, labels, box_stats, centroids = cv2.connectedComponentsWithStats(image, 4, cv2.CV_32S)
+		num_labels, labels, box_stats, centroids = cv2.connectedComponentsWithStats(
+			image, connectivity=4, ltype=cv2.CV_32S
+		)
 		box_area = box_stats[:, 4]
 
 		img_h, img_w = image.shape
@@ -98,14 +105,17 @@ class SimpleBubbleDetectEngine(BubbleDetectEngine):
 			cnts = sorted(contours, key=cv2.contourArea, reverse=True)[:3]
 			for cnt in cnts:
 				approx = cv2.approxPolyDP(cnt, 0.01 * cv2.arcLength(cnt, True), True)
+				cnt_area = cv2.contourArea(cnt)
+				if cnt_area <= 0 or len(approx) < 3:
+					continue
 				# print(f"getContourStat(cnt, image):{getContourStat(cnt, image)}")
 				# Check pixel intensity and discard those lying outside normal (heuristic) range
 				# if getContourStat(cnt, image) > 240 or getContourStat(cnt, image) < 100:
-				if SimpleBubbleDetectEngine._get_contour_stat(cnt, image) > 245 or SimpleBubbleDetectEngine._get_contour_stat(cnt, image) < 100:
+				intensity = SimpleBubbleDetectEngine._get_contour_stat(cnt, image)
+				if intensity > 245 or intensity < 100:
 					continue
 
 				x, y, w, h = cv2.boundingRect(cnt)
-				cnt_area = cv2.contourArea(cnt)
 				circle_radius = cv2.minEnclosingCircle(cnt)[1]
 				circle_area_ratio = int(3.14 * circle_radius ** 2 / (cnt_area + 1e-6))
 				rect_area_ratio = int(w * h / cnt_area)
@@ -141,8 +151,7 @@ class SimpleBubbleDetectEngine(BubbleDetectEngine):
 	def _get_contour_stat(contour, image):
 		mask = np.zeros(image.shape, dtype="uint8")
 		cv2.drawContours(mask, [contour], -1, 255, -1)
-		mean, stddev = cv2.meanStdDev(image, mask=mask)
-		return mean
+		return cv2.mean(image, mask=mask)[0]
 
 	@staticmethod
 	def _calculate_iom(bb1, bb2):
@@ -257,6 +266,9 @@ class SimpleBubbleDetectEngine(BubbleDetectEngine):
 	# ref from https://stackoverflow.com/questions/21410449/how-do-i-crop-to-largest-interior-bounding-box-in-opencv/21479072#21479072
 	@staticmethod
 	def get_maximal_rectangle(contour):
+		# Use Python integers so coordinate products do not overflow NumPy int32
+		# and returned values can be passed directly to Python/Qt APIs.
+		contour = [tuple(map(int, point)) for point in contour]
 		rect = []
 
 		for i in range(len(contour)):

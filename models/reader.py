@@ -2,8 +2,8 @@ import os
 import re
 import importlib
 
-from PyQt5 import QtGui
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6 import QtGui
+from PyQt6.QtCore import QThread, pyqtSignal
 
 from models import util
 from models.const import *

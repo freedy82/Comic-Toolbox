@@ -1,8 +1,8 @@
 import threading
 
-from PyQt5 import QtGui, QtCore, QtWidgets
-from PyQt5.QtCore import QSize, Qt
-from PyQt5.QtWidgets import QWidget, QLabel, QGridLayout, QScrollArea
+from PyQt6 import QtGui, QtCore, QtWidgets
+from PyQt6.QtCore import QSize, Qt
+from PyQt6.QtWidgets import QWidget, QLabel, QGridLayout, QScrollArea
 
 from models.reader import Reader
 from models.controllers.reader.helper import *
@@ -109,6 +109,8 @@ class ReaderImageProcess:
 
 	@staticmethod
 	def get_fit_image_size(area_size,image_size,v_scrollbar_size,h_scrollbar_size,page_fit:PageFit,scroll_flow:ScrollFlow,free_width):
+		if area_size.isEmpty() or image_size.isEmpty():
+			return QSize(1, 1)
 		new_width = image_size.width()
 		new_height = image_size.height()
 		width_rate = height_rate = 1
@@ -136,7 +138,8 @@ class ReaderImageProcess:
 				new_width -= v_scrollbar_size
 				new_height = new_width/image_size.width() * image_size.height()
 
-		return QSize(new_width,new_height)
+		# Aspect-ratio calculations produce floats; Qt requires integer dimensions.
+		return QSize(max(1, int(new_width)), max(1, int(new_height)))
 
 	@staticmethod
 	def update_image_at_scroll_area(
@@ -150,12 +153,14 @@ class ReaderImageProcess:
 			col_add_count = 0
 			for colIdx, file in enumerate(row):
 				q_pixmap = current_reader.get_q_pixmap_from_file(file)
+				if q_pixmap is None or q_pixmap.isNull():
+					continue
 				lbl_tmp = QLabel(scroll_area_widget_contents)
 				lbl_tmp.setLineWidth(0)
 				lbl_tmp.setText("")
 				lbl_tmp.setScaledContents(True)
 				lbl_tmp.setPixmap(q_pixmap)
-				lbl_tmp.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))
+				lbl_tmp.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.OpenHandCursor))
 				lbl_tmp.setWindowFilePath(file)
 				lbl_tmp.installEventFilter(parent_controller)
 				image_size = q_pixmap.size()
@@ -187,25 +192,27 @@ class ReaderImageProcess:
 					col_add_count += 1
 				if page_mode == PageMode.DOUBLE and col_count > 1:
 					if is_2_pages_already:
-						layout_main.setAlignment(lbl_tmp, Qt.AlignHCenter | Qt.AlignCenter)
+						layout_main.setAlignment(lbl_tmp, Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignCenter)
 					elif page_flow == PageFlow.LEFT_TO_RIGHT:
 						if col_add_count == 1:
-							layout_main.setAlignment(lbl_tmp, Qt.AlignHCenter | Qt.AlignRight)
+							layout_main.setAlignment(lbl_tmp, Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignRight)
 						else:
-							layout_main.setAlignment(lbl_tmp, Qt.AlignHCenter | Qt.AlignLeft)
+							layout_main.setAlignment(lbl_tmp, Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignLeft)
 					elif page_flow == PageFlow.RIGHT_TO_LEFT:
 						if col_add_count == 1:
-							layout_main.setAlignment(lbl_tmp, Qt.AlignHCenter | Qt.AlignLeft)
+							layout_main.setAlignment(lbl_tmp, Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignLeft)
 						else:
-							layout_main.setAlignment(lbl_tmp, Qt.AlignHCenter | Qt.AlignRight)
+							layout_main.setAlignment(lbl_tmp, Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignRight)
 				else:
-					layout_main.setAlignment(lbl_tmp, Qt.AlignHCenter | Qt.AlignCenter)
+					layout_main.setAlignment(lbl_tmp, Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignCenter)
 		return tmp_current_image_file
 
 	@staticmethod
 	def update_image_size_inner(
 			area_size,page_mode:PageMode,page_fit:PageFit,scroll_flow:ScrollFlow,pages_ratio_require:float,
 			layout_main:QGridLayout,scroll_area:QScrollArea,page_gap,free_width):
+		if area_size.isEmpty():
+			return 0, 0
 		rows = layout_main.rowCount()
 		#cols = self.ui.layout_main.columnCount()
 		cols = page_mode.value
@@ -223,8 +230,10 @@ class ReaderImageProcess:
 				if layout_main.itemAtPosition(row,col) is not None:
 					tmp_widget = layout_main.itemAtPosition(row,col).widget()
 					if (tmp_widget is not None) and (type(tmp_widget) is QtWidgets.QLabel):
-						if tmp_widget.pixmap() is not None:
-							image_size = tmp_widget.pixmap().size()
+						pixmap = tmp_widget.pixmap()
+						# Qt6 returns a null QPixmap for labels without an image.
+						if pixmap is not None and not pixmap.isNull():
+							image_size = pixmap.size()
 							item_idx = layout_main.indexOf(layout_main.itemAtPosition(row,col))
 							from_row,from_col,from_rowspan,from_colspan = layout_main.getItemPosition(item_idx)
 							total_cols_in_row = ReaderImageProcess.get_cols_in_row(layout_main,row,cols)
@@ -252,11 +261,11 @@ class ReaderImageProcess:
 								if scroll_flow == ScrollFlow.UP_DOWN and page_mode.value > 2:
 									# force display the scroll bar case
 									new_image_size = ReaderImageProcess.get_fit_image_size(
-										QSize((area_size.width() - (page_gap * (total_cols_in_row - 1))) / cols - (v_scrollbar_size / cols) - 1, area_size.height()), image_size,
+										QSize(max(1, int((area_size.width() - (page_gap * (total_cols_in_row - 1))) / cols - (v_scrollbar_size / cols) - 1)), area_size.height()), image_size,
 										0, h_scrollbar_size, page_fit, scroll_flow,free_width)
 								else:
 									new_image_size = ReaderImageProcess.get_fit_image_size(
-										QSize((area_size.width() - (page_gap * (total_cols_in_row - 1))) / cols, area_size.height()),image_size,
+										QSize(max(1, int((area_size.width() - (page_gap * (total_cols_in_row - 1))) / cols)), area_size.height()),image_size,
 										v_scrollbar_size / cols, h_scrollbar_size,page_fit,scroll_flow,free_width)
 								#print(f"new_image_size {new_image_size}")
 							tmp_widget.setFixedSize(new_image_size.width(), new_image_size.height())

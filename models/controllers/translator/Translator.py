@@ -2,6 +2,12 @@ import os
 import re
 import importlib
 
+class TranslationError(RuntimeError):
+	def __init__(self, message, *values):
+		self.message = message
+		self.values = values
+		super().__init__(message % values if values else message)
+
 class TranslatorEngine(object):
 	def __init__(self):
 		super(TranslatorEngine, self).__init__()

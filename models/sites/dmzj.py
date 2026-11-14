@@ -16,7 +16,7 @@ class Dmzj(Site):
 	def __init__(self,web_bot):
 		super().__init__(web_bot)
 		self._home_url = "https://www.dmzj.com"
-		self._site_name = "动漫之家"
+		self._site_name = "动漫之家(不存在)"
 		self._sample_url = ["https://manhua.dmzj.com/yaojingdeweibabainianrenwu/","https://www.dmzj.com/info/yishenji.html"]
 
 	def get_book_id_from_url(self,url):

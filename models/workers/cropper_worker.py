@@ -1,6 +1,6 @@
 import math
 
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QThread, pyqtSignal
 from PIL import Image
 from pathlib import Path
 

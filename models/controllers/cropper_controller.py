@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QFileDialog, QListWidgetItem
+from PyQt6.QtWidgets import QFileDialog, QListWidgetItem
 
 from models.const import *
 from models import util
@@ -160,27 +160,27 @@ class CropperController(object):
 	def btn_cropper_select_clicked(self):
 		items = self.ui.list_cropper_folder.selectedItems()
 		for item in items:
-			item.setCheckState(QtCore.Qt.Checked)
+			item.setCheckState(QtCore.Qt.CheckState.Checked)
 		pass
 
 	def btn_cropper_unselect_clicked(self):
 		items = self.ui.list_cropper_folder.selectedItems()
 		for item in items:
-			item.setCheckState(QtCore.Qt.Unchecked)
+			item.setCheckState(QtCore.Qt.CheckState.Unchecked)
 		pass
 
 	def btn_cropper_select_all_clicked(self):
 		for i in range(self.ui.list_cropper_folder.count()):
-			self.ui.list_cropper_folder.item(i).setCheckState(QtCore.Qt.Checked)
+			self.ui.list_cropper_folder.item(i).setCheckState(QtCore.Qt.CheckState.Checked)
 
 	def btn_cropper_unselect_all_clicked(self):
 		for i in range(self.ui.list_cropper_folder.count()):
-			self.ui.list_cropper_folder.item(i).setCheckState(QtCore.Qt.Unchecked)
+			self.ui.list_cropper_folder.item(i).setCheckState(QtCore.Qt.CheckState.Unchecked)
 
 	def btn_cropper_start_clicked(self):
 		total_need_crop_list = []
 		for i in range(self.ui.list_cropper_folder.count()):
-			if self.ui.list_cropper_folder.item(i).checkState() == QtCore.Qt.Checked:
+			if self.ui.list_cropper_folder.item(i).checkState() == QtCore.Qt.CheckState.Checked:
 				total_need_crop_list.append(self.folder_list[i])
 		#print(total_need_crop_list)
 
@@ -291,8 +291,8 @@ class CropperController(object):
 		for idx, tmp_folder in enumerate(self.folder_list):
 			item = QListWidgetItem()
 			item.setText(tmp_folder)
-			item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
-			item.setCheckState(QtCore.Qt.Checked)
+			item.setFlags(item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+			item.setCheckState(QtCore.Qt.CheckState.Checked)
 			self.ui.list_cropper_folder.addItem(item)
 
 		if self.ui.list_cropper_folder.count() > 0:
