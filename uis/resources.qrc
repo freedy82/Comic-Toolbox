@@ -42,6 +42,7 @@
     <file alias="main_icon">resources/icon.png</file>
     <file alias="language">resources/language.png</file>
     <file alias="full-screen">resources/full-screen.png</file>
+    <file alias="normal-screen">resources/normal-screen.png</file>
     <file alias="help">resources/help.png</file>
   </qresource>
   <qresource prefix="sound">

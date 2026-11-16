@@ -138,5 +138,4 @@ books/
 realcugan-ncnn-vulkan/
 colorize_models/
 realesrgan-ncnn-vulkan/
-uis/ui2py.bat
 models/test_sites/

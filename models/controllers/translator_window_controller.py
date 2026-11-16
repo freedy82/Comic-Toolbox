@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import QFileDialog
 
 from models import util
 from models.const import MY_CONFIG, TRSM
+from models.controllers.fullscreen_icon import FullscreenIcon
 from models.controllers.translator.BoxItem import BoxItem
 from models.controllers.translator.BubbleDetect import BubbleDetectEngine
 from models.controllers.translator.helper import Alignment, Style
@@ -62,6 +63,7 @@ class TranslatorWindowController(QtWidgets.QMainWindow):
         self.before_full_screen_is_max = False
 
         self.setup_control()
+        self.fullscreen_icon = FullscreenIcon(self, self.ui.actionFullscreen)
 
     def setup_control(self):
         self.setWindowFlag(Qt.WindowType.WindowMinimizeButtonHint, False)

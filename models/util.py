@@ -39,10 +39,12 @@ def find_all_themes():
 
 def find_all_fonts():
     fonts = []
-    for file in os.listdir(os.path.join(RESOURCE_DIR, "fonts")):
-        if re.match(r"^[a-zA-Z_].*?\.tt[f|c]$", file):
-            full_path = Path(os.path.join(RESOURCE_DIR, "fonts", file)).as_posix()
-            fonts.append({"name": file, "file": full_path})
+    for path in (RESOURCE_DIR / "fonts").iterdir():
+        if path.is_file() and path.suffix.lower() in {".ttf", ".ttc", ".otf"}:
+            fonts.append({"name": path.name, "file": path.as_posix()})
+    # Keep existing TTF/TTC choices first so adding OTF does not replace the
+    # translator's current default font. Spaces and CJK filenames are allowed.
+    fonts.sort(key=lambda font: Path(font["file"]).suffix.lower() == ".otf")
     return fonts
 
 

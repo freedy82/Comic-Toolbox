@@ -9,6 +9,7 @@ from PyQt6.QtWidgets import QColorDialog, QFileDialog, QMenu, QSizePolicy, QTool
 from models import util
 from models.const import MY_CONFIG, TRSM
 from models.controllers.bookmark_window_controller import BookmarkWindowController
+from models.controllers.fullscreen_icon import FullscreenIcon
 from models.controllers.reader.fullscreen_toolbar import FullscreenToolbar
 from models.controllers.reader.helper import PageFit, PageFlow, PageMode, PageRotate, PageRotateMode, ScrollFlow
 from models.controllers.reader.image_process import ReaderImageProcess
@@ -74,6 +75,7 @@ class ReaderWindowController(QtWidgets.QMainWindow):
 
         self.setup_control()
         apply_native_toolbar(self.app, self.ui.tb_main)
+        self.fullscreen_icon = FullscreenIcon(self, self.ui.actionFullscreen)
         self.fullscreen_toolbar = FullscreenToolbar(self, self.ui.tb_main)
 
     def setup_control(self):
