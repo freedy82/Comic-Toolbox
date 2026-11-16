@@ -835,10 +835,6 @@
         <translation>儲存設定後，在轉換工具中選擇 Real-ESRGAN AI 增強模式。轉換工具的模型清單可另外指定要使用的模型。</translation>
     </message>
     <message>
-        <source>Project page</source>
-        <translation>專案網頁</translation>
-    </message>
-    <message>
         <source>Download Real-ESRGAN</source>
         <translation>下載 Real-ESRGAN</translation>
     </message>
@@ -977,6 +973,169 @@
     <message><source>Splitting %s</source><translation>正在分割 %s</translation></message>
     <message><source>Split %s into %s and %s</source><translation>已將 %s 分割為 %s 和 %s</translation></message>
     <message><source>Could not split %s: %s</source><translation>無法分割 %s：%s</translation></message>
+    <message><source>Manhuagui: The embedded chapter list could not be decoded.</source><translation>漫畫櫃：無法解碼頁面內嵌的章節清單。</translation></message>
+    <message><source>ASCII comic folder names</source><translation>ASCII 漫畫資料夾名稱</translation></message>
+    <message><source>Enable</source><translation>啟用</translation></message>
+    <message><source>Chinese names use Pinyin; other non-ASCII characters use code labels. Applies to new download folders only. The download path must also use ASCII for AI tools.</source><translation>中文名稱轉換為拼音，其他非 ASCII 字元轉換為字元編碼。僅用於新建的下載資料夾。使用 AI 工具時，下載目錄的完整路徑也必須使用 ASCII 字元。</translation></message>
+    <message><source>Bilibili Manga: %s failed (code %s).</source><translation>嗶哩嗶哩漫畫：%s 失敗（代碼 %s）。</translation></message>
+    <message><source>Bilibili Manga requires a valid browser session. Sign in on this page if needed, then click Continue. Only chapters your account can read are supported. Cookies stay in memory until Comic Toolbox closes.</source><translation>嗶哩嗶哩漫畫需要有效的瀏覽器工作階段。如有需要，請在此頁面登入，然後點擊繼續。僅支援您的帳號可以閱讀的章節。Cookie 僅保留在記憶體中，關閉漫畫工具箱後清除。</translation></message>
+    <message><source>Bilibili Manga returned an unsupported API response.</source><translation>嗶哩嗶哩漫畫傳回了不支援的 API 回應。</translation></message>
+    <message><source>Bilibili Manga returned protected API data that this version cannot decode.</source><translation>嗶哩嗶哩漫畫傳回了此版本無法解碼的受保護 API 資料。</translation></message>
+    <message><source>Enter a Bilibili Manga detail or chapter URL.</source><translation>請輸入嗶哩嗶哩漫畫的詳情頁或章節網址。</translation></message>
+    <message><source>Only public preview links could be listed. Downloads still require API access; sign-in alone may not satisfy Bilibili's current request protection.</source><translation>僅能列出公開試讀章節。下載仍需要 API 存取權限，僅登入可能無法通過嗶哩嗶哩目前的請求保護。</translation></message>
+    <message><source>Bilibili Manga: %d locked chapters were omitted. Purchase or unlock them on the official site before checking again.</source><translation>嗶哩嗶哩漫畫：已略過 %d 個未解鎖章節。請先在官方網站購買或解鎖，再重新檢查。</translation></message>
+    <message><source>Bilibili Manga did not return chapter images. The chapter may require login, purchase, or app-only access.</source><translation>嗶哩嗶哩漫畫沒有傳回章節圖片。該章節可能需要登入、購買或使用官方 App 閱讀。</translation></message>
+    <message><source>Bilibili Manga returned an incomplete image-token list.</source><translation>嗶哩嗶哩漫畫傳回的圖片權杖清單不完整。</translation></message>
+    <message><source>Bilibili Manga returned protected images that this version cannot download.</source><translation>嗶哩嗶哩漫畫傳回了此版本無法下載的受保護圖片。</translation></message>
+    <message><source>Bilibili Manga returned an unreadable or protected image; no file was saved.</source><translation>嗶哩嗶哩漫畫傳回了無法讀取或受保護的圖片，未儲存檔案。</translation></message>
+    <message>
+        <source>Colorize</source>
+        <translation>上色</translation>
+    </message>
+    <message>
+        <source>Unknown Colorize model: %s</source>
+        <translation>未知的上色模型：%s</translation>
+    </message>
+    <message>
+        <source>Download %s in Settings &gt; Colorize first.</source>
+        <translation>請先在「設定 &gt; 上色」中下載 %s。</translation>
+    </message>
+    <message>
+        <source>Colorize requires ONNX Runtime. Install the updated requirements.txt, then restart Comic Toolbox.</source>
+        <translation>上色需要 ONNX Runtime。請安裝更新後的 requirements.txt 所列套件，然後重新啟動漫畫工具箱。</translation>
+    </message>
+    <message>
+        <source>Cannot use the Colorize models folder: %s</source>
+        <translation>無法使用上色模型資料夾：%s</translation>
+    </message>
+    <message>
+        <source>The model server returned a webpage instead of a model. Please try again later.</source>
+        <translation>模型伺服器傳回網頁而非模型檔案，請稍後重試。</translation>
+    </message>
+    <message>
+        <source>The model download was incomplete. Please download it again.</source>
+        <translation>模型下載不完整，請重新下載。</translation>
+    </message>
+    <message>
+        <source>Could not load the Colorize model: %s</source>
+        <translation>無法載入上色模型：%s</translation>
+    </message>
+    <message>
+        <source>This ONNX model is incompatible. Download a model from Settings &gt; Colorize.</source>
+        <translation>此 ONNX 模型不相容。請在「設定 &gt; 上色」中下載模型。</translation>
+    </message>
+    <message>
+        <source>Download size: %s MB | %s</source>
+        <translation>下載大小：%s MB | %s</translation>
+    </message>
+    <message>
+        <source>Downloaded</source>
+        <translation>已下載</translation>
+    </message>
+    <message>
+        <source>Not downloaded</source>
+        <translation>未下載</translation>
+    </message>
+    <message>
+        <source>Model download source</source>
+        <translation>模型下載來源</translation>
+    </message>
+    <message>
+        <source>Downloading %s...</source>
+        <translation>正在下載 %s……</translation>
+    </message>
+    <message>
+        <source>Model downloaded. Click Save to use this model in Converter.</source>
+        <translation>模型已下載。按「儲存」後，即可在轉換工具中使用此模型。</translation>
+    </message>
+    <message>
+        <source>Model download failed: %s</source>
+        <translation>模型下載失敗：%s</translation>
+    </message>
+    <message>
+        <source>Model download canceled.</source>
+        <translation>已取消模型下載。</translation>
+    </message>
+    <message>
+        <source>Canceling model download...</source>
+        <translation>正在取消模型下載……</translation>
+    </message>
+    <message>
+        <source>Download selected model</source>
+        <translation>下載所選模型</translation>
+    </message>
+    <message>
+        <source>Colorize model</source>
+        <translation>上色模型</translation>
+    </message>
+    <message>
+        <source>Loading Colorize model %s...</source>
+        <translation>正在載入上色模型 %s……</translation>
+    </message>
+    <message>
+        <source>Colorize could not start: %s</source>
+        <translation>無法啟動上色功能：%s</translation>
+    </message>
+    <message>
+        <source>Colorizing %s with %s</source>
+        <translation>正在為 %s 上色，模型：%s</translation>
+    </message>
+    <message>
+        <source>Colorize could not convert %s: %s</source>
+        <translation>無法為 %s 上色：%s</translation>
+    </message>
+    <message>
+        <source>Conversion failed: %s</source>
+        <translation>轉換失敗：%s</translation>
+    </message>
+    <message>
+        <source>Download a DeOldify or DDColor model, then click Save. Choose Colorize in Converter to colorize images locally. Image dimensions are preserved.</source>
+        <translation>下載 DeOldify 或 DDColor 模型後，按「儲存」。在轉換工具中選擇「上色」，即可在本機處理圖片，並保留原圖尺寸。</translation>
+    </message>
+    <message>
+        <source>Use GPU acceleration (when available)</source>
+        <translation>使用 GPU 加速（可用時）</translation>
+    </message>
+    <message>
+        <source>Enabled by default. Uses a supported GPU; falls back to CPU if GPU acceleration is unavailable. Turn off to use CPU only.</source>
+        <translation>預設啟用。使用受支援的 GPU；GPU 加速無法使用時自動改用 CPU。關閉此選項即可僅使用 CPU。</translation>
+    </message>
+    <message>
+        <source>GPU acceleration is unavailable for this model. Colorize will use CPU.</source>
+        <translation>此模型無法使用 GPU 加速，上色將改用 CPU。</translation>
+    </message>
+    <message>
+        <source>Colorize execution backend: %s</source>
+        <translation>上色運算後端：%s</translation>
+    </message>
+    <message>
+        <source>GPU backend %s could not start: %s</source>
+        <translation>GPU 後端 %s 無法啟動：%s</translation>
+    </message>
+    <message>
+        <source>GPU colorization failed: %s. Retrying this image and continuing on CPU.</source>
+        <translation>GPU 上色失敗：%s。將使用 CPU 重試此圖片，並繼續處理其他圖片。</translation>
+    </message>
+    <message>
+        <source>Already colored; using source %s</source>
+        <translation>圖片已有顏色，使用原圖：%s</translation>
+    </message>
+    <message>
+        <source>Pages already in color skip AI recoloring. Matching formats are copied when image filters are disabled.</source>
+        <translation>已有顏色的圖片將跳過 AI 上色。關閉圖片濾鏡且輸出格式相同時，將直接複製原始檔案。</translation>
+    </message>
+    <message>
+        <source>Archive failed: %s</source>
+        <translation>壓縮失敗：%s</translation>
+    </message>
+    <message>
+        <source>Crop failed: %s</source>
+        <translation>裁剪失敗：%s</translation>
+    </message>
+    <message>
+        <source>Could not save settings: %s</source>
+        <translation>無法儲存設定：%s</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>

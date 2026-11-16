@@ -1,14 +1,13 @@
 from PyQt6 import QtCore
-from PyQt6.QtGui import *
-from PyQt6.QtCore import *
+from PyQt6.QtCore import QPointF, QRectF, pyqtSignal
+from PyQt6.QtGui import QCursor
 from PyQt6.QtWidgets import QGraphicsItem, QGraphicsObject
 
-#from .BoxItem import BoxItem
 
 class ResizerItem(QGraphicsObject):
     startResizeSignal = pyqtSignal()
     resizeSignal = pyqtSignal(QPointF, str)
-    start_pos = QPointF(0,0)
+    start_pos = QPointF(0, 0)
     resize_type_to_cursor = {
         "L": QtCore.Qt.CursorShape.SizeHorCursor,
         "R": QtCore.Qt.CursorShape.SizeHorCursor,
@@ -38,14 +37,12 @@ class ResizerItem(QGraphicsObject):
         pass
 
     def mousePressEvent(self, event):
-        #print("mouse move",event)
         self.start_pos = self.pos()
         self.startResizeSignal.emit()
         super(ResizerItem, self).mousePressEvent(event)
 
     def mouseReleaseEvent(self, event):
         super(ResizerItem, self).mouseReleaseEvent(event)
-        #print("mouse release")
         if self.parent is not None:
             self.setSelected(False)
             self.parent.setSelected(True)
@@ -53,7 +50,6 @@ class ResizerItem(QGraphicsObject):
     def itemChange(self, change, value):
         if change == QGraphicsItem.GraphicsItemChange.ItemPositionChange:
             if self.isSelected():
-                #print(f"value:{value.x()}-{value.y()}")
                 value -= self.start_pos
                 if self.resize_type == "L" or self.resize_type == "R":
                     value.setY(0)

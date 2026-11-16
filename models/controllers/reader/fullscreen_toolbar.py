@@ -97,9 +97,7 @@ class FullscreenToolbar(QtCore.QObject):
         color = self.window.palette().color(self.toolbar.backgroundRole())
         color.setAlpha(255)
         self.overlay.setStyleSheet(
-            "QWidget#reader_fullscreen_toolbar, QToolBar#tb_main {"
-            f"background-color: {color.name()};"
-            "}"
+            f"QWidget#reader_fullscreen_toolbar, QToolBar#tb_main {{background-color: {color.name()};}}"
         )
 
     def _resize_overlay(self):

@@ -226,7 +226,9 @@ class Ui_MainWindow(object):
         self.btn_update_style_to_all_bubble.setObjectName("btn_update_style_to_all_bubble")
         self.layout_text.setWidget(7, QtWidgets.QFormLayout.ItemRole.FieldRole, self.btn_update_style_to_all_bubble)
         self.layout_tool.addLayout(self.layout_text)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         self.layout_tool.addItem(spacerItem)
         self.layout_main.addLayout(self.layout_tool)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -371,11 +373,13 @@ class Ui_MainWindow(object):
         self.actionTranslateThisBubble.setText(_translate("MainWindow", "Translate This Bubble (F4)"))
         self.actionTranslateThisBubble.setToolTip(_translate("MainWindow", "Translate This Bubble (F4)"))
         self.actionTranslateThisBubble.setShortcut(_translate("MainWindow", "F4"))
-from uis import resources_rc
 
+
+from uis import resources_rc
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

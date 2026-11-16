@@ -285,10 +285,6 @@
         <translation>Save these settings, then choose a Real-ESRGAN AI enhance mode in Converter. Its model list can override this selection.</translation>
     </message>
     <message>
-        <source>Project page</source>
-        <translation>Project page</translation>
-    </message>
-    <message>
         <source>Download Real-ESRGAN</source>
         <translation>Download Real-ESRGAN</translation>
     </message>
@@ -427,6 +423,169 @@
     <message><source>Splitting %s</source><translation>Splitting %s</translation></message>
     <message><source>Split %s into %s and %s</source><translation>Split %s into %s and %s</translation></message>
     <message><source>Could not split %s: %s</source><translation>Could not split %s: %s</translation></message>
+    <message><source>Manhuagui: The embedded chapter list could not be decoded.</source><translation>Manhuagui: The embedded chapter list could not be decoded.</translation></message>
+    <message><source>ASCII comic folder names</source><translation>ASCII comic folder names</translation></message>
+    <message><source>Enable</source><translation>Enable</translation></message>
+    <message><source>Chinese names use Pinyin; other non-ASCII characters use code labels. Applies to new download folders only. The download path must also use ASCII for AI tools.</source><translation>Chinese names use Pinyin; other non-ASCII characters use code labels. Applies to new download folders only. The download path must also use ASCII for AI tools.</translation></message>
+    <message><source>Bilibili Manga: %s failed (code %s).</source><translation>Bilibili Manga: %s failed (code %s).</translation></message>
+    <message><source>Bilibili Manga requires a valid browser session. Sign in on this page if needed, then click Continue. Only chapters your account can read are supported. Cookies stay in memory until Comic Toolbox closes.</source><translation>Bilibili Manga requires a valid browser session. Sign in on this page if needed, then click Continue. Only chapters your account can read are supported. Cookies stay in memory until Comic Toolbox closes.</translation></message>
+    <message><source>Bilibili Manga returned an unsupported API response.</source><translation>Bilibili Manga returned an unsupported API response.</translation></message>
+    <message><source>Bilibili Manga returned protected API data that this version cannot decode.</source><translation>Bilibili Manga returned protected API data that this version cannot decode.</translation></message>
+    <message><source>Enter a Bilibili Manga detail or chapter URL.</source><translation>Enter a Bilibili Manga detail or chapter URL.</translation></message>
+    <message><source>Only public preview links could be listed. Downloads still require API access; sign-in alone may not satisfy Bilibili's current request protection.</source><translation>Only public preview links could be listed. Downloads still require API access; sign-in alone may not satisfy Bilibili's current request protection.</translation></message>
+    <message><source>Bilibili Manga: %d locked chapters were omitted. Purchase or unlock them on the official site before checking again.</source><translation>Bilibili Manga: %d locked chapters were omitted. Purchase or unlock them on the official site before checking again.</translation></message>
+    <message><source>Bilibili Manga did not return chapter images. The chapter may require login, purchase, or app-only access.</source><translation>Bilibili Manga did not return chapter images. The chapter may require login, purchase, or app-only access.</translation></message>
+    <message><source>Bilibili Manga returned an incomplete image-token list.</source><translation>Bilibili Manga returned an incomplete image-token list.</translation></message>
+    <message><source>Bilibili Manga returned protected images that this version cannot download.</source><translation>Bilibili Manga returned protected images that this version cannot download.</translation></message>
+    <message><source>Bilibili Manga returned an unreadable or protected image; no file was saved.</source><translation>Bilibili Manga returned an unreadable or protected image; no file was saved.</translation></message>
+    <message>
+        <source>Colorize</source>
+        <translation>Colorize</translation>
+    </message>
+    <message>
+        <source>Unknown Colorize model: %s</source>
+        <translation>Unknown Colorize model: %s</translation>
+    </message>
+    <message>
+        <source>Download %s in Settings &gt; Colorize first.</source>
+        <translation>Download %s in Settings &gt; Colorize first.</translation>
+    </message>
+    <message>
+        <source>Colorize requires ONNX Runtime. Install the updated requirements.txt, then restart Comic Toolbox.</source>
+        <translation>Colorize requires ONNX Runtime. Install the updated requirements.txt, then restart Comic Toolbox.</translation>
+    </message>
+    <message>
+        <source>Cannot use the Colorize models folder: %s</source>
+        <translation>Cannot use the Colorize models folder: %s</translation>
+    </message>
+    <message>
+        <source>The model server returned a webpage instead of a model. Please try again later.</source>
+        <translation>The model server returned a webpage instead of a model. Please try again later.</translation>
+    </message>
+    <message>
+        <source>The model download was incomplete. Please download it again.</source>
+        <translation>The model download was incomplete. Please download it again.</translation>
+    </message>
+    <message>
+        <source>Could not load the Colorize model: %s</source>
+        <translation>Could not load the Colorize model: %s</translation>
+    </message>
+    <message>
+        <source>This ONNX model is incompatible. Download a model from Settings &gt; Colorize.</source>
+        <translation>This ONNX model is incompatible. Download a model from Settings &gt; Colorize.</translation>
+    </message>
+    <message>
+        <source>Download size: %s MB | %s</source>
+        <translation>Download size: %s MB | %s</translation>
+    </message>
+    <message>
+        <source>Downloaded</source>
+        <translation>Downloaded</translation>
+    </message>
+    <message>
+        <source>Not downloaded</source>
+        <translation>Not downloaded</translation>
+    </message>
+    <message>
+        <source>Model download source</source>
+        <translation>Model download source</translation>
+    </message>
+    <message>
+        <source>Downloading %s...</source>
+        <translation>Downloading %s...</translation>
+    </message>
+    <message>
+        <source>Model downloaded. Click Save to use this model in Converter.</source>
+        <translation>Model downloaded. Click Save to use this model in Converter.</translation>
+    </message>
+    <message>
+        <source>Model download failed: %s</source>
+        <translation>Model download failed: %s</translation>
+    </message>
+    <message>
+        <source>Model download canceled.</source>
+        <translation>Model download canceled.</translation>
+    </message>
+    <message>
+        <source>Canceling model download...</source>
+        <translation>Canceling model download...</translation>
+    </message>
+    <message>
+        <source>Download selected model</source>
+        <translation>Download selected model</translation>
+    </message>
+    <message>
+        <source>Colorize model</source>
+        <translation>Colorize model</translation>
+    </message>
+    <message>
+        <source>Loading Colorize model %s...</source>
+        <translation>Loading Colorize model %s...</translation>
+    </message>
+    <message>
+        <source>Colorize could not start: %s</source>
+        <translation>Colorize could not start: %s</translation>
+    </message>
+    <message>
+        <source>Colorizing %s with %s</source>
+        <translation>Colorizing %s with %s</translation>
+    </message>
+    <message>
+        <source>Colorize could not convert %s: %s</source>
+        <translation>Colorize could not convert %s: %s</translation>
+    </message>
+    <message>
+        <source>Conversion failed: %s</source>
+        <translation>Conversion failed: %s</translation>
+    </message>
+    <message>
+        <source>Download a DeOldify or DDColor model, then click Save. Choose Colorize in Converter to colorize images locally. Image dimensions are preserved.</source>
+        <translation>Download a DeOldify or DDColor model, then click Save. Choose Colorize in Converter to colorize images locally. Image dimensions are preserved.</translation>
+    </message>
+    <message>
+        <source>Use GPU acceleration (when available)</source>
+        <translation>Use GPU acceleration (when available)</translation>
+    </message>
+    <message>
+        <source>Enabled by default. Uses a supported GPU; falls back to CPU if GPU acceleration is unavailable. Turn off to use CPU only.</source>
+        <translation>Enabled by default. Uses a supported GPU; falls back to CPU if GPU acceleration is unavailable. Turn off to use CPU only.</translation>
+    </message>
+    <message>
+        <source>GPU acceleration is unavailable for this model. Colorize will use CPU.</source>
+        <translation>GPU acceleration is unavailable for this model. Colorize will use CPU.</translation>
+    </message>
+    <message>
+        <source>Colorize execution backend: %s</source>
+        <translation>Colorize execution backend: %s</translation>
+    </message>
+    <message>
+        <source>GPU backend %s could not start: %s</source>
+        <translation>GPU backend %s could not start: %s</translation>
+    </message>
+    <message>
+        <source>GPU colorization failed: %s. Retrying this image and continuing on CPU.</source>
+        <translation>GPU colorization failed: %s. Retrying this image and continuing on CPU.</translation>
+    </message>
+    <message>
+        <source>Already colored; using source %s</source>
+        <translation>Already colored; using source %s</translation>
+    </message>
+    <message>
+        <source>Pages already in color skip AI recoloring. Matching formats are copied when image filters are disabled.</source>
+        <translation>Pages already in color skip AI recoloring. Matching formats are copied when image filters are disabled.</translation>
+    </message>
+    <message>
+        <source>Archive failed: %s</source>
+        <translation>Archive failed: %s</translation>
+    </message>
+    <message>
+        <source>Crop failed: %s</source>
+        <translation>Crop failed: %s</translation>
+    </message>
+    <message>
+        <source>Could not save settings: %s</source>
+        <translation>Could not save settings: %s</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>

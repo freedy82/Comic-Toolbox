@@ -16,6 +16,7 @@ from models.webbot import BrowserVerificationError
 @dataclass
 class VerificationRequest:
     url: str
+    instructions: str = ""
     done: threading.Event = field(default_factory=threading.Event)
     result: dict = None
     error: str = ""
@@ -37,8 +38,8 @@ class BrowserVerificationBroker(QtCore.QObject):
         self.requested.connect(self._show, QtCore.Qt.ConnectionType.QueuedConnection)
         QtWidgets.QApplication.instance().aboutToQuit.connect(self._shutdown)
 
-    def verify(self, url):
-        request = VerificationRequest(url)
+    def verify(self, url, instructions=""):
+        request = VerificationRequest(url, instructions=instructions)
         with self._lock:
             if self._closing:
                 raise BrowserVerificationError(TRSM("Website verification was cancelled."))
@@ -64,11 +65,14 @@ class BrowserVerificationBroker(QtCore.QObject):
             app = QtWidgets.QApplication.instance()
             font = app.font()
             self._command = {
-                "command": "verify", "url": request.url,
+                "command": "verify",
+                "url": request.url,
+                "instructions": TRSM(request.instructions) if request.instructions else "",
                 "language": MY_CONFIG.get("general", "language"),
                 "theme": MY_CONFIG.get("general", "theme"),
                 "messages": {source: TRSM(source) for source in VERIFICATION_MESSAGES},
-                "font_family": font.family(), "font_size": font.pointSizeF(),
+                "font_family": font.family(),
+                "font_size": font.pointSizeF(),
                 "stylesheet": app.styleSheet(),
             }
             if self._process is None or self._process.state() == QtCore.QProcess.ProcessState.NotRunning:
@@ -99,9 +103,15 @@ class BrowserVerificationBroker(QtCore.QObject):
         self._process = QtCore.QProcess(self)
         # Qt6 must discover its own plugins, resources and subprocess executable.
         environment = QtCore.QProcessEnvironment.systemEnvironment()
-        for name in ("QT_PLUGIN_PATH", "QT_QPA_PLATFORM_PLUGIN_PATH", "QML2_IMPORT_PATH",
-                     "QML_IMPORT_PATH", "QTWEBENGINEPROCESS_PATH", "QTWEBENGINE_RESOURCES_PATH",
-                     "QTWEBENGINE_LOCALES_PATH"):
+        for name in (
+            "QT_PLUGIN_PATH",
+            "QT_QPA_PLATFORM_PLUGIN_PATH",
+            "QML2_IMPORT_PATH",
+            "QML_IMPORT_PATH",
+            "QTWEBENGINEPROCESS_PATH",
+            "QTWEBENGINE_RESOURCES_PATH",
+            "QTWEBENGINE_LOCALES_PATH",
+        ):
             environment.remove(name)
         frozen = getattr(sys, "frozen", False)
         if frozen:
@@ -159,14 +169,17 @@ class BrowserVerificationBroker(QtCore.QObject):
 
     def _process_error(self, error):
         if error == QtCore.QProcess.ProcessError.FailedToStart:
-            self._fail_active("The verification browser could not start.",
-                              TRSM("Details: %s") % self._process.errorString())
+            self._fail_active(
+                "The verification browser could not start.", TRSM("Details: %s") % self._process.errorString()
+            )
 
     def _process_finished(self, exit_code, exit_status):
         self._read_output()
         if self._active is not None and not self._active.done.is_set():
-            self._fail_active("The verification browser closed unexpectedly. Please try again.",
-                              TRSM("Browser exit code: %s") % f"0x{exit_code & 0xFFFFFFFF:08X}")
+            self._fail_active(
+                "The verification browser closed unexpectedly. Please try again.",
+                TRSM("Browser exit code: %s") % f"0x{exit_code & 0xFFFFFFFF:08X}",
+            )
 
     def _shutdown(self):
         with self._lock:

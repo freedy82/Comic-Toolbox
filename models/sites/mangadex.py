@@ -89,9 +89,7 @@ class MangaDex(Site):
                         "MangaDex returned browser verification instead of API data. "
                         "Check site access and try again later."
                     ) from None
-                raise ValueError(
-                    "MangaDex returned a non-JSON response instead of API data."
-                ) from None
+                raise ValueError("MangaDex returned a non-JSON response instead of API data.") from None
         if not isinstance(payload, dict):
             raise ValueError("MangaDex returned an unexpected API response.")
         if payload.get("result") == "error" or payload.get("errors"):
@@ -114,10 +112,7 @@ class MangaDex(Site):
                     else "MangaDex API rate limit reached. Wait before trying again."
                 )
             if exc.code in (401, 403):
-                return (
-                    f"MangaDex denied API access (HTTP {exc.code}). "
-                    "Check site access and network/VPN settings."
-                )
+                return f"MangaDex denied API access (HTTP {exc.code}). Check site access and network/VPN settings."
             if exc.code == 404:
                 return "This MangaDex title or chapter is no longer available (HTTP 404)."
             return f"MangaDex API request failed (HTTP {exc.code})."
@@ -128,9 +123,7 @@ class MangaDex(Site):
     def get_book_title_from_html(self, html_code):
         payload = self._decode_json(html_code)
         titles = payload["data"]["attributes"].get("title") or {}
-        return titles.get("en") or next(
-            (title for title in titles.values() if title), "unknown"
-        )
+        return titles.get("en") or next((title for title in titles.values() if title), "unknown")
 
     def get_book_author_from_html(self, html_code):
         payload = self._decode_json(html_code)
@@ -158,10 +151,7 @@ class MangaDex(Site):
             ]
             # Leave includeExternalUrl unset to fetch both kinds of entries.
             # The chapter parser excludes external publisher links locally.
-            params.extend(
-                ("contentRating[]", rating)
-                for rating in ("safe", "suggestive", "erotica", "pornographic")
-            )
+            params.extend(("contentRating[]", rating) for rating in ("safe", "suggestive", "erotica", "pornographic"))
             feed_url = f"{self._api_url}/manga/{self._book_id}/feed?{urlencode(params)}"
             payload = self._api_json(feed_url)
             batch = payload.get("data")
@@ -194,9 +184,7 @@ class MangaDex(Site):
                     "for this title. Read these chapters on the publisher's website."
                 )
             else:
-                self._availability_message = (
-                    "No downloadable chapters are currently available for this MangaDex title."
-                )
+                self._availability_message = "No downloadable chapters are currently available for this MangaDex title."
         return {"chapter": chapters}
 
     def get_image_list_from_html(self, html_code, url):
@@ -207,10 +195,7 @@ class MangaDex(Site):
             chapter_hash = chapter.get("hash")
             filenames = chapter.get("data")
             if not base_url or not chapter_hash or not isinstance(filenames, list) or not filenames:
-                raise ValueError(
-                    "No image data was returned for this chapter; "
-                    "it may no longer be hosted on MangaDex."
-                )
+                raise ValueError("No image data was returned for this chapter; it may no longer be hosted on MangaDex.")
             prefix = base_url.rstrip("/") + "/data/" + quote(chapter_hash, safe="") + "/"
             images = [
                 {
@@ -266,7 +251,4 @@ class MangaDex(Site):
         language = (attributes.get("translatedLanguage") or "und").upper()
         volume = attributes.get("volume")
         chapter = attributes.get("chapter")
-        return (
-            f"{language}_Vol{volume if volume is not None else 'No'}"
-            f"Ch{chapter if chapter is not None else 'No'}"
-        )
+        return f"{language}_Vol{volume if volume is not None else 'No'}Ch{chapter if chapter is not None else 'No'}"

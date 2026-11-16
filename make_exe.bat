@@ -18,6 +18,16 @@ if errorlevel 1 goto failed
 
 :install
 echo Installing project and build dependencies...
+rem Migrate old x64 environments to DirectML. Runtime variants share files,
+rem so remove conflicting packages before reinstalling the selected backend.
+".venv\Scripts\python.exe" -c "import platform, sys; from importlib.metadata import distributions; names = {d.metadata['Name'].lower() for d in distributions()}; sys.exit(0 if platform.machine() == 'AMD64' and names.intersection({'onnxruntime', 'onnxruntime-gpu'}) else 1)"
+if errorlevel 1 goto requirements
+".venv\Scripts\python.exe" -m pip uninstall -y onnxruntime onnxruntime-gpu
+if errorlevel 1 goto failed
+".venv\Scripts\python.exe" -m pip install --force-reinstall --no-deps "onnxruntime-directml>=1.24.4,<2"
+if errorlevel 1 goto failed
+
+:requirements
 ".venv\Scripts\python.exe" -m pip install -r "requirements.txt"
 if errorlevel 1 goto failed
 ".venv\Scripts\python.exe" -m pip install --upgrade "PyInstaller>=6.22.3,<7" pyinstaller-hooks-contrib
@@ -40,11 +50,34 @@ echo Building Comic Toolbox and its verification browser...
 if errorlevel 1 goto failed
 
 echo.
+echo Copying local settings and bookmarks into the application folder...
+for %%F in (bookmarks.ini setting.ini) do (
+    if exist "%%F" (
+        copy /Y "%%F" "dist\ComicToolbox\%%F" >nul
+        if errorlevel 1 goto failed
+        echo Copied %%F.
+    ) else (
+        echo %%F not found in the project root; skipped.
+    )
+)
+
+echo.
+echo Copying local Colorize models into the application folder...
+if exist "colorize_models\" (
+    robocopy "colorize_models" "dist\ComicToolbox\colorize_models" /E /XJ /R:1 /W:1 /XF *.part /NFL /NDL /NJH /NJS /NP
+    if errorlevel 8 goto failed
+    echo Copied colorize_models.
+) else (
+    echo colorize_models not found in the project root; skipped.
+)
+
+echo.
 echo Build complete: %CD%\dist\ComicToolbox\ComicToolbox.exe
 echo The browser helper, supporting DLLs, Python packages and resources are grouped in _internal.
 echo Unused QML, video, Tkinter, debug resources and extra Qt languages are excluded.
-echo Distribute the ENTIRE dist\ComicToolbox folder, including _internal.
-echo Personal settings, bookmarks, downloaded comics and AI model packages are not copied.
+echo Use make_zip.bat for distribution; it excludes setting.ini, bookmarks.ini and colorize_models.
+echo Keep the entire application folder, including _internal, together.
+echo Local Colorize models are included beside the EXE when available.
 echo Node.js, Tesseract and Real-CUGAN/Real-ESRGAN remain optional external tools.
 echo.
 popd

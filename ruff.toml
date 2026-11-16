@@ -1,0 +1,14 @@
+target-version = "py311"
+line-length = 120
+extend-exclude = ["build", "dist", "tools", "models/test_sites", "uis/resources_rc.py"]
+
+[lint]
+select = ["E9", "F", "I"]
+
+[lint.per-file-ignores]
+# pyuic6 emits imports that register the compiled icons and other Qt resources.
+"uis/*.py" = ["F401"]
+
+[format]
+indent-style = "space"
+quote-style = "double"

@@ -101,6 +101,24 @@ QToolButton:checked {
 	border: none;
 }
 
+QToolBar QToolButton:enabled:hover {
+    background-color: #636363;
+    color: #F0F0F0;
+    border: 1px solid #909090;
+    border-radius: 2px;
+}
+
+QToolBar QToolButton:enabled:pressed,
+QToolBar QToolButton:enabled:open {
+    background-color: #383838;
+    border: 1px solid #909090;
+    border-radius: 2px;
+}
+
+QToolBar QToolButton::menu-button:hover {
+    background-color: #636363;
+}
+
 QSlider::handle {
 	background-color: #383838;
 }

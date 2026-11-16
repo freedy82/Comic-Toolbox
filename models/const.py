@@ -1,20 +1,23 @@
-import os
 import concurrent.futures
+import os
+import threading
+import xml.etree.ElementTree as ET
 from functools import lru_cache
 from pathlib import Path
-import xml.etree.ElementTree as ET
+
 from PyQt6 import QtCore
 
-from models.webbot import WebBot
 from models.config import MyConfig
+from models.webbot import WebBot
 
 ROOT_DIR = os.getcwd()
 # PyInstaller resolves module paths inside _internal; editable user data stays
 # under ROOT_DIR, while packaged assets follow this resource directory.
 RESOURCE_DIR = Path(__file__).resolve().parent.parent
 MY_CONFIG = MyConfig(os.path.join(ROOT_DIR, "setting.ini"))
-MY_BOOKMARK = MyConfig(os.path.join(ROOT_DIR, "bookmarks.ini"),need_init_as_config=False)
+MY_BOOKMARK = MyConfig(os.path.join(ROOT_DIR, "bookmarks.ini"), need_init_as_config=False)
 TRS = QtCore.QCoreApplication.translate
+
 
 @lru_cache(maxsize=8)
 def _extra_messages(language):
@@ -36,11 +39,13 @@ def _extra_messages(language):
                     messages[message.findtext("source")] = text
     return messages
 
+
 def TRSM(str_name):
     translated = TRS("MainWindow", str_name)
     if translated == str_name:
         return _extra_messages(MY_CONFIG.get("general", "language")).get(str_name, translated)
     return translated
+
 
 APP_VERSION = "0.9.2"
 APP_LINK = "https://github.com/freedy82/Comic-Toolbox"
@@ -49,16 +54,39 @@ APP_LICENSE_LINK = "https://github.com/freedy82/Comic-Toolbox/blob/main/LICENSE"
 APP_AUTHOR = "Freedy Lam"
 APP_AUTHOR_LINK = "https://github.com/freedy82"
 
-IMAGE_EXTS = ("jpg","gif","png","jpeg","webp")
+IMAGE_EXTS = ("jpg", "gif", "png", "jpeg", "webp")
 
 # should not change below debug only
-DOWNLOAD_IMAGES_PER_BOOK = 0    # 0 for unlimited, number for fast debug
-BY_PASS_DOWNLOAD = False        # debug
+DOWNLOAD_IMAGES_PER_BOOK = 0  # 0 for unlimited, number for fast debug
+BY_PASS_DOWNLOAD = False  # debug
 
-WEB_BOT = WebBot(agent=MY_CONFIG.get("general", "agent"),
-                 time_out=float(MY_CONFIG.get("general", "timeout")),
-                 max_retry=int(MY_CONFIG.get("general", "max_retry")),
-                 proxy_mode=int(MY_CONFIG.get("anti-ban", "proxy_mode")),
-                 proxy_list=MY_CONFIG.get("anti-ban", "proxy_list")
-                 )
-EXECUTOR = concurrent.futures.ThreadPoolExecutor(max_workers=int(MY_CONFIG.get("anti-ban", "download_worker")))
+WEB_BOT = WebBot(
+    agent=MY_CONFIG.get("general", "agent"),
+    time_out=float(MY_CONFIG.get("general", "timeout")),
+    max_retry=int(MY_CONFIG.get("general", "max_retry")),
+    proxy_mode=int(MY_CONFIG.get("anti-ban", "proxy_mode")),
+    proxy_list=MY_CONFIG.get("anti-ban", "proxy_list"),
+)
+_download_worker_count = MY_CONFIG.getint("anti-ban", "download_worker")
+_executor_lock = threading.Lock()
+EXECUTOR = concurrent.futures.ThreadPoolExecutor(max_workers=_download_worker_count)
+
+
+def set_download_workers(max_workers):
+    """Update the shared pool while allowing already submitted jobs to finish."""
+    global EXECUTOR, _download_worker_count
+    with _executor_lock:
+        if max_workers == _download_worker_count:
+            return
+        replacement = concurrent.futures.ThreadPoolExecutor(max_workers=max_workers)
+        previous = EXECUTOR
+        EXECUTOR = replacement
+        _download_worker_count = max_workers
+    previous.shutdown(wait=False)
+
+
+def submit_download(function, *args, **kwargs):
+    # Keep pool replacement and submission atomic so saving settings cannot
+    # submit a new job to a pool which has just been shut down.
+    with _executor_lock:
+        return EXECUTOR.submit(function, *args, **kwargs)

@@ -36,11 +36,13 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.txt_supported_site = QtWidgets.QTextBrowser(self.tab_page1)
         self.txt_supported_site.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
-        self.txt_supported_site.setHtml("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>")
+        self.txt_supported_site.setHtml(
+            '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n'
+            '<html><head><meta name="qrichtext" content="1" /><style type="text/css">\n'
+            "p, li { white-space: pre-wrap; }\n"
+            '</style></head><body style=" font-weight:400; font-style:normal;">\n'
+            '<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p></body></html>'
+        )
         self.txt_supported_site.setAcceptRichText(True)
         self.txt_supported_site.setOpenExternalLinks(True)
         self.txt_supported_site.setObjectName("txt_supported_site")
@@ -63,20 +65,24 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.tab_main.setCurrentIndex(0)
-        self.btn_box.accepted.connect(MainWindow.accept) # type: ignore
-        self.btn_box.rejected.connect(MainWindow.reject) # type: ignore
+        self.btn_box.accepted.connect(MainWindow.accept)  # type: ignore
+        self.btn_box.rejected.connect(MainWindow.reject)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Comic Toolbox"))
-        self.tab_main.setTabText(self.tab_main.indexOf(self.tab_page1), _translate("MainWindow", "About supported site"))
+        self.tab_main.setTabText(
+            self.tab_main.indexOf(self.tab_page1), _translate("MainWindow", "About supported site")
+        )
         self.tab_main.setTabText(self.tab_main.indexOf(self.tab_page2), _translate("MainWindow", "Other"))
-from uis import resources_rc
 
+
+from uis import resources_rc
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QDialog()
     ui = Ui_MainWindow()

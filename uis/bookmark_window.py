@@ -41,7 +41,9 @@ class Ui_MainWindow(object):
         self.btn_delete = QtWidgets.QPushButton(self.centralwidget)
         self.btn_delete.setObjectName("btn_delete")
         self.layout_button.addWidget(self.btn_delete)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum
+        )
         self.layout_button.addItem(spacerItem)
         self.btn_load = QtWidgets.QPushButton(self.centralwidget)
         self.btn_load.setObjectName("btn_load")
@@ -58,11 +60,13 @@ class Ui_MainWindow(object):
         self.btn_close.setText(_translate("MainWindow", "Close"))
         self.btn_delete.setText(_translate("MainWindow", "Delete"))
         self.btn_load.setText(_translate("MainWindow", "Load"))
-from uis import resources_rc
 
+
+from uis import resources_rc
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

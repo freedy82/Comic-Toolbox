@@ -14,12 +14,26 @@ excluded_bindings = ["PyQt5", "PySide2", "PySide6"]
 # WebEngine links against, but do not collect Python QML bindings and the whole
 # QML plugin tree. Also omit optional tools imported by third-party libraries.
 unused_modules = [
-    "PyQt6.QtQml", "PyQt6.QtQuick", "PyQt6.QtQuickWidgets",
-    "PyQt6.QtQuick3D", "PyQt6.QtWebEngineQuick",
-    "PyQt6.QtDesigner", "PyQt6.QtHelp", "PyQt6.QtTest", "PyQt6.uic",
-    "tkinter", "_tkinter", "PIL.ImageTk",
-    "pytest", "unittest", "_testcapi", "_testinternalcapi",
-    "IPython", "matplotlib", "pandas", "scipy",
+    "PyQt6.QtQml",
+    "PyQt6.QtQuick",
+    "PyQt6.QtQuickWidgets",
+    "PyQt6.QtQuick3D",
+    "PyQt6.QtWebEngineQuick",
+    "PyQt6.QtDesigner",
+    "PyQt6.QtHelp",
+    "PyQt6.QtTest",
+    "PyQt6.uic",
+    "tkinter",
+    "_tkinter",
+    "PIL.ImageTk",
+    "pytest",
+    "unittest",
+    "_testcapi",
+    "_testinternalcapi",
+    "IPython",
+    "matplotlib",
+    "pandas",
+    "scipy",
 ]
 
 
@@ -36,11 +50,18 @@ def keep_runtime_file(entry):
         if "/qtwebengine_locales/" in destination:
             return filename in {"en-US.pak", "en-GB.pak", "zh-CN.pak", "zh-TW.pak"}
         if filename.endswith(".qm"):
-            return filename.endswith((
-                "_en.qm", "_en_US.qm", "_en_GB.qm",
-                "_zh_CN.qm", "_zh_TW.qm", "_zh_HK.qm",
-            ))
+            return filename.endswith(
+                (
+                    "_en.qm",
+                    "_en_US.qm",
+                    "_en_GB.qm",
+                    "_zh_CN.qm",
+                    "_zh_TW.qm",
+                    "_zh_HK.qm",
+                )
+            )
     return True
+
 
 # These modules are imported by name after scanning their source directories.
 # Keep the directory entries as well as analyzing their Python dependencies.
@@ -61,6 +82,8 @@ for folder in plugin_folders:
         hidden_imports.append(".".join(path.relative_to(project).with_suffix("").parts))
 
 # Include runtime assets explicitly rather than copying entire source folders.
+# ONNX Runtime's standard hook collects its DirectML/CPU libraries. Colorize weights
+# are downloaded separately at runtime and are deliberately not bundled here.
 for path in sorted((project / "languages").iterdir()):
     if path.is_file() and (path.suffix == ".qm" or path.name.endswith("_extra.ts")):
         app_data.append((str(path), "languages"))
@@ -72,6 +95,7 @@ for path in sorted((project / "fonts").iterdir()):
 app_data.append((str(project / "LICENSE"), "."))
 for package in ("language_data", "langcodes", "docx"):
     app_data += collect_data_files(package)
+app_data += collect_data_files("pypinyin", includes=["pinyin_dict.json", "phrases_dict.json"])
 for distribution in ("googletrans", "language_data", "langcodes", "PyMuPDF"):
     app_data += copy_metadata(distribution)
 

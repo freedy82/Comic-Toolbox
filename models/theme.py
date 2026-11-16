@@ -55,8 +55,7 @@ def _native_menu_layout(app):
     text_width = option.fontMetrics.horizontalAdvance(option.text)
     text_height = option.fontMetrics.height()
     item_size = style.sizeFromContents(
-        QtWidgets.QStyle.ContentsType.CT_MenuItem, option,
-        QtCore.QSize(text_width, max(text_height, icon_size)), menu
+        QtWidgets.QStyle.ContentsType.CT_MenuItem, option, QtCore.QSize(text_width, max(text_height, icon_size)), menu
     )
     bar_padding = max(0, bar_item.width() - text_width)
     bar_left = bar_padding // 2
@@ -111,6 +110,45 @@ def apply_theme(app, name):
     if name not in ("", "default"):
         theme_style = app._menu_layout_style + "\n" + theme_style
     app.setStyleSheet(theme_style)
+    # Existing rich text retains the link colors from the palette it was
+    # parsed with. Refresh it after Qt applies the new color scheme, using
+    # the same native link color as a newly opened About Qt dialog.
+    QtCore.QTimer.singleShot(0, lambda: _refresh_link_colors(app))
+
+
+def _refresh_link_colors(app):
+    link_color = app.palette("QMessageBox").color(QtGui.QPalette.ColorRole.Link)
+    for widget in app.allWidgets():
+        if isinstance(widget, QtWidgets.QLabel):
+            text = widget.text()
+            if widget.textFormat() != QtCore.Qt.TextFormat.PlainText and "<a " in text.lower():
+                if text == widget.property("_theme_link_rendered"):
+                    text = widget.property("_theme_link_original")
+                rendered = f"<style>a {{color: {link_color.name()};}}</style>{text}"
+                widget.setProperty("_theme_link_original", text)
+                widget.setProperty("_theme_link_rendered", rendered)
+                widget.setText(rendered)
+        elif isinstance(widget, QtWidgets.QTextBrowser):
+            # HTML exported by QTextDocument stores explicit colors. Update
+            # anchor fragments directly, preserving the content and scroll.
+            document = widget.document()
+            anchors = []
+            block = document.begin()
+            while block.isValid():
+                iterator = block.begin()
+                while not iterator.atEnd():
+                    fragment = iterator.fragment()
+                    if fragment.isValid() and fragment.charFormat().anchorHref():
+                        anchors.append((fragment.position(), fragment.length()))
+                    iterator += 1
+                block = block.next()
+            link_format = QtGui.QTextCharFormat()
+            link_format.setForeground(link_color)
+            cursor = QtGui.QTextCursor(document)
+            for position, length in anchors:
+                cursor.setPosition(position)
+                cursor.setPosition(position + length, QtGui.QTextCursor.MoveMode.KeepAnchor)
+                cursor.mergeCharFormat(link_format)
 
 
 def apply_native_layout(app, ui):
@@ -126,7 +164,9 @@ def apply_native_layout(app, ui):
             margins = app._native_layout_margins if isinstance(item.parent(), QtWidgets.QWidget) else QtCore.QMargins()
             item.setContentsMargins(margins)
             item.setSpacing(app._native_layout_spacing)
-        elif control_style is not None and isinstance(item, (QtWidgets.QProgressBar, QtWidgets.QMenuBar, QtWidgets.QMenu)):
+        elif control_style is not None and isinstance(
+            item, (QtWidgets.QProgressBar, QtWidgets.QMenuBar, QtWidgets.QMenu)
+        ):
             item.setStyle(control_style)
 
 

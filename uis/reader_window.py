@@ -29,15 +29,17 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.pgb_auto_play = QtWidgets.QProgressBar(self.mainwidget)
         self.pgb_auto_play.setMaximumSize(QtCore.QSize(16777215, 1))
-        self.pgb_auto_play.setStyleSheet("QProgressBar\n"
-"{\n"
-"border: 0px;\n"
-"background-color: #000000;\n"
-"}\n"
-"QProgressBar::chunk \n"
-"{\n"
-"background-color: #888888;\n"
-"}")
+        self.pgb_auto_play.setStyleSheet(
+            "QProgressBar\n"
+            "{\n"
+            "border: 0px;\n"
+            "background-color: #000000;\n"
+            "}\n"
+            "QProgressBar::chunk \n"
+            "{\n"
+            "background-color: #888888;\n"
+            "}"
+        )
         self.pgb_auto_play.setProperty("value", 0)
         self.pgb_auto_play.setTextVisible(False)
         self.pgb_auto_play.setFormat("%p%")
@@ -54,18 +56,23 @@ class Ui_MainWindow(object):
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 878, 424))
-        self.scrollAreaWidgetContents.setStyleSheet("background-color: #000000;\n"
-"color: #FFFFFF;")
+        self.scrollAreaWidgetContents.setStyleSheet("background-color: #000000;\ncolor: #FFFFFF;")
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.gridLayout = QtWidgets.QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName("gridLayout")
-        spacerItem = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            0, 0, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         self.gridLayout.addItem(spacerItem, 0, 1, 1, 1)
-        spacerItem1 = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            0, 0, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         self.gridLayout.addItem(spacerItem1, 2, 1, 1, 1)
-        spacerItem2 = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            0, 0, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum
+        )
         self.gridLayout.addItem(spacerItem2, 1, 2, 1, 1)
         self.layout_main = QtWidgets.QGridLayout()
         self.layout_main.setSpacing(0)
@@ -80,7 +87,9 @@ class Ui_MainWindow(object):
         self.lbl_tmp.setObjectName("lbl_tmp")
         self.layout_main.addWidget(self.lbl_tmp, 0, 0, 1, 1)
         self.gridLayout.addLayout(self.layout_main, 1, 1, 1, 1)
-        spacerItem3 = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem3 = QtWidgets.QSpacerItem(
+            0, 0, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum
+        )
         self.gridLayout.addItem(spacerItem3, 1, 0, 1, 1)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.scrollArea)
@@ -288,11 +297,13 @@ class Ui_MainWindow(object):
         self.actionAutoPlay.setToolTip(_translate("MainWindow", "Start or Pause Auto Play (k)"))
         self.actionRotateAllImage.setText(_translate("MainWindow", "Rotate all image"))
         self.actionRotateAllImage.setToolTip(_translate("MainWindow", "Rotate all image"))
-from uis import resources_rc
 
+
+from uis import resources_rc
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

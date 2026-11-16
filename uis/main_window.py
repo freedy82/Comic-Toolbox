@@ -21,14 +21,23 @@ class Ui_MainWindow(object):
         MainWindow.setWindowIcon(icon)
         MainWindow.setDocumentMode(True)
         MainWindow.setTabShape(QtWidgets.QTabWidget.TabShape.Triangular)
-        MainWindow.setDockOptions(QtWidgets.QMainWindow.DockOption.AllowNestedDocks|QtWidgets.QMainWindow.DockOption.AllowTabbedDocks|QtWidgets.QMainWindow.DockOption.AnimatedDocks|QtWidgets.QMainWindow.DockOption.ForceTabbedDocks|QtWidgets.QMainWindow.DockOption.GroupedDragging|QtWidgets.QMainWindow.DockOption.VerticalTabs)
+        MainWindow.setDockOptions(
+            QtWidgets.QMainWindow.DockOption.AllowNestedDocks
+            | QtWidgets.QMainWindow.DockOption.AllowTabbedDocks
+            | QtWidgets.QMainWindow.DockOption.AnimatedDocks
+            | QtWidgets.QMainWindow.DockOption.ForceTabbedDocks
+            | QtWidgets.QMainWindow.DockOption.GroupedDragging
+            | QtWidgets.QMainWindow.DockOption.VerticalTabs
+        )
         MainWindow.setUnifiedTitleAndToolBarOnMac(True)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName("verticalLayout")
         self.tabMainWidget = QtWidgets.QTabWidget(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.tabMainWidget.sizePolicy().hasHeightForWidth())
@@ -37,7 +46,9 @@ class Ui_MainWindow(object):
         self.tabMainWidget.setElideMode(QtCore.Qt.TextElideMode.ElideNone)
         self.tabMainWidget.setObjectName("tabMainWidget")
         self.tab_downloader = QtWidgets.QWidget()
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.tab_downloader.sizePolicy().hasHeightForWidth())
@@ -111,7 +122,9 @@ class Ui_MainWindow(object):
         self.lbl_downloader_type.setObjectName("lbl_downloader_type")
         self.layout_downloader_info.addWidget(self.lbl_downloader_type, 1, 2, 1, 1)
         self.cbx_downloader_type = QtWidgets.QComboBox(self.tab_downloader)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.cbx_downloader_type.sizePolicy().hasHeightForWidth())
@@ -153,10 +166,14 @@ class Ui_MainWindow(object):
         self.layout_downloader_exist.setObjectName("layout_downloader_exist")
         self.lbl_downloader_file_exist = QtWidgets.QLabel(self.tab_downloader)
         self.lbl_downloader_file_exist.setObjectName("lbl_downloader_file_exist")
-        self.layout_downloader_exist.setWidget(0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_downloader_file_exist)
+        self.layout_downloader_exist.setWidget(
+            0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_downloader_file_exist
+        )
         self.cbx_downloader_file_exist = QtWidgets.QComboBox(self.tab_downloader)
         self.cbx_downloader_file_exist.setObjectName("cbx_downloader_file_exist")
-        self.layout_downloader_exist.setWidget(0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.cbx_downloader_file_exist)
+        self.layout_downloader_exist.setWidget(
+            0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.cbx_downloader_file_exist
+        )
         self.verticalLayout_2.addLayout(self.layout_downloader_exist)
         self.layout_downloader_button = QtWidgets.QHBoxLayout()
         self.layout_downloader_button.setObjectName("layout_downloader_button")
@@ -215,7 +232,9 @@ class Ui_MainWindow(object):
         self.btn_converter_folder_scan = QtWidgets.QPushButton(self.tab_converter)
         self.btn_converter_folder_scan.setObjectName("btn_converter_folder_scan")
         self.layout_converter_from.addWidget(self.btn_converter_folder_scan)
-        self.layout_converter_from_main.setLayout(0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.layout_converter_from)
+        self.layout_converter_from_main.setLayout(
+            0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.layout_converter_from
+        )
         self.verticalLayout_4.addLayout(self.layout_converter_from_main)
         self.layout_converter_folder = QtWidgets.QHBoxLayout()
         self.layout_converter_folder.setObjectName("layout_converter_folder")
@@ -272,10 +291,14 @@ class Ui_MainWindow(object):
         self.layout_converter_main.setWidget(3, QtWidgets.QFormLayout.ItemRole.FieldRole, self.cbx_converter_exist)
         self.lbl_converter_remove_source = QtWidgets.QLabel(self.tab_converter)
         self.lbl_converter_remove_source.setObjectName("lbl_converter_remove_source")
-        self.layout_converter_main.setWidget(4, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_converter_remove_source)
+        self.layout_converter_main.setWidget(
+            4, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_converter_remove_source
+        )
         self.cbx_converter_remove_source = QtWidgets.QComboBox(self.tab_converter)
         self.cbx_converter_remove_source.setObjectName("cbx_converter_remove_source")
-        self.layout_converter_main.setWidget(4, QtWidgets.QFormLayout.ItemRole.FieldRole, self.cbx_converter_remove_source)
+        self.layout_converter_main.setWidget(
+            4, QtWidgets.QFormLayout.ItemRole.FieldRole, self.cbx_converter_remove_source
+        )
         self.lbl_converter_filter = QtWidgets.QLabel(self.tab_converter)
         self.lbl_converter_filter.setObjectName("lbl_converter_filter")
         self.layout_converter_main.setWidget(5, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_converter_filter)
@@ -322,7 +345,9 @@ class Ui_MainWindow(object):
         self.layout_cropper_from_main.setObjectName("layout_cropper_from_main")
         self.lbl_cropper_form_folder = QtWidgets.QLabel(self.tab_cropper)
         self.lbl_cropper_form_folder.setObjectName("lbl_cropper_form_folder")
-        self.layout_cropper_from_main.setWidget(0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_cropper_form_folder)
+        self.layout_cropper_from_main.setWidget(
+            0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_cropper_form_folder
+        )
         self.layout_copper_from = QtWidgets.QHBoxLayout()
         self.layout_copper_from.setObjectName("layout_copper_from")
         self.txt_cropper_from_folder = QtWidgets.QLineEdit(self.tab_cropper)
@@ -473,7 +498,11 @@ class Ui_MainWindow(object):
         self.lbl_archiver_combie.setObjectName("lbl_archiver_combie")
         self.layout_archiver_info.setWidget(2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_archiver_combie)
         self.spin_archiver_combie = QtWidgets.QSpinBox(self.tab_archiver)
-        self.spin_archiver_combie.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_archiver_combie.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_archiver_combie.setMinimum(1)
         self.spin_archiver_combie.setMaximum(100)
         self.spin_archiver_combie.setObjectName("spin_archiver_combie")
@@ -515,7 +544,11 @@ class Ui_MainWindow(object):
         self.tab_settings_general = QtWidgets.QWidget()
         self.tab_settings_general.setObjectName("tab_settings_general")
         self.formLayout = QtWidgets.QFormLayout(self.tab_settings_general)
-        self.formLayout.setLabelAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.formLayout.setLabelAlignment(
+            QtCore.Qt.AlignmentFlag.AlignLeading
+            | QtCore.Qt.AlignmentFlag.AlignLeft
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.formLayout.setObjectName("formLayout")
         self.lbl_settings_general_folder = QtWidgets.QLabel(self.tab_settings_general)
         self.lbl_settings_general_folder.setObjectName("lbl_settings_general_folder")
@@ -534,7 +567,11 @@ class Ui_MainWindow(object):
         self.lbl_settings_max_retry.setObjectName("lbl_settings_max_retry")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_max_retry)
         self.spin_settings_max_retry = QtWidgets.QSpinBox(self.tab_settings_general)
-        self.spin_settings_max_retry.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_settings_max_retry.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_settings_max_retry.setMaximum(10)
         self.spin_settings_max_retry.setProperty("value", 5)
         self.spin_settings_max_retry.setObjectName("spin_settings_max_retry")
@@ -544,7 +581,11 @@ class Ui_MainWindow(object):
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_timeout)
         self.spin_settings_timeout = QtWidgets.QDoubleSpinBox(self.tab_settings_general)
         self.spin_settings_timeout.setToolTip("10-120")
-        self.spin_settings_timeout.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_settings_timeout.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_settings_timeout.setDecimals(1)
         self.spin_settings_timeout.setMinimum(10.0)
         self.spin_settings_timeout.setMaximum(120.0)
@@ -557,7 +598,9 @@ class Ui_MainWindow(object):
         self.formLayout.setWidget(4, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_user_agent)
         self.cbx_settings_user_agent = QtWidgets.QComboBox(self.tab_settings_general)
         self.cbx_settings_user_agent.setEditable(True)
-        self.cbx_settings_user_agent.setSizeAdjustPolicy(QtWidgets.QComboBox.SizeAdjustPolicy.AdjustToContentsOnFirstShow)
+        self.cbx_settings_user_agent.setSizeAdjustPolicy(
+            QtWidgets.QComboBox.SizeAdjustPolicy.AdjustToContentsOnFirstShow
+        )
         self.cbx_settings_user_agent.setObjectName("cbx_settings_user_agent")
         self.formLayout.setWidget(4, QtWidgets.QFormLayout.ItemRole.FieldRole, self.cbx_settings_user_agent)
         self.lbl_settings_book_padding = QtWidgets.QLabel(self.tab_settings_general)
@@ -565,7 +608,11 @@ class Ui_MainWindow(object):
         self.formLayout.setWidget(5, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_book_padding)
         self.spin_settings_book_padding = QtWidgets.QSpinBox(self.tab_settings_general)
         self.spin_settings_book_padding.setToolTip("1-6")
-        self.spin_settings_book_padding.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_settings_book_padding.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_settings_book_padding.setMinimum(1)
         self.spin_settings_book_padding.setMaximum(6)
         self.spin_settings_book_padding.setProperty("value", 2)
@@ -576,7 +623,11 @@ class Ui_MainWindow(object):
         self.formLayout.setWidget(6, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_chapter_padding)
         self.spin_settings_chapter_padding = QtWidgets.QSpinBox(self.tab_settings_general)
         self.spin_settings_chapter_padding.setToolTip("1-6")
-        self.spin_settings_chapter_padding.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_settings_chapter_padding.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_settings_chapter_padding.setMinimum(1)
         self.spin_settings_chapter_padding.setMaximum(6)
         self.spin_settings_chapter_padding.setProperty("value", 3)
@@ -587,7 +638,11 @@ class Ui_MainWindow(object):
         self.formLayout.setWidget(7, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_image_padding)
         self.spin_settings_image_padding = QtWidgets.QSpinBox(self.tab_settings_general)
         self.spin_settings_image_padding.setToolTip("1-6")
-        self.spin_settings_image_padding.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_settings_image_padding.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_settings_image_padding.setMinimum(1)
         self.spin_settings_image_padding.setMaximum(6)
         self.spin_settings_image_padding.setProperty("value", 3)
@@ -598,7 +653,11 @@ class Ui_MainWindow(object):
         self.formLayout.setWidget(8, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_jpg_quality)
         self.spin_settings_jpg_quality = QtWidgets.QSpinBox(self.tab_settings_general)
         self.spin_settings_jpg_quality.setToolTip("1-100")
-        self.spin_settings_jpg_quality.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_settings_jpg_quality.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_settings_jpg_quality.setMinimum(1)
         self.spin_settings_jpg_quality.setMaximum(100)
         self.spin_settings_jpg_quality.setProperty("value", 90)
@@ -609,12 +668,22 @@ class Ui_MainWindow(object):
         self.formLayout.setWidget(9, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_check_is_2_page)
         self.spin_settings_check_is_2_page = QtWidgets.QDoubleSpinBox(self.tab_settings_general)
         self.spin_settings_check_is_2_page.setToolTip("0.7-3.0")
-        self.spin_settings_check_is_2_page.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_settings_check_is_2_page.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_settings_check_is_2_page.setDecimals(1)
         self.spin_settings_check_is_2_page.setSingleStep(0.1)
         self.spin_settings_check_is_2_page.setProperty("value", 1.0)
         self.spin_settings_check_is_2_page.setObjectName("spin_settings_check_is_2_page")
         self.formLayout.setWidget(9, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_settings_check_is_2_page)
+        self.lbl_settings_ascii_comic_names = QtWidgets.QLabel(self.tab_settings_general)
+        self.lbl_settings_ascii_comic_names.setObjectName("lbl_settings_ascii_comic_names")
+        self.formLayout.setWidget(10, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_ascii_comic_names)
+        self.chk_settings_ascii_comic_names = QtWidgets.QCheckBox(self.tab_settings_general)
+        self.chk_settings_ascii_comic_names.setObjectName("chk_settings_ascii_comic_names")
+        self.formLayout.setWidget(10, QtWidgets.QFormLayout.ItemRole.FieldRole, self.chk_settings_ascii_comic_names)
         self.tab_settings_inner.addTab(self.tab_settings_general, "")
         self.tab_settings_anti_ban = QtWidgets.QWidget()
         self.tab_settings_anti_ban.setObjectName("tab_settings_anti_ban")
@@ -624,46 +693,76 @@ class Ui_MainWindow(object):
         self.layout_settings_anti_ban.setObjectName("layout_settings_anti_ban")
         self.lbl_settings_page_sleep = QtWidgets.QLabel(self.tab_settings_anti_ban)
         self.lbl_settings_page_sleep.setObjectName("lbl_settings_page_sleep")
-        self.layout_settings_anti_ban.setWidget(0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_page_sleep)
+        self.layout_settings_anti_ban.setWidget(
+            0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_page_sleep
+        )
         self.spin_settings_page_sleep = QtWidgets.QDoubleSpinBox(self.tab_settings_anti_ban)
-        self.spin_settings_page_sleep.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_settings_page_sleep.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_settings_page_sleep.setDecimals(1)
         self.spin_settings_page_sleep.setMaximum(20.0)
         self.spin_settings_page_sleep.setSingleStep(0.5)
         self.spin_settings_page_sleep.setProperty("value", 8.0)
         self.spin_settings_page_sleep.setObjectName("spin_settings_page_sleep")
-        self.layout_settings_anti_ban.setWidget(0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_settings_page_sleep)
+        self.layout_settings_anti_ban.setWidget(
+            0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_settings_page_sleep
+        )
         self.lbl_settings_image_sleep = QtWidgets.QLabel(self.tab_settings_anti_ban)
         self.lbl_settings_image_sleep.setObjectName("lbl_settings_image_sleep")
-        self.layout_settings_anti_ban.setWidget(1, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_image_sleep)
+        self.layout_settings_anti_ban.setWidget(
+            1, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_image_sleep
+        )
         self.spin_settings_image_sleep = QtWidgets.QDoubleSpinBox(self.tab_settings_anti_ban)
-        self.spin_settings_image_sleep.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_settings_image_sleep.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_settings_image_sleep.setDecimals(1)
         self.spin_settings_image_sleep.setMaximum(10.0)
         self.spin_settings_image_sleep.setSingleStep(0.5)
         self.spin_settings_image_sleep.setProperty("value", 0.5)
         self.spin_settings_image_sleep.setObjectName("spin_settings_image_sleep")
-        self.layout_settings_anti_ban.setWidget(1, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_settings_image_sleep)
+        self.layout_settings_anti_ban.setWidget(
+            1, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_settings_image_sleep
+        )
         self.lbl_settings_download_worker = QtWidgets.QLabel(self.tab_settings_anti_ban)
         self.lbl_settings_download_worker.setObjectName("lbl_settings_download_worker")
-        self.layout_settings_anti_ban.setWidget(2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_download_worker)
+        self.layout_settings_anti_ban.setWidget(
+            2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_download_worker
+        )
         self.spin_settings_download_worker = QtWidgets.QSpinBox(self.tab_settings_anti_ban)
-        self.spin_settings_download_worker.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_settings_download_worker.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_settings_download_worker.setMinimum(1)
         self.spin_settings_download_worker.setMaximum(20)
         self.spin_settings_download_worker.setProperty("value", 2)
         self.spin_settings_download_worker.setObjectName("spin_settings_download_worker")
-        self.layout_settings_anti_ban.setWidget(2, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_settings_download_worker)
+        self.layout_settings_anti_ban.setWidget(
+            2, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_settings_download_worker
+        )
         self.lbl_settings_proxy_mode = QtWidgets.QLabel(self.tab_settings_anti_ban)
         self.lbl_settings_proxy_mode.setObjectName("lbl_settings_proxy_mode")
-        self.layout_settings_anti_ban.setWidget(3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_proxy_mode)
+        self.layout_settings_anti_ban.setWidget(
+            3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_proxy_mode
+        )
         self.cbx_settings_proxy_mode = QtWidgets.QComboBox(self.tab_settings_anti_ban)
         self.cbx_settings_proxy_mode.setObjectName("cbx_settings_proxy_mode")
-        self.layout_settings_anti_ban.setWidget(3, QtWidgets.QFormLayout.ItemRole.FieldRole, self.cbx_settings_proxy_mode)
+        self.layout_settings_anti_ban.setWidget(
+            3, QtWidgets.QFormLayout.ItemRole.FieldRole, self.cbx_settings_proxy_mode
+        )
         self.verticalLayout_9.addLayout(self.layout_settings_anti_ban)
         self.group_settings_proxy_list = QtWidgets.QGroupBox(self.tab_settings_anti_ban)
         self.group_settings_proxy_list.setEnabled(True)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.group_settings_proxy_list.sizePolicy().hasHeightForWidth())
@@ -712,7 +811,9 @@ class Ui_MainWindow(object):
         self.layout_settings_proxy_button.addWidget(self.btn_settings_proxy_delete)
         self.horizontalLayout_2.addLayout(self.layout_settings_proxy_button)
         self.verticalLayout_9.addWidget(self.group_settings_proxy_list)
-        spacerItem = QtWidgets.QSpacerItem(20, 97, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 97, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         self.verticalLayout_9.addItem(spacerItem)
         self.tab_settings_inner.addTab(self.tab_settings_anti_ban, "")
         self.tab_settings_reader = QtWidgets.QWidget()
@@ -741,7 +842,9 @@ class Ui_MainWindow(object):
         self.formLayout_2.setLayout(0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.layout_settings_reader_background)
         self.lbl_settings_reader_auto_play_pgb_color = QtWidgets.QLabel(self.tab_settings_reader)
         self.lbl_settings_reader_auto_play_pgb_color.setObjectName("lbl_settings_reader_auto_play_pgb_color")
-        self.formLayout_2.setWidget(1, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_reader_auto_play_pgb_color)
+        self.formLayout_2.setWidget(
+            1, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_reader_auto_play_pgb_color
+        )
         self.layout_settings_reader_auto_play_pgb_color = QtWidgets.QHBoxLayout()
         self.layout_settings_reader_auto_play_pgb_color.setObjectName("layout_settings_reader_auto_play_pgb_color")
         self.lbl_settings_reader_auto_play_pgb_color_preview = QtWidgets.QLabel(self.tab_settings_reader)
@@ -750,7 +853,9 @@ class Ui_MainWindow(object):
         self.lbl_settings_reader_auto_play_pgb_color_preview.setFrameShape(QtWidgets.QFrame.Shape.Panel)
         self.lbl_settings_reader_auto_play_pgb_color_preview.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.lbl_settings_reader_auto_play_pgb_color_preview.setText("")
-        self.lbl_settings_reader_auto_play_pgb_color_preview.setObjectName("lbl_settings_reader_auto_play_pgb_color_preview")
+        self.lbl_settings_reader_auto_play_pgb_color_preview.setObjectName(
+            "lbl_settings_reader_auto_play_pgb_color_preview"
+        )
         self.layout_settings_reader_auto_play_pgb_color.addWidget(self.lbl_settings_reader_auto_play_pgb_color_preview)
         self.txt_settings_reader_auto_play_pgb_color = QtWidgets.QLineEdit(self.tab_settings_reader)
         self.txt_settings_reader_auto_play_pgb_color.setObjectName("txt_settings_reader_auto_play_pgb_color")
@@ -758,19 +863,29 @@ class Ui_MainWindow(object):
         self.btn_settings_reader_auto_play_pgb_color = QtWidgets.QPushButton(self.tab_settings_reader)
         self.btn_settings_reader_auto_play_pgb_color.setObjectName("btn_settings_reader_auto_play_pgb_color")
         self.layout_settings_reader_auto_play_pgb_color.addWidget(self.btn_settings_reader_auto_play_pgb_color)
-        self.formLayout_2.setLayout(1, QtWidgets.QFormLayout.ItemRole.FieldRole, self.layout_settings_reader_auto_play_pgb_color)
+        self.formLayout_2.setLayout(
+            1, QtWidgets.QFormLayout.ItemRole.FieldRole, self.layout_settings_reader_auto_play_pgb_color
+        )
         self.lbl_settings_reader_auto_play_interval = QtWidgets.QLabel(self.tab_settings_reader)
         self.lbl_settings_reader_auto_play_interval.setObjectName("lbl_settings_reader_auto_play_interval")
-        self.formLayout_2.setWidget(2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_reader_auto_play_interval)
+        self.formLayout_2.setWidget(
+            2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_reader_auto_play_interval
+        )
         self.spin_settings_reader_auto_play_interval = QtWidgets.QDoubleSpinBox(self.tab_settings_reader)
-        self.spin_settings_reader_auto_play_interval.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_settings_reader_auto_play_interval.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_settings_reader_auto_play_interval.setDecimals(1)
         self.spin_settings_reader_auto_play_interval.setMinimum(0.5)
         self.spin_settings_reader_auto_play_interval.setMaximum(20.0)
         self.spin_settings_reader_auto_play_interval.setSingleStep(0.5)
         self.spin_settings_reader_auto_play_interval.setProperty("value", 5.0)
         self.spin_settings_reader_auto_play_interval.setObjectName("spin_settings_reader_auto_play_interval")
-        self.formLayout_2.setWidget(2, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_settings_reader_auto_play_interval)
+        self.formLayout_2.setWidget(
+            2, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_settings_reader_auto_play_interval
+        )
         self.lbl_settings_reader_auto_play_pgb = QtWidgets.QLabel(self.tab_settings_reader)
         self.lbl_settings_reader_auto_play_pgb.setObjectName("lbl_settings_reader_auto_play_pgb")
         self.formLayout_2.setWidget(3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_reader_auto_play_pgb)
@@ -781,7 +896,11 @@ class Ui_MainWindow(object):
         self.lbl_settings_reader_page_gap.setObjectName("lbl_settings_reader_page_gap")
         self.formLayout_2.setWidget(4, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_reader_page_gap)
         self.spin_settings_reader_page_gap = QtWidgets.QSpinBox(self.tab_settings_reader)
-        self.spin_settings_reader_page_gap.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_settings_reader_page_gap.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_settings_reader_page_gap.setObjectName("spin_settings_reader_page_gap")
         self.formLayout_2.setWidget(4, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_settings_reader_page_gap)
         self.tab_settings_inner.addTab(self.tab_settings_reader, "")
@@ -793,7 +912,9 @@ class Ui_MainWindow(object):
         self.layout_settings_cugan_main.setObjectName("layout_settings_cugan_main")
         self.lbl_settings_cugan_location = QtWidgets.QLabel(self.tab_settings_cugan)
         self.lbl_settings_cugan_location.setObjectName("lbl_settings_cugan_location")
-        self.layout_settings_cugan_main.setWidget(1, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_cugan_location)
+        self.layout_settings_cugan_main.setWidget(
+            1, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_cugan_location
+        )
         self.layout_settings_cugan = QtWidgets.QHBoxLayout()
         self.layout_settings_cugan.setObjectName("layout_settings_cugan")
         self.txt_settings_cugan_location = QtWidgets.QLineEdit(self.tab_settings_cugan)
@@ -803,42 +924,68 @@ class Ui_MainWindow(object):
         self.btn_settings_cugan_browser = QtWidgets.QPushButton(self.tab_settings_cugan)
         self.btn_settings_cugan_browser.setObjectName("btn_settings_cugan_browser")
         self.layout_settings_cugan.addWidget(self.btn_settings_cugan_browser)
-        self.layout_settings_cugan_main.setLayout(1, QtWidgets.QFormLayout.ItemRole.FieldRole, self.layout_settings_cugan)
+        self.layout_settings_cugan_main.setLayout(
+            1, QtWidgets.QFormLayout.ItemRole.FieldRole, self.layout_settings_cugan
+        )
         self.lbl_settings_cugan_scale = QtWidgets.QLabel(self.tab_settings_cugan)
         self.lbl_settings_cugan_scale.setObjectName("lbl_settings_cugan_scale")
-        self.layout_settings_cugan_main.setWidget(2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_cugan_scale)
+        self.layout_settings_cugan_main.setWidget(
+            2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_cugan_scale
+        )
         self.spin_settings_cugan_scale = QtWidgets.QSpinBox(self.tab_settings_cugan)
         self.spin_settings_cugan_scale.setToolTip("2-4")
-        self.spin_settings_cugan_scale.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_settings_cugan_scale.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_settings_cugan_scale.setMinimum(2)
         self.spin_settings_cugan_scale.setMaximum(4)
         self.spin_settings_cugan_scale.setProperty("value", 2)
         self.spin_settings_cugan_scale.setObjectName("spin_settings_cugan_scale")
-        self.layout_settings_cugan_main.setWidget(2, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_settings_cugan_scale)
+        self.layout_settings_cugan_main.setWidget(
+            2, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_settings_cugan_scale
+        )
         self.lbl_settings_cugan_donoise = QtWidgets.QLabel(self.tab_settings_cugan)
         self.lbl_settings_cugan_donoise.setObjectName("lbl_settings_cugan_donoise")
-        self.layout_settings_cugan_main.setWidget(3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_cugan_donoise)
+        self.layout_settings_cugan_main.setWidget(
+            3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_cugan_donoise
+        )
         self.cbx_settings_cugan_denoise = QtWidgets.QComboBox(self.tab_settings_cugan)
         self.cbx_settings_cugan_denoise.setObjectName("cbx_settings_cugan_denoise")
-        self.layout_settings_cugan_main.setWidget(3, QtWidgets.QFormLayout.ItemRole.FieldRole, self.cbx_settings_cugan_denoise)
+        self.layout_settings_cugan_main.setWidget(
+            3, QtWidgets.QFormLayout.ItemRole.FieldRole, self.cbx_settings_cugan_denoise
+        )
         self.lbl_settings_cugan_download = QtWidgets.QLabel(self.tab_settings_cugan)
         self.lbl_settings_cugan_download.setObjectName("lbl_settings_cugan_download")
-        self.layout_settings_cugan_main.setWidget(0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_cugan_download)
+        self.layout_settings_cugan_main.setWidget(
+            0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_cugan_download
+        )
         self.lbl_settings_cugan_link = QtWidgets.QLabel(self.tab_settings_cugan)
-        self.lbl_settings_cugan_link.setText("<a href=\"https://github.com/nihui/realcugan-ncnn-vulkan\">https://github.com/nihui/realcugan-ncnn-vulkan</a>")
+        self.lbl_settings_cugan_link.setText(
+            '<a href="https://github.com/nihui/realcugan-ncnn-vulkan">https://github.com/nihui/realcugan-ncnn-vulkan</a>'
+        )
         self.lbl_settings_cugan_link.setTextFormat(QtCore.Qt.TextFormat.RichText)
         self.lbl_settings_cugan_link.setOpenExternalLinks(True)
         self.lbl_settings_cugan_link.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextBrowserInteraction)
         self.lbl_settings_cugan_link.setObjectName("lbl_settings_cugan_link")
-        self.layout_settings_cugan_main.setWidget(0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lbl_settings_cugan_link)
+        self.layout_settings_cugan_main.setWidget(
+            0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lbl_settings_cugan_link
+        )
         self.lbl_settings_cugan_resize = QtWidgets.QLabel(self.tab_settings_cugan)
         self.lbl_settings_cugan_resize.setObjectName("lbl_settings_cugan_resize")
-        self.layout_settings_cugan_main.setWidget(4, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_cugan_resize)
+        self.layout_settings_cugan_main.setWidget(
+            4, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_cugan_resize
+        )
         self.cbx_settings_cugan_resize = QtWidgets.QComboBox(self.tab_settings_cugan)
         self.cbx_settings_cugan_resize.setObjectName("cbx_settings_cugan_resize")
-        self.layout_settings_cugan_main.setWidget(4, QtWidgets.QFormLayout.ItemRole.FieldRole, self.cbx_settings_cugan_resize)
+        self.layout_settings_cugan_main.setWidget(
+            4, QtWidgets.QFormLayout.ItemRole.FieldRole, self.cbx_settings_cugan_resize
+        )
         self.verticalLayout_8.addLayout(self.layout_settings_cugan_main)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 256, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            20, 256, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         self.verticalLayout_8.addItem(spacerItem1)
         self.tab_settings_inner.addTab(self.tab_settings_cugan, "")
         self.tab_settings_misc = QtWidgets.QWidget()
@@ -847,11 +994,19 @@ class Ui_MainWindow(object):
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.layout_settings_misc = QtWidgets.QFormLayout()
         self.layout_settings_misc.setFieldGrowthPolicy(QtWidgets.QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
-        self.layout_settings_misc.setLabelAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
-        self.layout_settings_misc.setFormAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.layout_settings_misc.setLabelAlignment(
+            QtCore.Qt.AlignmentFlag.AlignLeading
+            | QtCore.Qt.AlignmentFlag.AlignLeft
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
+        self.layout_settings_misc.setFormAlignment(
+            QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop
+        )
         self.layout_settings_misc.setObjectName("layout_settings_misc")
         self.lbl_settings_message = QtWidgets.QLabel(self.tab_settings_misc)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_settings_message.sizePolicy().hasHeightForWidth())
@@ -888,7 +1043,9 @@ class Ui_MainWindow(object):
         self.layout_settings_message.addWidget(self.radio_settings_message_no)
         self.layout_settings_misc.setLayout(0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.layout_settings_message)
         self.lbl_settings_sound = QtWidgets.QLabel(self.tab_settings_misc)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_settings_sound.sizePolicy().hasHeightForWidth())
@@ -926,10 +1083,14 @@ class Ui_MainWindow(object):
         self.layout_settings_misc.setLayout(1, QtWidgets.QFormLayout.ItemRole.FieldRole, self.layout_settings_sound)
         self.lbl_settings_when_close_window = QtWidgets.QLabel(self.tab_settings_misc)
         self.lbl_settings_when_close_window.setObjectName("lbl_settings_when_close_window")
-        self.layout_settings_misc.setWidget(2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_when_close_window)
+        self.layout_settings_misc.setWidget(
+            2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_settings_when_close_window
+        )
         self.cbx_settings_when_close_window = QtWidgets.QComboBox(self.tab_settings_misc)
         self.cbx_settings_when_close_window.setObjectName("cbx_settings_when_close_window")
-        self.layout_settings_misc.setWidget(2, QtWidgets.QFormLayout.ItemRole.FieldRole, self.cbx_settings_when_close_window)
+        self.layout_settings_misc.setWidget(
+            2, QtWidgets.QFormLayout.ItemRole.FieldRole, self.cbx_settings_when_close_window
+        )
         self.verticalLayout_7.addLayout(self.layout_settings_misc)
         self.tab_settings_inner.addTab(self.tab_settings_misc, "")
         self.verticalLayout_3.addWidget(self.tab_settings_inner)
@@ -938,7 +1099,9 @@ class Ui_MainWindow(object):
         self.btn_settings_reset = QtWidgets.QPushButton(self.tab_settings)
         self.btn_settings_reset.setObjectName("btn_settings_reset")
         self.layout_settings_button.addWidget(self.btn_settings_reset)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum
+        )
         self.layout_settings_button.addItem(spacerItem2)
         self.btn_settings_save = QtWidgets.QPushButton(self.tab_settings)
         self.btn_settings_save.setObjectName("btn_settings_save")
@@ -1043,7 +1206,9 @@ class Ui_MainWindow(object):
         self.pgb_downloader_current.setFormat(_translate("MainWindow", " %v/%m (%p%)"))
         self.lbl_downloader_total.setText(_translate("MainWindow", "Total download"))
         self.pgb_downloader_total.setFormat(_translate("MainWindow", " %v/%m (%p%)"))
-        self.tabMainWidget.setTabText(self.tabMainWidget.indexOf(self.tab_downloader), _translate("MainWindow", "Downloader"))
+        self.tabMainWidget.setTabText(
+            self.tabMainWidget.indexOf(self.tab_downloader), _translate("MainWindow", "Downloader")
+        )
         self.lbl_converter_from.setText(_translate("MainWindow", "From folder"))
         self.txt_converter_from_folder.setToolTip(_translate("MainWindow", "Please select the comic series folder"))
         self.btn_converter_from_browser.setToolTip(_translate("MainWindow", "Please select the comic series folder"))
@@ -1063,7 +1228,9 @@ class Ui_MainWindow(object):
         self.btn_converter_start.setText(_translate("MainWindow", "Start Convert"))
         self.btn_converter_cancel.setText(_translate("MainWindow", "Cancel Convert"))
         self.pgb_converter.setFormat(_translate("MainWindow", " %v/%m (%p%)"))
-        self.tabMainWidget.setTabText(self.tabMainWidget.indexOf(self.tab_converter), _translate("MainWindow", "Converter"))
+        self.tabMainWidget.setTabText(
+            self.tabMainWidget.indexOf(self.tab_converter), _translate("MainWindow", "Converter")
+        )
         self.lbl_cropper_form_folder.setText(_translate("MainWindow", "From folder"))
         self.txt_cropper_from_folder.setToolTip(_translate("MainWindow", "Please select the comic series folder"))
         self.btn_cropper_from_folder.setToolTip(_translate("MainWindow", "Please select the comic series folder"))
@@ -1097,7 +1264,9 @@ class Ui_MainWindow(object):
         self.btn_archiver_start.setText(_translate("MainWindow", "Start Archiver"))
         self.btn_archiver_cancel.setText(_translate("MainWindow", "Cancel Archiver"))
         self.pgb_archiver.setFormat(_translate("MainWindow", " %v/%m (%p%)"))
-        self.tabMainWidget.setTabText(self.tabMainWidget.indexOf(self.tab_archiver), _translate("MainWindow", "Archiver"))
+        self.tabMainWidget.setTabText(
+            self.tabMainWidget.indexOf(self.tab_archiver), _translate("MainWindow", "Archiver")
+        )
         self.lbl_settings_general_folder.setText(_translate("MainWindow", "Download folder"))
         self.btn_settings_general_folder.setText(_translate("MainWindow", "Browser"))
         self.lbl_settings_max_retry.setText(_translate("MainWindow", "Max retry"))
@@ -1108,8 +1277,14 @@ class Ui_MainWindow(object):
         self.lbl_settings_chapter_padding.setText(_translate("MainWindow", "Chapter folder zero padding"))
         self.lbl_settings_image_padding.setText(_translate("MainWindow", "Image file zero padding"))
         self.lbl_settings_jpg_quality.setText(_translate("MainWindow", "JPG quality"))
-        self.lbl_settings_check_is_2_page.setText(_translate("MainWindow", "Check is 2 page, width/height ratio larger than"))
-        self.tab_settings_inner.setTabText(self.tab_settings_inner.indexOf(self.tab_settings_general), _translate("MainWindow", "General"))
+        self.lbl_settings_check_is_2_page.setText(
+            _translate("MainWindow", "Check is 2 page, width/height ratio larger than")
+        )
+        self.lbl_settings_ascii_comic_names.setText(_translate("MainWindow", "ASCII comic folder names"))
+        self.chk_settings_ascii_comic_names.setText(_translate("MainWindow", "Enable"))
+        self.tab_settings_inner.setTabText(
+            self.tab_settings_inner.indexOf(self.tab_settings_general), _translate("MainWindow", "General")
+        )
         self.lbl_settings_page_sleep.setText(_translate("MainWindow", "Page sleep"))
         self.spin_settings_page_sleep.setSuffix(_translate("MainWindow", "s"))
         self.lbl_settings_image_sleep.setText(_translate("MainWindow", "Image sleep"))
@@ -1120,34 +1295,48 @@ class Ui_MainWindow(object):
         self.txt_settings_proxy_ip.setToolTip(_translate("MainWindow", "IP:PORT"))
         self.btn_settings_proxy_add.setText(_translate("MainWindow", "Add"))
         self.btn_settings_proxy_delete.setText(_translate("MainWindow", "Delete"))
-        self.tab_settings_inner.setTabText(self.tab_settings_inner.indexOf(self.tab_settings_anti_ban), _translate("MainWindow", "Anti Ban"))
+        self.tab_settings_inner.setTabText(
+            self.tab_settings_inner.indexOf(self.tab_settings_anti_ban), _translate("MainWindow", "Anti Ban")
+        )
         self.lbl_settings_reader_background.setText(_translate("MainWindow", "Reader background"))
         self.btn_settings_reader_background.setText(_translate("MainWindow", "Pick a color"))
         self.lbl_settings_reader_auto_play_pgb_color.setText(_translate("MainWindow", "Auto-play progress bar color"))
         self.btn_settings_reader_auto_play_pgb_color.setText(_translate("MainWindow", "Pick a color"))
         self.lbl_settings_reader_auto_play_interval.setText(_translate("MainWindow", "Reader auto play interval"))
         self.spin_settings_reader_auto_play_interval.setSuffix(_translate("MainWindow", "s"))
-        self.lbl_settings_reader_auto_play_pgb.setText(_translate("MainWindow", "Reader auto play display progress bar"))
+        self.lbl_settings_reader_auto_play_pgb.setText(
+            _translate("MainWindow", "Reader auto play display progress bar")
+        )
         self.lbl_settings_reader_page_gap.setText(_translate("MainWindow", "Reader page gap"))
-        self.tab_settings_inner.setTabText(self.tab_settings_inner.indexOf(self.tab_settings_reader), _translate("MainWindow", "Reader"))
+        self.tab_settings_inner.setTabText(
+            self.tab_settings_inner.indexOf(self.tab_settings_reader), _translate("MainWindow", "Reader")
+        )
         self.lbl_settings_cugan_location.setText(_translate("MainWindow", "EXE Location"))
         self.btn_settings_cugan_browser.setText(_translate("MainWindow", "Browser"))
         self.lbl_settings_cugan_scale.setText(_translate("MainWindow", "Scale"))
         self.lbl_settings_cugan_donoise.setText(_translate("MainWindow", "Denoise level"))
         self.lbl_settings_cugan_download.setText(_translate("MainWindow", "Can download from"))
         self.lbl_settings_cugan_resize.setText(_translate("MainWindow", "Resize to same as source image after convert"))
-        self.tab_settings_inner.setTabText(self.tab_settings_inner.indexOf(self.tab_settings_cugan), _translate("MainWindow", "Real-CUGAN"))
-        self.lbl_settings_message.setText(_translate("MainWindow", "Display message notification after finish download"))
+        self.tab_settings_inner.setTabText(
+            self.tab_settings_inner.indexOf(self.tab_settings_cugan), _translate("MainWindow", "Real-CUGAN")
+        )
+        self.lbl_settings_message.setText(
+            _translate("MainWindow", "Display message notification after finish download")
+        )
         self.radio_settings_message_yes.setText(_translate("MainWindow", "Yes"))
         self.radio_settings_message_no.setText(_translate("MainWindow", "No"))
         self.lbl_settings_sound.setText(_translate("MainWindow", "Play sound notification after finish download"))
         self.radio_settings_sound_yes.setText(_translate("MainWindow", "Yes"))
         self.radio_settings_sound_no.setText(_translate("MainWindow", "No"))
         self.lbl_settings_when_close_window.setText(_translate("MainWindow", "When close main window"))
-        self.tab_settings_inner.setTabText(self.tab_settings_inner.indexOf(self.tab_settings_misc), _translate("MainWindow", "Misc"))
+        self.tab_settings_inner.setTabText(
+            self.tab_settings_inner.indexOf(self.tab_settings_misc), _translate("MainWindow", "Misc")
+        )
         self.btn_settings_reset.setText(_translate("MainWindow", "Reset Default"))
         self.btn_settings_save.setText(_translate("MainWindow", "Save"))
-        self.tabMainWidget.setTabText(self.tabMainWidget.indexOf(self.tab_settings), _translate("MainWindow", "Settings"))
+        self.tabMainWidget.setTabText(
+            self.tabMainWidget.indexOf(self.tab_settings), _translate("MainWindow", "Settings")
+        )
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))
         self.menuHelpLanguage.setTitle(_translate("MainWindow", "Language"))
@@ -1160,11 +1349,13 @@ class Ui_MainWindow(object):
         self.actionHelpAboutQt.setText(_translate("MainWindow", "About Qt"))
         self.actionFileStartReader.setText(_translate("MainWindow", "Start Reader"))
         self.actionFileStartTranslator.setText(_translate("MainWindow", "Start Translator"))
-from uis import resources_rc
 
+
+from uis import resources_rc
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

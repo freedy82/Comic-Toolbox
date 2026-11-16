@@ -51,13 +51,15 @@ class Ui_MainWindow(object):
         self.buttonBox.setToolTip("")
         self.buttonBox.setLayoutDirection(QtCore.Qt.LayoutDirection.LeftToRight)
         self.buttonBox.setOrientation(QtCore.Qt.Orientation.Horizontal)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Cancel|QtWidgets.QDialogButtonBox.StandardButton.Ok)
+        self.buttonBox.setStandardButtons(
+            QtWidgets.QDialogButtonBox.StandardButton.Cancel | QtWidgets.QDialogButtonBox.StandardButton.Ok
+        )
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout.addWidget(self.buttonBox)
 
         self.retranslateUi(MainWindow)
-        self.buttonBox.accepted.connect(MainWindow.accept) # type: ignore
-        self.buttonBox.rejected.connect(MainWindow.reject) # type: ignore
+        self.buttonBox.accepted.connect(MainWindow.accept)  # type: ignore
+        self.buttonBox.rejected.connect(MainWindow.reject)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -66,11 +68,13 @@ class Ui_MainWindow(object):
         self.lbl_target_image.setText(_translate("MainWindow", "Target image"))
         self.lbl_rotate.setText(_translate("MainWindow", "Rotate"))
         self.lbl_change_mode.setText(_translate("MainWindow", "Change mode"))
-from uis import resources_rc
 
+
+from uis import resources_rc
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QDialog()
     ui = Ui_MainWindow()

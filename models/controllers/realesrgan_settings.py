@@ -1,10 +1,20 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout, QHBoxLayout,
-                             QLabel, QLineEdit, QPushButton, QComboBox,
-                             QSpinBox, QCheckBox, QFileDialog)
+from PyQt6.QtWidgets import (
+    QCheckBox,
+    QComboBox,
+    QFileDialog,
+    QFormLayout,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QSpinBox,
+    QVBoxLayout,
+    QWidget,
+)
 
 from models.const import MY_CONFIG, TRSM
-from models.realesrgan import MODELS, DEFAULT_MODEL, model_scales
+from models.realesrgan import DEFAULT_MODEL, MODELS, model_scales
 
 
 class RealESRGANSettings(QWidget):
@@ -25,7 +35,9 @@ class RealESRGANSettings(QWidget):
         form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
         layout.addLayout(form)
         self.download_label = QLabel()
-        self.download_link = QLabel('<a href="https://github.com/xinntao/Real-ESRGAN">https://github.com/xinntao/Real-ESRGAN</a>')
+        self.download_link = QLabel(
+            '<a href="https://github.com/xinntao/Real-ESRGAN">https://github.com/xinntao/Real-ESRGAN</a>'
+        )
         self.download_link.setTextFormat(Qt.TextFormat.RichText)
         self.download_link.setOpenExternalLinks(True)
         self.download_link.setTextInteractionFlags(Qt.TextInteractionFlag.TextBrowserInteraction)
@@ -84,8 +96,11 @@ class RealESRGANSettings(QWidget):
 
     def _browse_executable(self):
         filename, _ = QFileDialog.getOpenFileName(
-            self, TRSM("Real-ESRGAN executable"), self.exe.text() or "./",
-            "Real-ESRGAN (realesrgan-ncnn-vulkan.exe);;All files (*)")
+            self,
+            TRSM("Real-ESRGAN executable"),
+            self.exe.text() or "./",
+            "Real-ESRGAN (realesrgan-ncnn-vulkan.exe);;All files (*)",
+        )
         if filename:
             self.exe.setText(filename)
 
@@ -97,7 +112,11 @@ class RealESRGANSettings(QWidget):
     def retranslateUi(self):
         self.tabs.setTabText(self.tabs.indexOf(self), "Real-ESRGAN")
         self.download_label.setText(TRSM("Can download from"))
-        self.path_note.setText(TRSM("Use English (ASCII) characters for folder and file names. Paths must not contain Chinese, Japanese or Korean (CJK) characters."))
+        self.path_note.setText(
+            TRSM(
+                "Use English (ASCII) characters for folder and file names. Paths must not contain Chinese, Japanese or Korean (CJK) characters."
+            )
+        )
         self.exe_label.setText(TRSM("EXE Location"))
         self.folder_label.setText(TRSM("Models folder"))
         self.folder.setPlaceholderText(TRSM("Leave empty to use the models folder beside the executable"))
@@ -125,9 +144,14 @@ class RealESRGANSettings(QWidget):
         self.restore_size.setChecked(MY_CONFIG.get("real-esrgan", "resize") == "1")
 
     def save_config(self):
-        values = {"exe_location": self.exe.text().strip(), "models_folder": self.folder.text().strip(),
-                  "model": self.model.currentData(), "scale": str(self.scale.currentData()),
-                  "tile_size": str(self.tile.value()), "resize": "1" if self.restore_size.isChecked() else "0"}
+        values = {
+            "exe_location": self.exe.text().strip(),
+            "models_folder": self.folder.text().strip(),
+            "model": self.model.currentData(),
+            "scale": str(self.scale.currentData()),
+            "tile_size": str(self.tile.value()),
+            "resize": "1" if self.restore_size.isChecked() else "0",
+        }
         for key, value in values.items():
             MY_CONFIG.set("real-esrgan", key, value)
 

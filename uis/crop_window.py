@@ -54,7 +54,9 @@ class Ui_MainWindow(object):
         self.layout_middle = QtWidgets.QHBoxLayout()
         self.layout_middle.setObjectName("layout_middle")
         self.frame_image = QtWidgets.QFrame(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.frame_image.sizePolicy().hasHeightForWidth())
@@ -80,7 +82,9 @@ class Ui_MainWindow(object):
         self.formLayout.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetDefaultConstraint)
         self.formLayout.setObjectName("formLayout")
         self.lbl_frame_1 = QtWidgets.QLabel(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_frame_1.sizePolicy().hasHeightForWidth())
@@ -88,7 +92,9 @@ class Ui_MainWindow(object):
         self.lbl_frame_1.setObjectName("lbl_frame_1")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_frame_1)
         self.lbl_frame1_x1 = QtWidgets.QLabel(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_frame1_x1.sizePolicy().hasHeightForWidth())
@@ -103,12 +109,18 @@ class Ui_MainWindow(object):
         self.spin_frame1_x1.setSizePolicy(sizePolicy)
         self.spin_frame1_x1.setMinimumSize(QtCore.QSize(80, 0))
         self.spin_frame1_x1.setMaximumSize(QtCore.QSize(100, 16777215))
-        self.spin_frame1_x1.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_frame1_x1.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_frame1_x1.setMaximum(50000)
         self.spin_frame1_x1.setObjectName("spin_frame1_x1")
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_frame1_x1)
         self.lbl_frame1_y1 = QtWidgets.QLabel(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_frame1_y1.sizePolicy().hasHeightForWidth())
@@ -123,12 +135,18 @@ class Ui_MainWindow(object):
         self.spin_frame1_y1.setSizePolicy(sizePolicy)
         self.spin_frame1_y1.setMinimumSize(QtCore.QSize(80, 0))
         self.spin_frame1_y1.setMaximumSize(QtCore.QSize(100, 16777215))
-        self.spin_frame1_y1.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_frame1_y1.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_frame1_y1.setMaximum(50000)
         self.spin_frame1_y1.setObjectName("spin_frame1_y1")
         self.formLayout.setWidget(4, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_frame1_y1)
         self.lbl_frame1_x2 = QtWidgets.QLabel(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_frame1_x2.sizePolicy().hasHeightForWidth())
@@ -143,12 +161,18 @@ class Ui_MainWindow(object):
         self.spin_frame1_x2.setSizePolicy(sizePolicy)
         self.spin_frame1_x2.setMinimumSize(QtCore.QSize(80, 0))
         self.spin_frame1_x2.setMaximumSize(QtCore.QSize(100, 16777215))
-        self.spin_frame1_x2.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_frame1_x2.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_frame1_x2.setMaximum(50000)
         self.spin_frame1_x2.setObjectName("spin_frame1_x2")
         self.formLayout.setWidget(5, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_frame1_x2)
         self.lbl_frame1_y2 = QtWidgets.QLabel(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_frame1_y2.sizePolicy().hasHeightForWidth())
@@ -163,12 +187,18 @@ class Ui_MainWindow(object):
         self.spin_frame1_y2.setSizePolicy(sizePolicy)
         self.spin_frame1_y2.setMinimumSize(QtCore.QSize(80, 0))
         self.spin_frame1_y2.setMaximumSize(QtCore.QSize(100, 16777215))
-        self.spin_frame1_y2.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_frame1_y2.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_frame1_y2.setMaximum(50000)
         self.spin_frame1_y2.setObjectName("spin_frame1_y2")
         self.formLayout.setWidget(6, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_frame1_y2)
         self.lbl_frame_2 = QtWidgets.QLabel(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_frame_2.sizePolicy().hasHeightForWidth())
@@ -176,7 +206,9 @@ class Ui_MainWindow(object):
         self.lbl_frame_2.setObjectName("lbl_frame_2")
         self.formLayout.setWidget(7, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_frame_2)
         self.lbl_frame2_x1 = QtWidgets.QLabel(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_frame2_x1.sizePolicy().hasHeightForWidth())
@@ -191,12 +223,18 @@ class Ui_MainWindow(object):
         self.spin_frame2_x1.setSizePolicy(sizePolicy)
         self.spin_frame2_x1.setMinimumSize(QtCore.QSize(80, 0))
         self.spin_frame2_x1.setMaximumSize(QtCore.QSize(100, 16777215))
-        self.spin_frame2_x1.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_frame2_x1.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_frame2_x1.setMaximum(50000)
         self.spin_frame2_x1.setObjectName("spin_frame2_x1")
         self.formLayout.setWidget(8, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_frame2_x1)
         self.lbl_frame2_y1 = QtWidgets.QLabel(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_frame2_y1.sizePolicy().hasHeightForWidth())
@@ -211,12 +249,18 @@ class Ui_MainWindow(object):
         self.spin_frame2_y1.setSizePolicy(sizePolicy)
         self.spin_frame2_y1.setMinimumSize(QtCore.QSize(80, 0))
         self.spin_frame2_y1.setMaximumSize(QtCore.QSize(100, 16777215))
-        self.spin_frame2_y1.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_frame2_y1.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_frame2_y1.setMaximum(50000)
         self.spin_frame2_y1.setObjectName("spin_frame2_y1")
         self.formLayout.setWidget(9, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_frame2_y1)
         self.lbl_frame2_x2 = QtWidgets.QLabel(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_frame2_x2.sizePolicy().hasHeightForWidth())
@@ -231,12 +275,18 @@ class Ui_MainWindow(object):
         self.spin_frame2_x2.setSizePolicy(sizePolicy)
         self.spin_frame2_x2.setMinimumSize(QtCore.QSize(80, 0))
         self.spin_frame2_x2.setMaximumSize(QtCore.QSize(100, 16777215))
-        self.spin_frame2_x2.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_frame2_x2.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_frame2_x2.setMaximum(50000)
         self.spin_frame2_x2.setObjectName("spin_frame2_x2")
         self.formLayout.setWidget(10, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_frame2_x2)
         self.lbl_frame2_y2 = QtWidgets.QLabel(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_frame2_y2.sizePolicy().hasHeightForWidth())
@@ -251,7 +301,11 @@ class Ui_MainWindow(object):
         self.spin_frame2_y2.setSizePolicy(sizePolicy)
         self.spin_frame2_y2.setMinimumSize(QtCore.QSize(80, 0))
         self.spin_frame2_y2.setMaximumSize(QtCore.QSize(100, 16777215))
-        self.spin_frame2_y2.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.spin_frame2_y2.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.spin_frame2_y2.setMaximum(50000)
         self.spin_frame2_y2.setObjectName("spin_frame2_y2")
         self.formLayout.setWidget(11, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spin_frame2_y2)
@@ -413,11 +467,13 @@ class Ui_MainWindow(object):
         self.btn_full_screen.setText(_translate("MainWindow", "Toggle full screen (F11)"))
         self.btn_quit.setText(_translate("MainWindow", "Quit process (F12)"))
         self.pgb_cover.setFormat(_translate("MainWindow", " %v/%m (%p%)"))
-from uis import resources_rc
 
+
+from uis import resources_rc
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

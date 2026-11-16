@@ -9,9 +9,9 @@ from PyQt6 import QtCore, QtGui, QtWidgets, sip
 from PyQt6.QtWebEngineCore import QWebEnginePage, QWebEngineProfile, QWebEngineSettings
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 
-from models.webbot import is_browser_challenge
 from models.theme import apply_color_scheme
-from uis import resources_rc
+from models.webbot import is_browser_challenge
+from uis import resources_rc  # noqa: F401 -- registers the application's Qt resources
 
 
 class BrowserPage(QWebEnginePage):
@@ -42,8 +42,10 @@ class BrowserSession(QtCore.QObject):
         self.cookies[self._key(cookie)] = {
             "name": bytes(cookie.name()).decode("latin-1"),
             "value": bytes(cookie.value()).decode("latin-1"),
-            "domain": cookie.domain(), "path": cookie.path() or "/",
-            "secure": cookie.isSecure(), "http_only": cookie.isHttpOnly(),
+            "domain": cookie.domain(),
+            "path": cookie.path() or "/",
+            "secure": cookie.isSecure(),
+            "http_only": cookie.isHttpOnly(),
             "expires": None if cookie.isSessionCookie() else cookie.expirationDate().toSecsSinceEpoch(),
         }
 
@@ -52,9 +54,12 @@ class BrowserSession(QtCore.QObject):
 
     def export(self, url):
         host = urlsplit(url).hostname or ""
-        return [dict(cookie) for cookie in self.cookies.values()
-                if host == cookie["domain"].lstrip(".")
-                or (cookie["domain"].startswith(".") and host.endswith(cookie["domain"]))]
+        return [
+            dict(cookie)
+            for cookie in self.cookies.values()
+            if host == cookie["domain"].lstrip(".")
+            or (cookie["domain"].startswith(".") and host.endswith(cookie["domain"]))
+        ]
 
 
 class VerificationDialog(QtWidgets.QDialog):
@@ -69,9 +74,12 @@ class VerificationDialog(QtWidgets.QDialog):
         self.setWindowTitle(self.tr_text("Website verification"))
         self.setWindowFlag(QtCore.Qt.WindowType.WindowContextHelpButtonHint, False)
         layout = QtWidgets.QVBoxLayout(self)
-        explanation = QtWidgets.QLabel(self.tr_text(
-            "Wait for the website to finish its security check. If a verification control appears, complete it. When the comic page appears, click Continue. Cookies stay in memory until Comic Toolbox closes."
-        ))
+        explanation = QtWidgets.QLabel(
+            command.get("instructions")
+            or self.tr_text(
+                "Wait for the website to finish its security check. If a verification control appears, complete it. When the comic page appears, click Continue. Cookies stay in memory until Comic Toolbox closes."
+            )
+        )
         explanation.setWordWrap(True)
         layout.addWidget(explanation)
         self.address = QtWidgets.QLineEdit(self.url)
@@ -88,7 +96,9 @@ class VerificationDialog(QtWidgets.QDialog):
         self.status.setWordWrap(True)
         layout.addWidget(self.status)
         buttons = QtWidgets.QDialogButtonBox(self)
-        self.continue_button = buttons.addButton(self.tr_text("Continue"), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        self.continue_button = buttons.addButton(
+            self.tr_text("Continue"), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole
+        )
         reload_button = buttons.addButton(self.tr_text("Reload"), QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
         buttons.addButton(self.tr_text("Cancel"), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
         self.continue_button.setEnabled(False)
@@ -120,10 +130,13 @@ class VerificationDialog(QtWidgets.QDialog):
             return
         self._loading = False
         self.continue_button.setEnabled(ok)
-        self.status.setText(self.tr_text(
-            "Complete any verification shown by the website, then click Continue when the comic page appears."
-            if ok else "The page could not load. You can reload or cancel."
-        ))
+        self.status.setText(
+            self.tr_text(
+                "Complete any verification shown by the website, then click Continue when the comic page appears."
+                if ok
+                else "The page could not load. You can reload or cancel."
+            )
+        )
         if ok:
             self.stall_timer.start()
 
@@ -138,9 +151,11 @@ class VerificationDialog(QtWidgets.QDialog):
 
     def _stalled_html(self, html):
         if not self._closed and html and is_browser_challenge({}, html.encode("utf-8")):
-            self.status.setText(self.tr_text(
-                "The site is still checking this browser. If no verification control appears, try Reload. The site may not support embedded browsers."
-            ))
+            self.status.setText(
+                self.tr_text(
+                    "The site is still checking this browser. If no verification control appears, try Reload. The site may not support embedded browsers."
+                )
+            )
 
     def _correct_origin(self):
         expected = urlsplit(self.url)
@@ -164,12 +179,15 @@ class VerificationDialog(QtWidgets.QDialog):
             self.status.setText(self.tr_text("Return to the requested website before clicking Continue."))
             return
         if self._loading or not html or is_browser_challenge({}, html.encode("utf-8")):
-            self.status.setText(self.tr_text("The verification page is still showing. Complete the check before continuing."))
+            self.status.setText(
+                self.tr_text("The verification page is still showing. Complete the check before continuing.")
+            )
             return
         self.captured_result = {
             "cookies": self.session.export(self.url),
             "user_agent": self.session.profile.httpUserAgent(),
-            "url": self.browser.url().toString(), "html": html,
+            "url": self.browser.url().toString(),
+            "html": html,
         }
         self.accept()
 

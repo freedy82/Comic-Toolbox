@@ -6,7 +6,6 @@ import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
-
 MODELS = {
     "realesrgan-x4plus": "General images (default)",
     "realesrnet-x4plus": "General images, more conservative restoration",
@@ -76,8 +75,7 @@ class RealESRGANOptions:
             scale = 4
         folder = config.get("real-esrgan", "models_folder").strip().strip('"')
         models_folder = Path(folder).expanduser().resolve() if folder else executable.parent / "models"
-        options = cls(executable, models_folder, model, scale, tile_size,
-                      config.get("real-esrgan", "resize") == "1")
+        options = cls(executable, models_folder, model, scale, tile_size, config.get("real-esrgan", "resize") == "1")
         options.check_paths()
         return options
 
@@ -106,13 +104,30 @@ class RealESRGANOptions:
         # Older Windows NCNN image encoders can crash on absolute CJK paths.
         # Set the Unicode working directory through Python's Windows API and
         # give the executable only relative image filenames.
-        command = [str(self.executable), "-i", os.path.relpath(source, work_folder), "-o", output.name,
-                   "-m", str(self.models_folder), "-n", self.model,
-                   "-s", str(self.scale), "-t", str(self.tile_size), "-f", "png"]
+        command = [
+            str(self.executable),
+            "-i",
+            os.path.relpath(source, work_folder),
+            "-o",
+            output.name,
+            "-m",
+            str(self.models_folder),
+            "-n",
+            self.model,
+            "-s",
+            str(self.scale),
+            "-t",
+            str(self.tile_size),
+            "-f",
+            "png",
+        ]
         try:
             process = subprocess.Popen(
-                command, cwd=str(work_folder), stdin=subprocess.DEVNULL,
-                stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                command,
+                cwd=str(work_folder),
+                stdin=subprocess.DEVNULL,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
                 creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0,
             )
         except OSError as error:
@@ -138,7 +153,7 @@ class RealESRGANOptions:
             raise RealESRGANCanceled()
         details = _error_details(log)
         if process.returncode != 0:
-            code = "0x%08X" % (process.returncode & 0xffffffff) if os.name == "nt" else str(process.returncode)
+            code = "0x%08X" % (process.returncode & 0xFFFFFFFF) if os.name == "nt" else str(process.returncode)
             if details:
                 raise RealESRGANError("Real-ESRGAN failed (exit code %s): %s", code, details)
             raise RealESRGANError("Real-ESRGAN failed (exit code %s).", code)

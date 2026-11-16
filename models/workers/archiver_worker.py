@@ -1,320 +1,319 @@
+import os
+from pathlib import Path
 from zipfile import ZipFile
-from ebooklib import epub
+
 from docx import Document
-#from docx.shared import Inches
+from ebooklib import epub
 from PIL import Image
 from PyQt6.QtCore import QThread, pyqtSignal
-from pathlib import Path
 
 from models import util
-from models.const import *
+from models.const import IMAGE_EXTS, TRSM
+
 
 class ArchiverWorker(QThread):
-	trigger = pyqtSignal(str,int,int)
-	finished = pyqtSignal()
-	canceled = pyqtSignal()
-	MIMES = {"jpg":"image/jpeg", "jpeg":"image/jpeg", "png":"image/png", "gif":"image/gif", "webp":"image/webp"}
+    trigger = pyqtSignal(str, int, int)
+    MIMES = {"jpg": "image/jpeg", "jpeg": "image/jpeg", "png": "image/png", "gif": "image/gif", "webp": "image/webp"}
 
-	def __init__(self,folders,from_folder,to_format,is_overwrite,num_pre_archive,title):
-		super().__init__()
-		self.stop_flag = True
-		self.folders = folders
-		self.from_folder = from_folder
-		self.to_format = to_format
-		self.is_overwrite = is_overwrite
-		self.num_pre_archive = num_pre_archive
-		self.folders_need_archive = []
-		self.current_action_count = 0
-		self.total_action_count = 0
-		self.title = title
+    def __init__(self, folders, from_folder, to_format, is_overwrite, num_pre_archive, title, parent=None):
+        super().__init__(parent)
+        self.stop_flag = False
+        self.was_canceled = False
+        self.error_message = ""
+        self.folders = folders
+        self.from_folder = from_folder
+        self.to_format = to_format
+        self.is_overwrite = is_overwrite
+        self.num_pre_archive = num_pre_archive
+        self.folders_need_archive = []
+        self.current_action_count = 0
+        self.total_action_count = 0
+        self.title = title
 
-	def run(self):
-		self.stop_flag = False
-		self.trigger.emit(TRSM("Start checking, please wait"),0,0)
-		self.current_action_count = 0
-		self.total_action_count = 0
-		self.folders_need_archive = self._pre_check_folder(self.folders)
-		if len(self.folders_need_archive) > 0:
-			self.trigger.emit(TRSM("Starting archive"),0,len(self.folders_need_archive))
-			self.total_action_count = len(self.folders_need_archive)
+    def run(self):
+        try:
+            self._archive_files()
+        except Exception as error:
+            self.error_message = TRSM("Archive failed: %s") % str(error)
+        finally:
+            self.was_canceled = self.stop_flag
 
-			for idx, folders_info in enumerate(self.folders_need_archive, start=1):
-				if self.stop_flag:
-					break
-				self._start_archive(folders_info)
-				self.current_action_count += 1
-				if not self.stop_flag:
-					message = TRSM("Finish %s") % folders_info["to_file"]
-					self.trigger.emit(message,self.current_action_count,self.total_action_count)
+    def _archive_files(self):
+        self.trigger.emit(TRSM("Start checking, please wait"), 0, 0)
+        self.current_action_count = 0
+        self.total_action_count = 0
+        self.folders_need_archive = self._pre_check_folder(self.folders)
+        if len(self.folders_need_archive) > 0:
+            self.trigger.emit(TRSM("Starting archive"), 0, len(self.folders_need_archive))
+            self.total_action_count = len(self.folders_need_archive)
 
-		if self.stop_flag:
-			self.canceled.emit()
-		else:
-			self.finished.emit()
+            for idx, folders_info in enumerate(self.folders_need_archive, start=1):
+                if self.stop_flag:
+                    break
+                self._start_archive(folders_info)
+                self.current_action_count += 1
+                if not self.stop_flag:
+                    message = TRSM("Finish %s") % folders_info["to_file"]
+                    self.trigger.emit(message, self.current_action_count, self.total_action_count)
 
-	def stop(self):
-		self.stop_flag = True
+    def stop(self):
+        self.stop_flag = True
+        self.requestInterruption()
 
-	#internal
-	def _pre_check_folder(self,folders):
-		results = []
-		final_folder_sets = [folders[i:i + self.num_pre_archive] for i in range(0, len(folders), self.num_pre_archive)]
-		for final_folders in final_folder_sets:
-			if len(final_folders) > 1:
-				folder1_parts = final_folders[0].split("-",1)
-				folder2_parts = final_folders[-1].split("-",1)
-				if folder1_parts[0] == folder2_parts[0]:
-					target_name = final_folders[0] + "-" + folder2_parts[1]
-				else:
-					target_name = final_folders[0] + "-" + final_folders[-1]
-				target_name += "." + self.to_format
-			else:
-				target_name = final_folders[0] + "." + self.to_format
+    # internal
+    def _pre_check_folder(self, folders):
+        results = []
+        final_folder_sets = [
+            folders[i : i + self.num_pre_archive] for i in range(0, len(folders), self.num_pre_archive)
+        ]
+        for final_folders in final_folder_sets:
+            if len(final_folders) > 1:
+                folder1_parts = final_folders[0].split("-", 1)
+                folder2_parts = final_folders[-1].split("-", 1)
+                if folder1_parts[0] == folder2_parts[0]:
+                    target_name = final_folders[0] + "-" + folder2_parts[1]
+                else:
+                    target_name = final_folders[0] + "-" + final_folders[-1]
+                target_name += "." + self.to_format
+            else:
+                target_name = final_folders[0] + "." + self.to_format
 
-			if self.title:
-				target_name = self.title + "-" + target_name
+            if self.title:
+                target_name = self.title + "-" + target_name
 
-			full_target_file = os.path.join(self.from_folder,target_name)
-			full_target_file = Path(full_target_file).as_posix()
+            full_target_file = os.path.join(self.from_folder, target_name)
+            full_target_file = Path(full_target_file).as_posix()
 
-			if self.is_overwrite or not os.path.exists(full_target_file):
-				results.append({"folders":final_folders,"to_file":target_name})
-			else:
-				message = TRSM("File exist of %s") % full_target_file
-				self.trigger.emit(message,self.current_action_count,self.total_action_count)
+            if self.is_overwrite or not os.path.exists(full_target_file):
+                results.append({"folders": final_folders, "to_file": target_name})
+            else:
+                message = TRSM("File exist of %s") % full_target_file
+                self.trigger.emit(message, self.current_action_count, self.total_action_count)
 
-		return results
+        return results
 
-	def _start_archive(self,folder_info):
-		if self.to_format in ("cbz","zip"):
-			self._make_zip_from_multi_folder(folder_info["folders"],folder_info["to_file"])
-		elif self.to_format == "epub":
-			self._make_epub_from_multi_folder(folder_info["folders"],folder_info["to_file"])
-		elif self.to_format == "pdf":
-			self._make_pdf_from_multi_folder(folder_info["folders"],folder_info["to_file"])
-		elif self.to_format == "docx":
-			self._make_docx_from_multi_folder(folder_info["folders"],folder_info["to_file"])
-		pass
+    def _start_archive(self, folder_info):
+        if self.to_format in ("cbz", "zip"):
+            self._make_zip_from_multi_folder(folder_info["folders"], folder_info["to_file"])
+        elif self.to_format == "epub":
+            self._make_epub_from_multi_folder(folder_info["folders"], folder_info["to_file"])
+        elif self.to_format == "pdf":
+            self._make_pdf_from_multi_folder(folder_info["folders"], folder_info["to_file"])
+        elif self.to_format == "docx":
+            self._make_docx_from_multi_folder(folder_info["folders"], folder_info["to_file"])
 
-	def _make_zip_from_multi_folder(self, folders, zip_file):
-		full_zip_file = os.path.join(self.from_folder,zip_file)
-		with ZipFile(full_zip_file, "w") as myzip:
-			for folder in folders:
-				if self.stop_flag:
-					break
-				full_folder = os.path.join(self.from_folder,folder)
-				files = sorted(os.listdir(full_folder))
-				name_prefix = 'cover.'
+    def _make_zip_from_multi_folder(self, folders, zip_file):
+        full_zip_file = os.path.join(self.from_folder, zip_file)
+        with ZipFile(full_zip_file, "w") as myzip:
+            for folder in folders:
+                if self.stop_flag:
+                    break
+                full_folder = os.path.join(self.from_folder, folder)
+                files = sorted(os.listdir(full_folder))
+                name_prefix = "cover."
 
-				with_cover = [x for x in files if x.startswith(name_prefix)]
-				without_cover = [x for x in files if x not in with_cover]
+                with_cover = [x for x in files if x.startswith(name_prefix)]
+                without_cover = [x for x in files if x not in with_cover]
 
-				for file_list in (with_cover,without_cover):
-					if self.stop_flag:
-						break
-					for filename in file_list:
-						if self.stop_flag:
-							break
-						if self.to_format == "cbz":
-							if util.get_ext(filename) not in ("jpg","png","gif","jpeg"):
-								continue
+                for file_list in (with_cover, without_cover):
+                    if self.stop_flag:
+                        break
+                    for filename in file_list:
+                        if self.stop_flag:
+                            break
+                        if self.to_format == "cbz":
+                            if util.get_ext(filename) not in ("jpg", "png", "gif", "jpeg"):
+                                continue
 
-						full_file = os.path.join(full_folder, filename)
-						full_file = Path(full_file).as_posix()
+                        full_file = os.path.join(full_folder, filename)
+                        full_file = Path(full_file).as_posix()
 
-						if self.to_format == "cbz":
-							file_name_in_zip = folder + "-" + filename
-						else:
-							file_name_in_zip = folder + "/" + filename
+                        if self.to_format == "cbz":
+                            file_name_in_zip = folder + "-" + filename
+                        else:
+                            file_name_in_zip = folder + "/" + filename
 
-						message = TRSM("Adding %s") % full_file
-						self.trigger.emit(message,self.current_action_count,self.total_action_count)
-						myzip.write(str(full_file), arcname=file_name_in_zip)
+                        message = TRSM("Adding %s") % full_file
+                        self.trigger.emit(message, self.current_action_count, self.total_action_count)
+                        myzip.write(str(full_file), arcname=file_name_in_zip)
 
-		pass
+    def _make_pdf_from_multi_folder(self, folders, pdf_file):
+        full_pdf_file = os.path.join(self.from_folder, pdf_file)
+        full_pdf_file = Path(full_pdf_file).as_posix()
 
-	def _make_pdf_from_multi_folder(self, folders, pdf_file):
-		full_pdf_file = os.path.join(self.from_folder,pdf_file)
-		full_pdf_file = Path(full_pdf_file).as_posix()
+        images_datas = []
+        for folder in folders:
+            if self.stop_flag:
+                break
+            full_folder = os.path.join(self.from_folder, folder)
+            files = sorted(os.listdir(full_folder))
+            name_prefix = "cover."
 
-		images_datas = []
-		for folder in folders:
-			if self.stop_flag:
-				break
-			full_folder = os.path.join(self.from_folder,folder)
-			files = sorted(os.listdir(full_folder))
-			name_prefix = 'cover.'
+            with_cover = [x for x in files if x.startswith(name_prefix)]
+            without_cover = [x for x in files if x not in with_cover]
 
-			with_cover = [x for x in files if x.startswith(name_prefix)]
-			without_cover = [x for x in files if x not in with_cover]
+            for file_list in (with_cover, without_cover):
+                if self.stop_flag:
+                    break
+                for filename in file_list:
+                    if self.stop_flag:
+                        break
+                    if util.get_ext(filename) not in IMAGE_EXTS:
+                        continue
+                    full_file = os.path.join(full_folder, filename)
+                    full_file = Path(full_file).as_posix()
 
-			for file_list in (with_cover,without_cover):
-				if self.stop_flag:
-					break
-				for filename in file_list:
-					if self.stop_flag:
-						break
-					if util.get_ext(filename) not in IMAGE_EXTS:
-						continue
-					full_file = os.path.join(full_folder, filename)
-					full_file = Path(full_file).as_posix()
+                    tmp_image = Image.open(full_file)
+                    tmp_image = tmp_image.convert("RGB")
+                    images_datas.append(tmp_image)
 
-					tmp_image = Image.open(full_file)
-					tmp_image = tmp_image.convert('RGB')
-					images_datas.append(tmp_image)
+                    message = TRSM("Adding %s") % full_file
+                    self.trigger.emit(message, self.current_action_count, self.total_action_count)
 
-					message = TRSM("Adding %s") % full_file
-					self.trigger.emit(message,self.current_action_count,self.total_action_count)
+        if not self.stop_flag:
+            if len(images_datas) > 1:
+                message = TRSM("Creating %s") % full_pdf_file
+                self.trigger.emit(message, self.current_action_count, self.total_action_count)
+                images_datas[0].save(full_pdf_file, save_all=True, append_images=images_datas[1:])
+                message = TRSM("Finish create %s") % full_pdf_file
+                self.trigger.emit(message, self.current_action_count, self.total_action_count)
+            elif len(images_datas) == 1:
+                images_datas[0].save(full_pdf_file)
+                message = TRSM("Finish create %s") % full_pdf_file
+                self.trigger.emit(message, self.current_action_count, self.total_action_count)
+            else:
+                message = TRSM("Not images found to create %s") % full_pdf_file
+                self.trigger.emit(message, self.current_action_count, self.total_action_count)
 
-		if not self.stop_flag:
-			if len(images_datas) > 1:
-				message = TRSM("Creating %s") % full_pdf_file
-				self.trigger.emit(message, self.current_action_count, self.total_action_count)
-				images_datas[0].save(full_pdf_file, save_all=True, append_images=images_datas[1:])
-				message = TRSM("Finish create %s") % full_pdf_file
-				self.trigger.emit(message, self.current_action_count, self.total_action_count)
-			elif len(images_datas) == 1:
-				images_datas[0].save(full_pdf_file)
-				message = TRSM("Finish create %s") % full_pdf_file
-				self.trigger.emit(message, self.current_action_count, self.total_action_count)
-			else:
-				message = TRSM("Not images found to create %s") % full_pdf_file
-				self.trigger.emit(message, self.current_action_count, self.total_action_count)
+    def _make_epub_from_multi_folder(self, folders, epub_file):
+        full_epub_file = os.path.join(self.from_folder, epub_file)
+        full_epub_file = Path(full_epub_file).as_posix()
 
-		pass
+        book = epub.EpubBook()
+        book.set_title(epub_file.replace(".epub", ""))
 
-	def _make_epub_from_multi_folder(self, folders, epub_file):
-		full_epub_file = os.path.join(self.from_folder,epub_file)
-		full_epub_file = Path(full_epub_file).as_posix()
+        chapters = []
+        tocs = []
+        is_added_cover = False
+        for folder in folders:
+            if self.stop_flag:
+                break
+            full_folder = os.path.join(self.from_folder, folder)
+            files = sorted(os.listdir(full_folder))
+            name_prefix = "cover."
+            counter_in_folder = 1
+            # add make section
+            tocs.append((epub.Section(folder), []))
 
-		book = epub.EpubBook()
-		book.set_title(epub_file.replace(".epub",""))
-		#book.add_author('')
+            with_cover = [x for x in files if x.startswith(name_prefix)]
+            without_cover = [x for x in files if x not in with_cover]
 
-		chapters = []
-		tocs = []
-		is_added_cover = False
-		for folder in folders:
-			if self.stop_flag:
-				break
-			full_folder = os.path.join(self.from_folder,folder)
-			files = sorted(os.listdir(full_folder))
-			name_prefix = 'cover.'
-			counter_in_folder = 1
-			# add make section
-			tocs.append((epub.Section(folder),[]))
+            for file_list in (with_cover, without_cover):
+                if self.stop_flag:
+                    break
+                for filename in file_list:
+                    if self.stop_flag:
+                        break
+                    ext = util.get_ext(filename)
+                    if ext not in IMAGE_EXTS:
+                        continue
 
-			with_cover = [x for x in files if x.startswith(name_prefix)]
-			without_cover = [x for x in files if x not in with_cover]
+                    full_file = os.path.join(full_folder, filename)
+                    full_file = Path(full_file).as_posix()
 
-			for file_list in (with_cover,without_cover):
-				if self.stop_flag:
-					break
-				for filename in file_list:
-					if self.stop_flag:
-						break
-					ext = util.get_ext(filename)
-					if ext not in IMAGE_EXTS:
-						continue
+                    message = TRSM("Adding %s") % full_file
+                    self.trigger.emit(message, self.current_action_count, self.total_action_count)
 
-					full_file = os.path.join(full_folder, filename)
-					full_file = Path(full_file).as_posix()
+                    file_name_in_epub = folder + "-" + filename
 
-					message = TRSM("Adding %s") % full_file
-					self.trigger.emit(message,self.current_action_count,self.total_action_count)
+                    if not is_added_cover:
+                        is_added_cover = True
+                        book.set_cover(file_name_in_epub, open(full_file, "rb").read())
+                    else:
+                        ei = epub.EpubImage()
+                        ei.file_name = file_name_in_epub
+                        ei.media_type = self.MIMES[ext]
+                        ei.content = open(full_file, "rb").read()
+                        book.add_item(ei)
 
-					file_name_in_epub = folder + "-" + filename
+                    epub_chapter = epub.EpubHtml(
+                        title="Image " + str(counter_in_folder), file_name=file_name_in_epub + ".xhtml"
+                    )
+                    epub_chapter.content = (
+                        '<html><body><img src="' + file_name_in_epub + '" width="100%"></body></html>'
+                    )
+                    book.add_item(epub_chapter)
 
-					if not is_added_cover:
-						is_added_cover = True
-						book.set_cover(file_name_in_epub, open(full_file, 'rb').read())
-					else:
-						ei = epub.EpubImage()
-						ei.file_name = file_name_in_epub
-						ei.media_type = self.MIMES[ext]
-						ei.content = open(full_file, 'rb').read()
-						book.add_item(ei)
+                    tocs[len(tocs) - 1][1].append(epub_chapter)
 
-					epub_chapter = epub.EpubHtml(
-						title="Image "+str(counter_in_folder),
-						file_name=file_name_in_epub+'.xhtml'
-					)
-					epub_chapter.content = u'<html><body><img src="'+file_name_in_epub+'" width="100%"></body></html>'
-					book.add_item(epub_chapter)
+                    chapters.append(epub_chapter)
+                    counter_in_folder += 1
 
-					tocs[len(tocs)-1][1].append(epub_chapter)
+        book.toc = tocs
 
-					chapters.append(epub_chapter)
-					counter_in_folder += 1
+        book.spine = ["nav"] + chapters
 
-		book.toc = tocs
+        book.add_item(epub.EpubNcx())
+        book.add_item(epub.EpubNav())
 
-		book.spine = ['nav'] + chapters
+        # "play_order":{'enabled': False, 'start_from': 1}
+        epub.write_epub(full_epub_file, book, {})
 
-		book.add_item(epub.EpubNcx())
-		book.add_item(epub.EpubNav())
+    def _make_docx_from_multi_folder(self, folders, docx_file):
+        full_docx_file = os.path.join(self.from_folder, docx_file)
+        full_docx_file = Path(full_docx_file).as_posix()
 
-		# "play_order":{'enabled': False, 'start_from': 1}
-		epub.write_epub(full_epub_file, book, {})
+        images_files = []
+        document = Document()
 
-		pass
+        for folder in folders:
+            if self.stop_flag:
+                break
+            full_folder = os.path.join(self.from_folder, folder)
+            files = sorted(os.listdir(full_folder))
+            name_prefix = "cover."
 
-	def _make_docx_from_multi_folder(self, folders, docx_file):
-		full_docx_file = os.path.join(self.from_folder,docx_file)
-		full_docx_file = Path(full_docx_file).as_posix()
+            with_cover = [x for x in files if x.startswith(name_prefix)]
+            without_cover = [x for x in files if x not in with_cover]
 
-		images_files = []
-		document = Document()
+            for file_list in (with_cover, without_cover):
+                if self.stop_flag:
+                    break
+                for filename in file_list:
+                    if self.stop_flag:
+                        break
+                    if util.get_ext(filename) not in IMAGE_EXTS:
+                        continue
+                    full_file = os.path.join(full_folder, filename)
+                    full_file = Path(full_file).as_posix()
 
-		for folder in folders:
-			if self.stop_flag:
-				break
-			full_folder = os.path.join(self.from_folder,folder)
-			files = sorted(os.listdir(full_folder))
-			name_prefix = 'cover.'
+                    if len(images_files) > 0:
+                        document.add_section(2)  # add new section with new page
 
-			with_cover = [x for x in files if x.startswith(name_prefix)]
-			without_cover = [x for x in files if x not in with_cover]
+                    section = document.sections[-1]
+                    section.left_margin = 0
+                    section.right_margin = 0
+                    section.top_margin = 0
+                    section.bottom_margin = 0
+                    pixel2inch = 8000
+                    img_width, img_height = util.get_image_size(full_file)
 
-			for file_list in (with_cover,without_cover):
-				if self.stop_flag:
-					break
-				for filename in file_list:
-					if self.stop_flag:
-						break
-					if util.get_ext(filename) not in IMAGE_EXTS:
-						continue
-					full_file = os.path.join(full_folder, filename)
-					full_file = Path(full_file).as_posix()
+                    section.page_width = img_width * pixel2inch
+                    section.page_height = img_height * pixel2inch
 
-					if len(images_files) > 0:
-						document.add_section(2)   # add new section with new page
+                    document.add_picture(full_file, width=section.page_width, height=section.page_height)
+                    images_files.append(full_file)
 
-					section = document.sections[-1]
-					section.left_margin = 0
-					section.right_margin = 0
-					section.top_margin = 0
-					section.bottom_margin = 0
-					pixel2inch = 8000
-					img_width, img_height = util.get_image_size(full_file)
+                    message = TRSM("Adding %s") % full_file
+                    self.trigger.emit(message, self.current_action_count, self.total_action_count)
 
-					section.page_width = img_width * pixel2inch
-					section.page_height = img_height * pixel2inch
-
-					document.add_picture(full_file, width=section.page_width, height=section.page_height)
-					images_files.append(full_file)
-
-					message = TRSM("Adding %s") % full_file
-					self.trigger.emit(message,self.current_action_count,self.total_action_count)
-
-		if not self.stop_flag:
-			if len(images_files) >= 1:
-				message = TRSM("Creating %s") % full_docx_file
-				self.trigger.emit(message, self.current_action_count, self.total_action_count)
-				document.save(full_docx_file)
-				message = TRSM("Finish create %s") % full_docx_file
-				self.trigger.emit(message, self.current_action_count, self.total_action_count)
-			else:
-				message = TRSM("Not images found to create %s") % full_docx_file
-				self.trigger.emit(message, self.current_action_count, self.total_action_count)
-		pass
+        if not self.stop_flag:
+            if len(images_files) >= 1:
+                message = TRSM("Creating %s") % full_docx_file
+                self.trigger.emit(message, self.current_action_count, self.total_action_count)
+                document.save(full_docx_file)
+                message = TRSM("Finish create %s") % full_docx_file
+                self.trigger.emit(message, self.current_action_count, self.total_action_count)
+            else:
+                message = TRSM("Not images found to create %s") % full_docx_file
+                self.trigger.emit(message, self.current_action_count, self.total_action_count)

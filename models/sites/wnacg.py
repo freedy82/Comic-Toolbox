@@ -43,7 +43,9 @@ class WNACG(Site):
         if not result.get("book"):
             result.setdefault("title", "")
             result.setdefault("author", "")
-            result["message"] = TRSM("WNACG: The album could not be loaded. Open an album URL and complete website verification if requested.")
+            result["message"] = TRSM(
+                "WNACG: The album could not be loaded. Open an album URL and complete website verification if requested."
+            )
         return result
 
     def get_book_title_from_html(self, html_code):
@@ -68,8 +70,17 @@ class WNACG(Site):
         if not soup.select_one('#reader-btn, a[href*="photos-view-id-"], a[href*="photos-slide-aid-"]'):
             return {}
         self._page_count = self._album_page_count(soup)
-        return {"book": [{"title": self.get_book_title_from_html(html_code),
-                          "url": url, "ref": self._home_url + "/", "index": "1", "is_single": True}]}
+        return {
+            "book": [
+                {
+                    "title": self.get_book_title_from_html(html_code),
+                    "url": url,
+                    "ref": self._home_url + "/",
+                    "index": "1",
+                    "is_single": True,
+                }
+            ]
+        }
 
     @staticmethod
     def _album_page_count(soup):
@@ -81,7 +92,10 @@ class WNACG(Site):
 
     def _get_page(self, url, ref):
         return self._web_bot.get_web_content(
-            url=url, ref=ref, cookie=self._cookies, code_page=self._code_page,
+            url=url,
+            ref=ref,
+            cookie=self._cookies,
+            code_page=self._code_page,
             cancel_check=lambda: self._stop_flag,
         )
 
@@ -91,7 +105,7 @@ class WNACG(Site):
         match = re.search(r"\b(?:mReader\.)?initData\s*\(\s*", source or "")
         if not match:
             return None
-        text = source[match.end():]
+        text = source[match.end() :]
         try:
             return json.JSONDecoder().raw_decode(text)[0]
         except ValueError:
@@ -99,7 +113,7 @@ class WNACG(Site):
             cleaned = []
             quoted = escaped = False
             for index, char in enumerate(text):
-                if not quoted and char == "," and text[index + 1:].lstrip().startswith(("]", "}")):
+                if not quoted and char == "," and text[index + 1 :].lstrip().startswith(("]", "}")):
                     continue
                 cleaned.append(char)
                 if quoted:
@@ -150,8 +164,10 @@ class WNACG(Site):
             item_url = urljoin(reader_url, "/photos-item-aid-%s.html" % album_id)
             for script in reader.select("script[src]"):
                 candidate = urljoin(reader_url, script["src"])
-                if (self.is_url_from_this_site(candidate)
-                        and urlsplit(candidate).path == "/photos-item-aid-%s.html" % album_id):
+                if (
+                    self.is_url_from_this_site(candidate)
+                    and urlsplit(candidate).path == "/photos-item-aid-%s.html" % album_id
+                ):
                     item_url = candidate
                     break
             data = self._reader_data(self._get_page(item_url, reader_url))
@@ -162,7 +178,12 @@ class WNACG(Site):
             ref = reader_url
             if policy and policy.get("content", "").lower() in ("no-referrer", "same-origin"):
                 ref = ""
-            elif policy and policy.get("content", "").lower() in ("origin", "strict-origin", "origin-when-cross-origin", "strict-origin-when-cross-origin"):
+            elif policy and policy.get("content", "").lower() in (
+                "origin",
+                "strict-origin",
+                "origin-when-cross-origin",
+                "strict-origin-when-cross-origin",
+            ):
                 parsed = urlsplit(reader_url)
                 ref = urlunsplit((parsed.scheme, parsed.netloc, "/", "", ""))
             images = []
@@ -201,8 +222,11 @@ class WNACG(Site):
                 soup = bs4.BeautifulSoup(content, "html.parser")
             for link in soup.select('.pic_box a[href*="photos-view-id-"]'):
                 page_url = urljoin(index_url, link["href"])
-                if (self.is_url_from_this_site(page_url) and re.fullmatch(r"/photos-view-id-\d+\.html", urlsplit(page_url).path)
-                        and page_url not in seen):
+                if (
+                    self.is_url_from_this_site(page_url)
+                    and re.fullmatch(r"/photos-view-id-\d+\.html", urlsplit(page_url).path)
+                    and page_url not in seen
+                ):
                     seen.add(page_url)
                     pages.append({"url": page_url, "ref": index_url})
         return pages

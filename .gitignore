@@ -123,6 +123,7 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+.ruff_cache/
 .dmypy.json
 dmypy.json
 
@@ -135,7 +136,7 @@ bookmarks.ini
 tools/
 books/
 realcugan-ncnn-vulkan/
-realesrgan-ncnn-vulkan/
+colorize_models/
 realesrgan-ncnn-vulkan/
 uis/ui2py.bat
 models/test_sites/

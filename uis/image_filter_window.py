@@ -24,7 +24,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.centralwidget)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.gv_from = QtWidgets.QGraphicsView(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.gv_from.sizePolicy().hasHeightForWidth())
@@ -32,7 +34,9 @@ class Ui_MainWindow(object):
         self.gv_from.setObjectName("gv_from")
         self.horizontalLayout_2.addWidget(self.gv_from)
         self.gv_to = QtWidgets.QGraphicsView(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.gv_to.sizePolicy().hasHeightForWidth())
@@ -199,7 +203,9 @@ class Ui_MainWindow(object):
         self.lbl_vertical_flip.setObjectName("lbl_vertical_flip")
         self.layout_rotate.setWidget(2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lbl_vertical_flip)
         self.layout_info.addLayout(self.layout_rotate)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         self.layout_info.addItem(spacerItem)
         self.btn_full_screen = QtWidgets.QPushButton(self.centralwidget)
         self.btn_full_screen.setObjectName("btn_full_screen")
@@ -253,11 +259,13 @@ class Ui_MainWindow(object):
         self.btn_save.setText(_translate("MainWindow", "Save Filter Settings"))
         self.btn_reset.setText(_translate("MainWindow", "Reset Default"))
         self.btn_close.setText(_translate("MainWindow", "Close"))
-from uis import resources_rc
 
+
+from uis import resources_rc
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

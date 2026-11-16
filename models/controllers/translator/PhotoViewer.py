@@ -1,16 +1,17 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtGui import *
-from PyQt6.QtCore import *
+from PyQt6.QtCore import QPoint, QPointF, QRect, QRectF, pyqtSignal
+from PyQt6.QtGui import QCursor, QPixmap
 
 from .BoxItem import BoxItem
+
 
 class PhotoViewer(QtWidgets.QGraphicsView):
     photoClicked = pyqtSignal(QtCore.QPoint)
     item_selected = pyqtSignal(object)
-    item_changed = pyqtSignal(object,QRect)
+    item_changed = pyqtSignal(object, QRect)
     item_deleted = pyqtSignal()
-    view_updated = pyqtSignal(QtGui.QTransform,float)
-    drag_start_pos = QPoint(-1,-1)
+    view_updated = pyqtSignal(QtGui.QTransform, float)
+    drag_start_pos = QPoint(-1, -1)
     current_drag_label = None
 
     def __init__(self, parent=None):
@@ -18,7 +19,6 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         self._zoom = 0
         self._empty = True
         self._scene = QtWidgets.QGraphicsScene(self)
-        #self._scene = MyScene(self)
         self._photo = QtWidgets.QGraphicsPixmapItem()
         self._scene.addItem(self._photo)
         self.setScene(self._scene)
@@ -32,14 +32,18 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         for item in self._scene.selectedItems():
             item.setSelected(False)
 
-    def add_label(self,label_text="",frame=QRectF(0,0,100,100)):
-        tmp_label = BoxItem(proxy_parent=self,position=QPointF(frame.x(),frame.y()),rect=QRectF(0,0,frame.width(),frame.height()), text=label_text)
+    def add_label(self, label_text="", frame=QRectF(0, 0, 100, 100)):
+        tmp_label = BoxItem(
+            proxy_parent=self,
+            position=QPointF(frame.x(), frame.y()),
+            rect=QRectF(0, 0, frame.width(), frame.height()),
+            text=label_text,
+        )
         self._scene.addItem(tmp_label)
         tmp_label.update_text()
         self.unselect_all_label()
         tmp_label.setSelected(True)
         self.item_selected.emit(tmp_label)
-        #self.labels.append(tmp_label)
         return tmp_label
 
     def render_label(self, item):
@@ -59,8 +63,7 @@ class PhotoViewer(QtWidgets.QGraphicsView):
                 self.scale(1 / unity.width(), 1 / unity.height())
                 viewrect = self.viewport().rect()
                 scenerect = self.transform().mapRect(rect)
-                factor = min(viewrect.width() / scenerect.width(),
-                             viewrect.height() / scenerect.height())
+                factor = min(viewrect.width() / scenerect.width(), viewrect.height() / scenerect.height())
                 self.scale(factor, factor)
             self._zoom = 0
 
@@ -81,8 +84,8 @@ class PhotoViewer(QtWidgets.QGraphicsView):
             self._scene.removeItem(tmp_label)
         self.item_deleted.emit()
 
-    def select_label_by_index(self,index):
-        for idx,tmp_label in enumerate(self.get_all_labels()):
+    def select_label_by_index(self, index):
+        for idx, tmp_label in enumerate(self.get_all_labels()):
             if idx == index:
                 self.unselect_all_label()
                 tmp_label.setSelected(True)
@@ -92,28 +95,27 @@ class PhotoViewer(QtWidgets.QGraphicsView):
     def get_current_selected_label(self):
         if len(self._scene.selectedItems()) > 0:
             for item in self._scene.selectedItems():
-                if isinstance(item,BoxItem):
+                if isinstance(item, BoxItem):
                     return item
         return None
 
     def get_all_labels(self):
         results = []
         for item in self._scene.items():
-            if isinstance(item,BoxItem):
+            if isinstance(item, BoxItem):
                 results.append(item)
         return results
 
-    def scene_focus_item_changed(self,new_item,old_item):
+    def scene_focus_item_changed(self, new_item, old_item):
         if new_item is None or isinstance(new_item, BoxItem):
             self.item_selected.emit(new_item)
             if isinstance(new_item, BoxItem):
-                self.item_changed.emit(new_item,new_item.get_frame())
+                self.item_changed.emit(new_item, new_item.get_frame())
 
-    def item_frame_changed(self,item,frame):
-        #print(f"{item} {frame}")
-        self.item_changed.emit(item,frame)
+    def item_frame_changed(self, item, frame):
+        self.item_changed.emit(item, frame)
 
-    def set_current_label_frame(self,frame):
+    def set_current_label_frame(self, frame):
         item = self.get_current_selected_label()
         if item is not None:
             item.set_frame(frame)
@@ -121,13 +123,13 @@ class PhotoViewer(QtWidgets.QGraphicsView):
     def try_drag_create_and_move_current_label(self, start_pos, current_pos):
         if self.current_drag_label is None:
             self.current_drag_label = self.add_label()
-        x0 = min(start_pos.x(),current_pos.x())
-        y0 = min(start_pos.y(),current_pos.y())
-        x1 = max(start_pos.x(),current_pos.x())
-        y1 = max(start_pos.y(),current_pos.y())
-        self.current_drag_label.set_frame(QRectF(x0,y0,x1-x0,y1-y0).toAlignedRect())
+        x0 = min(start_pos.x(), current_pos.x())
+        y0 = min(start_pos.y(), current_pos.y())
+        x1 = max(start_pos.x(), current_pos.x())
+        y1 = max(start_pos.y(), current_pos.y())
+        self.current_drag_label.set_frame(QRectF(x0, y0, x1 - x0, y1 - y0).toAlignedRect())
 
-    def toggle_add_mode(self,is_manual_add=False):
+    def toggle_add_mode(self, is_manual_add=False):
         if is_manual_add:
             self.setDragMode(QtWidgets.QGraphicsView.DragMode.NoDrag)
             self._photo.setCursor(QCursor(QtCore.Qt.CursorShape.CrossCursor))
@@ -178,25 +180,24 @@ class PhotoViewer(QtWidgets.QGraphicsView):
         if self._photo.isUnderMouse():
             self.photoClicked.emit(self.mapToScene(event.position().toPoint()).toPoint())
         if self.dragMode() == QtWidgets.QGraphicsView.DragMode.NoDrag:
-            #print("mouse press")
             if len(self._scene.selectedItems()) == 0:
                 self.drag_start_pos = self.mapToScene(event.position().toPoint()).toPoint()
             else:
-                self.drag_start_pos = QPoint(-1,-1)
+                self.drag_start_pos = QPoint(-1, -1)
 
     def mouseMoveEvent(self, event: QtGui.QMouseEvent):
         super(PhotoViewer, self).mouseMoveEvent(event)
         if self.dragMode() == QtWidgets.QGraphicsView.DragMode.NoDrag:
             current_pos = self.mapToScene(event.position().toPoint()).toPoint()
-            if 0 <= self.drag_start_pos.x() < self._photo.pixmap().width() and \
-                    0 <= self.drag_start_pos.y() < self._photo.pixmap().height():
-                #print("mouse move event in photo ",current_pos)
-                self.try_drag_create_and_move_current_label(self.drag_start_pos,current_pos)
+            if (
+                0 <= self.drag_start_pos.x() < self._photo.pixmap().width()
+                and 0 <= self.drag_start_pos.y() < self._photo.pixmap().height()
+            ):
+                self.try_drag_create_and_move_current_label(self.drag_start_pos, current_pos)
 
     def mouseReleaseEvent(self, event: QtGui.QMouseEvent):
         if self.dragMode() == QtWidgets.QGraphicsView.DragMode.NoDrag:
-            #print("mouse release")
-            self.drag_start_pos = QPoint(-1,-1)
+            self.drag_start_pos = QPoint(-1, -1)
             if self.current_drag_label is not None:
                 self.current_drag_label.setSelected(True)
                 self.current_drag_label.try_bring_to_front()

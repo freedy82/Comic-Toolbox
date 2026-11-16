@@ -4,7 +4,6 @@ import os
 import sys
 from pathlib import Path
 
-
 # Portable settings, bookmarks and relative downloads stay beside the EXE.
 # Bundled resources resolve separately through their modules' __file__ paths
 # inside _internal, including when a shortcut starts from another directory.

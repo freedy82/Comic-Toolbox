@@ -75,7 +75,9 @@ class JMComic(Site):
         if not (result.get("chapter") or result.get("book")):
             result.setdefault("title", "")
             result.setdefault("author", "")
-            result["message"] = TRSM("18comic: No album or chapter list was found. Use an album URL and complete website verification if requested.")
+            result["message"] = TRSM(
+                "18comic: No album or chapter list was found. Use an album URL and complete website verification if requested."
+            )
         return result
 
     def get_book_title_from_html(self, html_code):
@@ -132,8 +134,17 @@ class JMComic(Site):
         for link in soup.select('a.reading[href], #album_photo_cover a[href], a[href*="/photo/"]'):
             photo = self._photo_link(link["href"], url)
             if photo and photo[0] == album_id and soup.select_one("#book-name"):
-                return {"book": [{"title": self.get_book_title_from_html(html_code), "url": photo[1],
-                                  "index": "1", "ref": url, "is_single": True}]}
+                return {
+                    "book": [
+                        {
+                            "title": self.get_book_title_from_html(html_code),
+                            "url": photo[1],
+                            "index": "1",
+                            "ref": url,
+                            "is_single": True,
+                        }
+                    ]
+                }
         return {}
 
     @staticmethod
@@ -146,8 +157,11 @@ class JMComic(Site):
         if not isinstance(value, str) or not value.strip():
             return ""
         parsed = urlsplit(urljoin(base, value.strip()))
-        if (parsed.scheme not in ("http", "https") or not parsed.hostname
-                or not parsed.path.startswith("/media/photos/%s/" % photo_id)):
+        if (
+            parsed.scheme not in ("http", "https")
+            or not parsed.hostname
+            or not parsed.path.startswith("/media/photos/%s/" % photo_id)
+        ):
             return ""
         return urlunsplit(("https", parsed.netloc, parsed.path, parsed.query, ""))
 
@@ -160,7 +174,11 @@ class JMComic(Site):
         photo_id = self._integer_variable(source, "aid")
         scramble_id = self._integer_variable(source, "scramble_id")
         if not photo or photo_id != int(photo[0]) or scramble_id is None:
-            raise ValueError(TRSM("18comic: Image-restoration information is missing. Complete website verification and reload the chapter."))
+            raise ValueError(
+                TRSM(
+                    "18comic: Image-restoration information is missing. Complete website verification and reload the chapter."
+                )
+            )
         images_by_name, ordered_names = {}, []
         for tag in soup.select('img[id^="album_photo_"]'):
             image_url = self._image_url(tag.get("data-original") or tag.get("data-src"), url, photo_id)
@@ -175,11 +193,15 @@ class JMComic(Site):
         page_array = re.search(r"\b(?:var|let|const)\s+page_arr\s*=\s*", source)
         if page_array:
             try:
-                names, _ = json.JSONDecoder().raw_decode(source[page_array.end():])
+                names, _ = json.JSONDecoder().raw_decode(source[page_array.end() :])
             except ValueError:
-                raise ValueError(TRSM("18comic: The chapter image list is incomplete. Reload the chapter and try again.")) from None
+                raise ValueError(
+                    TRSM("18comic: The chapter image list is incomplete. Reload the chapter and try again.")
+                ) from None
             if not isinstance(names, list) or not names or any(not isinstance(name, str) or not name for name in names):
-                raise ValueError(TRSM("18comic: The chapter image list is incomplete. Reload the chapter and try again."))
+                raise ValueError(
+                    TRSM("18comic: The chapter image list is incomplete. Reload the chapter and try again.")
+                )
             ordered_names = names
         elif soup.select("#pageselect option") and len(ordered_names) != len(soup.select("#pageselect option")):
             raise ValueError(TRSM("18comic: The chapter image list is incomplete. Reload the chapter and try again."))
@@ -193,8 +215,12 @@ class JMComic(Site):
                 candidate = urlunsplit((first.scheme, first.netloc, directory + filename, first.query, ""))
                 image_url = self._image_url(candidate, url, photo_id)
             if not image_url:
-                raise ValueError(TRSM("18comic: The chapter image list is incomplete. Reload the chapter and try again."))
-            images.append({"url": image_url, "ref": url, "strip_count": self._strip_count(photo_id, scramble_id, filename)})
+                raise ValueError(
+                    TRSM("18comic: The chapter image list is incomplete. Reload the chapter and try again.")
+                )
+            images.append(
+                {"url": image_url, "ref": url, "strip_count": self._strip_count(photo_id, scramble_id, filename)}
+            )
         return {"images": images}
 
     @staticmethod
@@ -234,7 +260,9 @@ class JMComic(Site):
         temporary = None
         try:
             data = self._web_bot.get_web_content_raw(
-                url=image_url, ref=page_ref, cookie=self._cookies,
+                url=image_url,
+                ref=page_ref,
+                cookie=self._cookies,
                 headers=download_info.get("headers") if download_info else None,
                 cancel_check=lambda: self._stop_flag,
             )
